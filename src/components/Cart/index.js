@@ -24,7 +24,6 @@ const CustomTableCell = withStyles(theme => ({
 
 const styles = theme => ({
 	root: {
-		width: '100%',
 		marginTop: theme.spacing.unit * 3,
 		overflowX: 'auto',
 	},
@@ -65,11 +64,6 @@ const styles = theme => ({
 	}
 });
 
-let id = 0;
-function createData(id, name, number) {
-	return { id, name, number };
-}
-
 class Cart extends React.Component {
 
 	state = {
@@ -86,8 +80,9 @@ class Cart extends React.Component {
 		});
 	};
 
-	handleDeleteClick = (event) => {
-		console.log("remove");
+	handleDeleteClick = row => () => {
+		const { removeBook } = this.props;
+		removeBook(row);
 	}
 	render() {
 		const { classes } = this.props;
@@ -101,8 +96,7 @@ class Cart extends React.Component {
 					<TableHead>
 						<TableRow>
 							<CustomTableCell>Mã</CustomTableCell>
-							<CustomTableCell numeric>Tên ấn phẩm</CustomTableCell>
-							<CustomTableCell numeric>SL</CustomTableCell>
+							<CustomTableCell>Tên ấn phẩm</CustomTableCell>
 							<CustomTableCell>Xóa</CustomTableCell>
 						</TableRow>
 					</TableHead>
@@ -116,9 +110,8 @@ class Cart extends React.Component {
 									<CustomTableCell component="th" scope="row">
 										{row.name}
 									</CustomTableCell>
-									<CustomTableCell numeric>{row.number}</CustomTableCell>
 									<CustomTableCell>
-										<IconButton onClick={this.handleDeleteClick}>
+										<IconButton onClick={this.handleDeleteClick(row)}>
 											<DeleteIcon />
 										</IconButton>
 									</CustomTableCell>

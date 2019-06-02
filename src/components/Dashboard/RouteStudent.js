@@ -24,7 +24,7 @@ export default class RouteStudent extends Component {
     }
 
     render() {
-        const { student, editStudent, addStudent, deleteStudent } = this.props;
+        const { student, editStudent, addStudent, deleteStudent, classList } = this.props;
         return (
             <PeopleManagement
                 students={student.students}
@@ -32,6 +32,7 @@ export default class RouteStudent extends Component {
                 editStudent={editStudent}
                 addStudent={addStudent}
                 deleteStudent={deleteStudent}
+                classList={classList}
             />
         )
     }

@@ -38,7 +38,6 @@ class BorrowBook extends Component {
 	}
 
 	onSelectedBook = (book) => {
-		console.log(book);
 		this.setState(state => {
 			return {
 				...state,
@@ -47,17 +46,22 @@ class BorrowBook extends Component {
 		})
 	}
 
+	removeBook = (book) => {
+		const {selectedBook} = this.state;
+		const newSelectedBook = selectedBook.filter(bookSelected => book.id !== bookSelected.id);
+		this.setState({selectedBook: newSelectedBook});
+	}
+
 	render() {
-		const { classes } = this.props;
+		const { classes, books } = this.props;
 		const { selectedBook } = this.state;
 		return (
 			<div>
 				<div className={classes.card}>
 					<div>
-						<Searchbox />
-						<ViewGridItem onSelectedBook={this.onSelectedBook}/>
+						<ViewGridItem books={books} onSelectedBook={this.onSelectedBook} inBorrowTab/>
 					</div>
-					<Cart selectedBook={selectedBook}/>
+					<Cart selectedBook={selectedBook} removeBook={this.removeBook}/>
 				</div>
 			</div>
 

@@ -11,7 +11,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from "@material-ui/core/TextField";
 import classNames from 'classnames';
-
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import FilledInput from '@material-ui/core/FilledInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
 
 const styles = (theme) => ({
 	appBar: {
@@ -19,6 +26,11 @@ const styles = (theme) => ({
 	},
 	flex: {
 		flex: 1,
+	},
+	fullwidth: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
+		width: "96%"
 	},
 	container: {
 		display: "flex",
@@ -31,11 +43,18 @@ const styles = (theme) => ({
 		marginRight: theme.spacing.unit,
 		width: "48%"
 	},
+	formControl: {
+		margin: theme.spacing.unit,
+		minWidth: 120,
+		width: "48%"
+	},
 	dense: {
 		marginTop: 19
 	},
 	menu: {
 		width: 200
+	},
+	select: {
 	}
 });
 
@@ -54,10 +73,7 @@ class FullScreenDialog extends React.Component {
 		phone: null,
 		isActive: null,
 		className: null,
-		class: {
-			id: null,
-			className: null,
-		}
+		classId: null
 	}
 
 	handleClickOpen = () => {
@@ -65,9 +81,21 @@ class FullScreenDialog extends React.Component {
 	};
 
 	handleClose = () => {
-		console.log(this.state);
 		this.props.handleCloseDialog();
-		this.setState({ open: false });
+		this.setState(
+			{
+				open: false,
+				fullName: null,
+				email: null,
+				sex: null,
+				address: null,
+				cardNumber: null,
+				phone: null,
+				isActive: null,
+				className: null,
+				classId: null,
+			}
+		);
 	};
 
 	handleChange = (name) => event => {
@@ -88,7 +116,8 @@ class FullScreenDialog extends React.Component {
 			address,
 			cardNumber,
 			phone,
-			className
+			classId,
+			isActive
 		} = this.state;
 		const { editStudent, addStudent, student } = this.props;
 		if(student.id){
@@ -100,7 +129,8 @@ class FullScreenDialog extends React.Component {
 				address: address || student.address,
 				cardNumber: cardNumber || student.cardNumber,
 				phone: phone || student.phone,
-				classId: student.class.id || 1
+				classId: classId || student.class.id,
+				isActive: isActive || student.isActive
 			})
 		}
 		addStudent({
@@ -110,7 +140,8 @@ class FullScreenDialog extends React.Component {
 			address,
 			cardNumber,
 			phone,
-			classId: 1
+			classId,
+			isActive
 		})
 		this.handleClose();
 	}
@@ -126,7 +157,7 @@ class FullScreenDialog extends React.Component {
 		return "Xem thông tin chi tiết";
 	}
 	render() {
-		const { classes, open, edit, student } = this.props;
+		const { classes, open, edit, student, classList } = this.props;
 		return (
 			<Dialog
 				fullScreen
@@ -169,16 +200,6 @@ class FullScreenDialog extends React.Component {
 						margin="normal"
 					/>
 					<TextField
-						disabled={!edit}
-						value={this.state.sex}
-						defaultValue={student.sex}
-						id="standard-required"
-						label="Giới tính"
-						onChange={this.handleChange("sex")}
-						className={classes.textField}
-						margin="normal"
-					/>
-					<TextField
 						type="number"
 						disabled={!edit}
 						id="standard-error"
@@ -203,24 +224,53 @@ class FullScreenDialog extends React.Component {
 						disabled={!edit}
 						id="standard-password-input"
 						label="Số điện thoại"
-						className={classes.textField}
 						type="number"
+						className={classes.fullwidth}
 						onChange={this.handleChange("phone")}
 						value={this.state.phone}
 						defaultValue={student.phone}
 						margin="normal"
 					/>
-					<TextField
-						disabled={!edit}
-						id="standard-full-width"
-						label="Thông tin lớp"
-						style={{ margin: 8 }}
-						fullWidth
-						value={this.state.className}
-						defaultValue={student.class ? student.class.className : ""}
-						onChange={this.handleChange("className")}
-						margin="normal"
-					/>
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="sex-helper">Giới tính:</InputLabel>
+						<Select
+							className={classes.select}
+							value={this.state.sex || student.sex}
+							onChange={this.handleChange("sex")}
+							input={<Input name="sex" id="sex-helper" />}
+						>
+							<MenuItem value={1}>Nam</MenuItem>
+							<MenuItem value={2}>Nữ</MenuItem>
+						</Select>
+					</FormControl>
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="class-helper">Lớp học:</InputLabel>
+						<Select
+							className={classes.select}
+							value={this.state.classId || (student.class ? student.class.classId : "")}
+							onChange={this.handleChange("classId")}
+							input={<Input name="class" id="class-helper" />}
+						>
+							<MenuItem value="">
+							<em>None</em>
+							</MenuItem>
+							{classList.map(item => (
+								<MenuItem value={item.id}>{item.className}</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="isActive-helper">Trạng thái:</InputLabel>
+						<Select
+							className={classes.select}
+							value={this.state.isActive || student.isActive}
+							onChange={this.handleChange("isActive")}
+							input={<Input name="isActive" id="isActive-helper" />}
+						>
+							<MenuItem value={true}>Active</MenuItem>
+							<MenuItem value={false}>Inactive</MenuItem>
+						</Select>
+					</FormControl>
 				</form>
 			</Dialog>
 		);

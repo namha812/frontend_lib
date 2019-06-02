@@ -15,7 +15,8 @@ export const SIGNUP_ERROR = 'signup error';
 const defaultState = {
   loading: false,
   loaded: false,
-  OAuthToken: null,
+  loginStatus: true,
+  OAuthToken: "OAuthToken",
   OAuthErrorCode: null,
   OAuthErrorDescription: null,
   sessionToken: null
@@ -29,6 +30,7 @@ const authReducer = createReducer(defaultState, {
     ...state,
     loading: false,
     loaded: true,
+    loginStatus: true,
     OAuthToken: action.payload.OAuthToken,
     sessionToken: action.payload.sessionToken
   }),

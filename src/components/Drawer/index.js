@@ -17,7 +17,8 @@ import {
 	ROUTE_SIGNUP,
 	ROUTE_ANONYMOUS,
 	ROUTE_PEOPLE,
-	ROUTE_BOOK_BORROW
+  ROUTE_BOOK_BORROW,
+  ROUTE_BOOK
 } from '../../state/modules/routing';
 const ListDrawer = [
   {
@@ -33,7 +34,7 @@ const ListDrawer = [
   {
     id: 3,
     title: "Quản lý sách",
-    path: ""
+    path:ROUTE_BOOK
   },
   {
     id: 4,
@@ -64,7 +65,7 @@ class TemporaryDrawer extends React.Component {
     onClose();
   }
   render() {
-    const { classes, openDrawer, onClose } = this.props;
+    const { classes, openDrawer, onClose, loginStatus } = this.props;
 
     const sideList = (
       <div className={classes.list}>
@@ -79,7 +80,9 @@ class TemporaryDrawer extends React.Component {
       </div>
     );
 
-
+    if(!loginStatus){
+      return null;
+    }
     return (
       <div>
         <Drawer open={openDrawer} onClose={onClose}>

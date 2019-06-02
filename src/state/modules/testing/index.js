@@ -11,12 +11,18 @@ const defaultState = {
 const testReducer = createReducer(defaultState, {
   [TESTING]: (state, action) => ({
     ...state,
-    loading: true
+    loading: true,
+    data: action.payload
   })
 })
 
-export const loginSaga = (payload) => ({
+export const test = (payload) => ({
   type: TESTING,
+  payload
+});
+
+export const testSaga = (payload) => ({
+  type: TESTING_SAGA,
   payload
 })
 

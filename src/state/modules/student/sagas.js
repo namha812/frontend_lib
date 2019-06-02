@@ -42,7 +42,35 @@ const studenmock = [
         "id": 1,
         "className": "Class 1"
     }
-}
+  },
+  {
+    "id": 7,
+    "fullName": "Nguyễn Văn B",
+    "email": "nguyenb@gmail.com",
+    "sex": 1,
+    "address": "Hoàng Mai - Hà N",
+    "cardNumber": "345",
+    "phone": null,
+    "isActive": true,
+    "class": {
+    "id": 2,
+    "className": "Class 2"
+    }
+  },
+  {
+    "id": 8,
+    "fullName": "Nguyễn Thị B",
+    "email": "thib@gmail.com",
+    "sex": 2,
+    "address": "Thanh Xuân - Hà Nội",
+    "cardNumber": "2341",
+    "phone": null,
+    "isActive": true,
+    "class": {
+    "id": 2,
+    "className": "Class 2"
+    }
+  }
 ]
 
 function* fetchStudentSaga(action) {
@@ -51,6 +79,7 @@ function* fetchStudentSaga(action) {
   if (res.data) {
     yield put(fetchStudent(res.data.data));
   }
+  // yield put(fetchStudent(studenmock));
   yield put(fetchedStudent())
 }
 

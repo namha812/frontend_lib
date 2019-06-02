@@ -7,6 +7,7 @@ import LoadingComponent from '../LoadingComponent';
 import RouteHome from './RouteHome';
 import RouteStudent from './RouteStudent';
 import RouteBookBorrow from './RouteBookBorrow';
+import RouteBook from './RouteBook'
 import {
 	routeType,
 	ROUTE_HOME,
@@ -15,7 +16,8 @@ import {
 	ROUTE_SIGNUP,
 	ROUTE_ANONYMOUS,
 	ROUTE_PEOPLE,
-	ROUTE_BOOK_BORROW
+	ROUTE_BOOK_BORROW,
+	ROUTE_BOOK
 } from '../../state/modules/routing';
 
 class index extends Component {
@@ -23,11 +25,13 @@ class index extends Component {
 		const { type, ...remainProps } = this.props;
 		switch (type) {
 			case ROUTE_HOME:
-				return <RouteHome/>
+				return <RouteHome {...remainProps}/>
 			case ROUTE_BOOK_BORROW:
-				return <RouteBookBorrow />
+				return <RouteBookBorrow {...remainProps}/>
 			case ROUTE_PEOPLE:
 				return <RouteStudent {...remainProps}/>
+			case ROUTE_BOOK:
+				return <RouteBook {...remainProps}/>
 			default:
 				return (<div>
 					<ViewGridItem anonymous/>

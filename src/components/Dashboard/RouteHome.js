@@ -16,11 +16,16 @@ import {
 } from '../../state/modules/routing';
 
 export default class RouteHome extends Component {
+    componentDidMount() {
+        const { fetchBook } = this.props;
+        fetchBook();
+    }
     render() {
+        const {books, OAuthToken} = this.props;
         return (
             <div>
-                <LoadingComponent />
-                <ViewGridItem anonymous/>
+                {/* <LoadingComponent /> */}
+                <ViewGridItem books={books} OAuthToken={OAuthToken}/>
             </div>
         )
     }

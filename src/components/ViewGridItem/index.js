@@ -10,7 +10,6 @@ const styles = {
 		display: "flex",
 		flexWrap: "wrap",
 		margin: "0 auto",
-		justifyContent: "center"
 	},
 	gridItem: {
 		margin: 20,
@@ -33,23 +32,27 @@ const styles = {
 };
 
 function MediaCard(props) {
-	const { classes, anonymous = false, onSelectedBook } = props;
+	const { classes, inBorrowTab = false, onSelectedBook, books = [] } = props;
+	console.log(props);
 	return (
 		<React.Fragment>
 			<div className={classes.container}>
-				{dataMock.map((data, index) => (
-					<div key={index} className={classes.gridItem}>
-						<Item
-							anonymous={anonymous}
-							url={data.url}
-							name={data.name}
-							content={data.content}
-							author={data.author}
-							onSelectedBook={onSelectedBook}
-							bookItem={data}
-						/>
+				{books.map((book, index) => {
+					if(!book.active){
+						return null;
+					}
+					return(<div key={index} className={classes.gridItem}>
+							<Item
+								anonymous={!inBorrowTab}
+								url={book.url}
+								name={book.name}
+								content={book.content}
+								author={book.author}
+								onSelectedBook={onSelectedBook}
+								bookItem={book}
+							/>
 					</div>
-				)
+					)}
 				)}
 			</div>
 		</React.Fragment>

@@ -16,6 +16,9 @@ export const ROUTE_SIGNUP = 'route/ROUTE_SIGNUP';
 export const ROUTE_ANONYMOUS = 'route/ROUTE_ANONYMOUS';
 export const ROUTE_PEOPLE ='route/ROUTE_PEOPLE';
 export const ROUTE_BOOK_BORROW = 'route/ROUTE_BOOK_BORROW';
+export const ROUTE_BOOK = 'route/ROUTE_BOOK';
+export const ROUTE_TEST = 'route/ROUTE_TEST';
+
 // selector
 export const routeType = state => state.location.type
 //routes map
@@ -62,6 +65,18 @@ export const routesMap = {
     component: "Home", 
     requiresAuth: true,
     modalOver: ROUTE_ANONYMOUS,
+  },
+  [ROUTE_BOOK] : {
+    path:"/book-manage",
+    component: "Home", 
+    requiresAuth: true,
+    modalOver: ROUTE_ANONYMOUS,
+  }, 
+  [ROUTE_TEST]: {
+    path: "/testing-something",
+    component: "Testing",
+    requiresAuth: true,
+    modalOver: ROUTE_ANONYMOUS
   }
 }
 

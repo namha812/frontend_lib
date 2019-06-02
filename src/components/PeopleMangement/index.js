@@ -19,7 +19,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
+import Checkbox from "@material-ui/core/Checkbox";
 
 
 const styles = theme => ({
@@ -86,7 +87,6 @@ class PeopleManagement extends React.Component {
 	}
 	handleAgree = () => {
 		const { currentStudent } = this.state;
-		console.log(currentStudent);
 		this.props.deleteStudent(currentStudent.id);
 		this.handleClose();
 	}
@@ -102,7 +102,8 @@ class PeopleManagement extends React.Component {
 			loadingState,
 			editStudent,
 			addStudent,
-			deleteStudent
+			deleteStudent,
+			classList
 	} = this.props;
 		const { open, edit, currentStudent } = this.state;
 		return (
@@ -110,6 +111,7 @@ class PeopleManagement extends React.Component {
 				<Table className={classes.table}>
 					<TableHead>
 						<TableRow>
+							<TableCell>Trạng thái</TableCell>
 							<TableCell>Họ tên</TableCell>
 							<TableCell>Địa chỉ</TableCell>
 							<TableCell>Giới tính</TableCell>
@@ -130,6 +132,12 @@ class PeopleManagement extends React.Component {
 						{students.map(row => {
 							return (
 								<TableRow key={row.id}>
+									<TableCell>
+										<Checkbox
+											disabled
+											checked={row.isActive}
+										/>
+									</TableCell>
 									<TableCell component="th" scope="row">
 										{row.fullName}
 									</TableCell>
@@ -159,26 +167,25 @@ class PeopleManagement extends React.Component {
 						<AddIcon color="white" />
 					</IconButton>
 				</Fab>
-				<PeopleDialog editStudent={editStudent} addStudent={addStudent} student={currentStudent} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+				<PeopleDialog classList={classList} editStudent={editStudent} addStudent={addStudent} student={currentStudent} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
 				<Dialog
 					open={this.state.deleteDialogState}
 					onClose={this.handleClose}
 					aria-labelledby="alert-dialog-title"
 					aria-describedby="alert-dialog-description"
 					>
-					<DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+					<DialogTitle id="alert-dialog-title">{"Xóa thông tin người dùng?"}</DialogTitle>
 					<DialogContent>
 						<DialogContentText id="alert-dialog-description">
-						Let Google help apps determine location. This means sending anonymous location data to
-						Google, even when no apps are running.
+							Bạn có chắc chắn xóa thông tin người dùng này?
 						</DialogContentText>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={this.handleDisagree} color="primary">
-						Disagree
+							Hủy
 						</Button>
 						<Button onClick={this.handleAgree} color="primary" autoFocus>
-						Agree
+							Xóa
 						</Button>
 					</DialogActions>
 					</Dialog>

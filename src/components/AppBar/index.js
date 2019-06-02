@@ -117,13 +117,13 @@ class PrimarySearchAppBar extends React.Component {
 	}
 
 	onMenuIconClick = () => {
-		console.log(this.props)
 		this.props.openDrawer();
 	}
 
 	render() {
 		const { anchorEl, contactAnchorEl } = this.state;
-		const { classes, anonymous } = this.props;
+		const { classes, loginStatus } = this.props;
+		console.log('app bar props:' , this.props);
 		const isMenuOpen = Boolean(anchorEl);
 		const isContactMenuOpen = Boolean(contactAnchorEl);
 		const renderMenu = (
@@ -158,30 +158,30 @@ class PrimarySearchAppBar extends React.Component {
 			<div className={classes.root}>
 				<AppBar position="static">
 					<Toolbar>
-						{!anonymous && <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" onClick={this.onMenuIconClick}>
+						{loginStatus && <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer" onClick={this.onMenuIconClick}>
 							<MenuIcon />
 						</IconButton>}
 						<Typography className={classes.title} variant="h6" color="inherit" noWrap>
 							LIBRARY MANAGER
-            </Typography>
+						</Typography>
 						<div className={classes.grow} />
 						<div className={classes.sectionDesktop}>
-							<IconButton color="inherit">
+							{loginStatus && <IconButton color="inherit">
 								<HomeIcon />
-							</IconButton>
-							{!anonymous && <IconButton color="inherit">
+							</IconButton>}
+							{loginStatus && <IconButton color="inherit">
 								<Badge badgeContent={17} color="secondary">
 									<NotificationsIcon />
 								</Badge>
 							</IconButton>}
-							{!anonymous && <IconButton
+							<IconButton
 								aria-owns={isMenuOpen ? 'material-appbar' : null}
 								aria-haspopup="true"
 								onClick={this.handleProfileMenuOpen}
 								color="inherit"
 							>
 								<AccountCircle />
-							</IconButton>}
+							</IconButton>
 							<IconButton
 								aria-owns={isContactMenuOpen ? 'material-appbar' : null}
 								aria-haspopup="true"
