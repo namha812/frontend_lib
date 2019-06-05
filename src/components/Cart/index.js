@@ -11,6 +11,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
 
 const CustomTableCell = withStyles(theme => ({
 	head: {
@@ -26,6 +31,7 @@ const styles = theme => ({
 	root: {
 		marginTop: theme.spacing.unit * 3,
 		overflowX: 'auto',
+		minWidth: 480
 	},
 	table: {
 		minWidth: 500,
@@ -37,13 +43,13 @@ const styles = theme => ({
 	},
 	container: {
 		display: "flex",
-		flexWrap: "wrap",
-		justifyContent: "center"
+		justifyContent: "center",
+    flexWrap: "wrap"
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
-		width: 250
+		width: "90%"
 	},
 	dense: {
 		marginTop: 19
@@ -61,17 +67,18 @@ const styles = theme => ({
 	},
 	submitField: {
 		textAlign: "center"
-	}
+	},
+	formControl: {
+		margin: theme.spacing.unit,
+		minWidth: 120,
+		width: "90%"
+	},
 });
 
 class Cart extends React.Component {
 
 	state = {
-		username: "",
-		address: "",
-		phone: "",
-		date: "",
-		listItem: []
+		selectedStudent: {}
 	}
 
 	handleChange = name => event => {
@@ -84,10 +91,36 @@ class Cart extends React.Component {
 		const { removeBook } = this.props;
 		removeBook(row);
 	}
+
+	onBorrowClick = () => {
+		const { selectedBook, borrowBook, classes, students = [] } = this.props;
+		const { selectedStudent } = this.state;
+		const borrowPay = selectedBook.map(book => {
+			return {
+				bookId: book.id,
+				quantity: book.number
+			}
+		});
+		const data = {
+			borrowPay,
+			expiryDate: "2019-06-09",
+			studentId: selectedStudent.id
+		}
+		borrowBook(data);
+		this.setState({selectedStudent: {}})
+	}
+
+	onChangeSelected = (event) => {
+		const { students } = this.props;
+		const { value } = event.target;
+		const selectedStudent = students.filter(item => item.id === value);
+		this.setState({ selectedStudent: selectedStudent[0] })
+	}
+
 	render() {
-		const { classes } = this.props;
-		const { selectedBook } = this.props;
-		if(!selectedBook.length) {
+		const { selectedStudent } = this.state;
+		const { selectedBook, classes, students = [] } = this.props;
+		if (!selectedBook.length) {
 			return null;
 		}
 		return (
@@ -97,6 +130,7 @@ class Cart extends React.Component {
 						<TableRow>
 							<CustomTableCell>Mã</CustomTableCell>
 							<CustomTableCell>Tên ấn phẩm</CustomTableCell>
+							<CustomTableCell>SL</CustomTableCell>
 							<CustomTableCell>Xóa</CustomTableCell>
 						</TableRow>
 					</TableHead>
@@ -108,7 +142,10 @@ class Cart extends React.Component {
 										{row.id}
 									</CustomTableCell>
 									<CustomTableCell component="th" scope="row">
-										{row.name}
+										{row.bookName}
+									</CustomTableCell>
+									<CustomTableCell component="th" scope="row">
+										{row.number}
 									</CustomTableCell>
 									<CustomTableCell>
 										<IconButton onClick={this.handleDeleteClick(row)}>
@@ -122,46 +159,41 @@ class Cart extends React.Component {
 				</Table>
 				<div className={classes.textLabel}>Độc giả</div>
 				<form className={classes.container} noValidate autoComplete="off">
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="class-helper">Hoc sinh muon:</InputLabel>
+						<Select
+							className={classes.select}
+							value={selectedStudent.id}
+							onChange={this.onChangeSelected}
+							input={<Input name="class" id="class-helper" />}
+						>
+							{students.map(item => (
+								<MenuItem value={item.id}>{item.fullName}</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 					<TextField
-						required
-						id="standard-name"
-						label="Tên độc giả"
-						className={classes.textField}
-						value={this.state.name}
-						onChange={this.handleChange("username")}
-						margin="normal"
-					/>
-					<TextField
-						required
 						id="standard-uncontrolled"
 						label="Địa chỉ"
 						defaultValue=""
 						className={classes.textField}
 						margin="normal"
+						value={selectedStudent.address}
 						onChange={this.handleChange("address")}
 
 					/>
 					<TextField
-						required
 						id="standard-required"
 						label="Số điện thoại"
 						defaultValue=""
 						className={classes.textField}
 						onChange={this.handleChange("phone")}
 						margin="normal"
-					/>
-					<TextField
-						required
-						id="standard-error"
-						label="Ngày mượn"
-						defaultValue=""
-						onChange={this.handleChange("date")}
-						className={classes.textField}
-						margin="normal"
+						value={selectedStudent.phone}
 					/>
 				</form>
 				<div className={classes.submitField}>
-					<Button variant="contained" color="primary" className={classes.button}>
+					<Button onClick={this.onBorrowClick} variant="contained" color="primary" className={classes.button}>
 						Lưu
         </Button>
 					<Button variant="contained" className={classes.button}>

@@ -13,6 +13,7 @@ const styles = {
 	},
 	gridItem: {
 		margin: 20,
+		maxWidth: 320
 	},
 	headerTitle: {
 		padding: 20
@@ -38,16 +39,17 @@ function MediaCard(props) {
 		<React.Fragment>
 			<div className={classes.container}>
 				{books.map((book, index) => {
-					if(!book.active){
+					if(book.isActive !== 1){
 						return null;
 					}
 					return(<div key={index} className={classes.gridItem}>
 							<Item
 								anonymous={!inBorrowTab}
 								url={book.url}
-								name={book.name}
+								name={book.bookName}
 								content={book.content}
 								author={book.author}
+								quantity={book.quantity}
 								onSelectedBook={onSelectedBook}
 								bookItem={book}
 							/>

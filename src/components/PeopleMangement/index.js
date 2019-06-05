@@ -98,7 +98,7 @@ class PeopleManagement extends React.Component {
 	render() {
 		const { 
 			classes,
-			students,
+			students = [],
 			loadingState,
 			editStudent,
 			addStudent,

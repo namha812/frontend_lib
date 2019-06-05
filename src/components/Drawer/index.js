@@ -18,7 +18,8 @@ import {
 	ROUTE_ANONYMOUS,
 	ROUTE_PEOPLE,
   ROUTE_BOOK_BORROW,
-  ROUTE_BOOK
+  ROUTE_BOOK,
+  ROUTE_BORROW
 } from '../../state/modules/routing';
 const ListDrawer = [
   {
@@ -39,7 +40,7 @@ const ListDrawer = [
   {
     id: 4,
     title: "Quản lý mượn trả",
-    path: ""
+    path: ROUTE_BORROW
   },
   {
     id: 5,

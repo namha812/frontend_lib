@@ -23,6 +23,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 import BookDialog from '../BookDialog';
+import BookManagement from '../../pages/BookManagement';
 // import book from './book.json'
 
 
@@ -43,9 +44,9 @@ const styles = theme => ({
 });
 
 
-class PeopleManagement extends React.Component {
+class BookManage extends React.Component {
 	state = {
-        // book: book,
+		// book: book,
 		currentBook: {},
 		deleteDialogState: false,
 		open: false,
@@ -98,13 +99,13 @@ class PeopleManagement extends React.Component {
 		this.setState({
 			deleteDialogState: false
 		})
-    }
-    
-    handleChangeStatus = (book) => (event) => {
+	}
 
-    }
+	handleChangeStatus = (book) => (event) => {
+
+	}
 	render() {
-		const { 
+		const {
 			classes,
 			books,
 			loadingState,
@@ -114,12 +115,13 @@ class PeopleManagement extends React.Component {
 			categories
 		} = this.props;
 		const { open, edit, currentBook, book } = this.state;
+		console.log(books)
 		return (
 			<Paper className={classes.root}>
 				<Table className={classes.table}>
 					<TableHead>
 						<TableRow>
-                            <TableCell>Trạng thái</TableCell>
+							<TableCell>Trạng thái</TableCell>
 							<TableCell>ID</TableCell>
 							<TableCell>Nhan đề</TableCell>
 							<TableCell>Tác giả</TableCell>
@@ -130,9 +132,9 @@ class PeopleManagement extends React.Component {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{!books.length && 
+						{!books.length &&
 							<TableRow>
-								<TableCell colSpan={7} style={{textAlign: "center"}}>
+								<TableCell colSpan={7} style={{ textAlign: "center" }}>
 									{loadingState ? "Loading" : "No data"}
 								</TableCell>
 
@@ -140,27 +142,27 @@ class PeopleManagement extends React.Component {
 						{books.map(row => {
 							return (
 								<TableRow key={row.id}>
-                                    <TableCell>
-                                    <FormControlLabel
-                                        control={
-                                            <Switch   
-                                                checked={row.active}
-                                                onChange={this.handleChangeStatus(row)}
-												value={row.active}
-												disable
-                                            />
-                                        }
-                                        label={row.active ? "Active" : "Inactive"}
-                                        />
-                                    </TableCell>
+									<TableCell>
+										<FormControlLabel
+											control={
+												<Switch
+													checked={row.isActive === 1}
+													onChange={this.handleChangeStatus(row)}
+													value={row.isActive === 1}
+													disable
+												/>
+											}
+											label={row.isActive === 1 ? "Active" : "Inactive"}
+										/>
+									</TableCell>
 									<TableCell component="th" scope="row">
 										{row.id}
 									</TableCell>
-									<TableCell >{row.name}</TableCell>
+									<TableCell >{row.bookName}</TableCell>
 									<TableCell >{row.author}</TableCell>
-									<TableCell >{row.category}</TableCell>
-									<TableCell >{row.publishingHouse}</TableCell>
-									<TableCell >{row.remainNumber ? row.remainNumber : "---"}</TableCell>
+									<TableCell >{row.category ? row.category.name : "---"}</TableCell>
+									<TableCell >{row.publisherHouse ? row.publisherHouse.name : "---"}</TableCell>
+									<TableCell >{row.quantity ? row.quantity : "---"}</TableCell>
 									<TableCell>
 										<IconButton onClick={this.handleView(row)}>
 											<ViewIcon />
@@ -188,29 +190,29 @@ class PeopleManagement extends React.Component {
 					onClose={this.handleClose}
 					aria-labelledby="alert-dialog-title"
 					aria-describedby="alert-dialog-description"
-					>
+				>
 					<DialogTitle id="alert-dialog-title">{"Delete book?"}</DialogTitle>
 					<DialogContent>
 						<DialogContentText id="alert-dialog-description">
-                            Bạn có chắc chắn xóa sách này khỏi hệ thống?
+							Bạn có chắc chắn xóa sách này khỏi hệ thống?
 						</DialogContentText>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={this.handleDisagree} color="primary">
-                            Hủy
+							Hủy
 						</Button>
 						<Button onClick={this.handleAgree} color="primary" autoFocus>
-						    Xóa
+							Xóa
 						</Button>
 					</DialogActions>
-					</Dialog>
+				</Dialog>
 			</Paper>
 		);
 	}
 }
 
-PeopleManagement.propTypes = {
+BookManage.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PeopleManagement);
+export default withStyles(styles)(BookManage);

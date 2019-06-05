@@ -34,6 +34,11 @@ const styles = (theme) => ({
 		marginRight: theme.spacing.unit,
 		width: "48%"
 	},
+	textFieldFullWidth: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
+		width: "96%"
+	},
 	dense: {
 		marginTop: 19
 	},
@@ -49,13 +54,13 @@ function Transition(props) {
 class FullScreenDialog extends React.Component {
 
 	state = {
-		name: null,
-		email: null,
-		remainNumber: null,
+		bookName: null,
 		author: null,
-		active: false,
 		category: null,
-		publishing:null
+		isActive: 1,
+		publisherHouse: null,
+		quantity: null,
+		coverPrice: null
 	}
 
 	handleClickOpen = () => {
@@ -64,7 +69,18 @@ class FullScreenDialog extends React.Component {
 
 	handleClose = () => {
 		this.props.handleCloseDialog();
-		this.setState({ open: false });
+		this.setState(
+			{
+				open: false,
+				bookName: null,
+				author: null,
+				category: null,
+				isActive: 1,
+				publisherHouse: null,
+				quantity: null,
+				coverPrice: null
+			}
+		);
 	};
 
 	handleChange = (name) => event => {
@@ -78,41 +94,46 @@ class FullScreenDialog extends React.Component {
 	}
 
 	handleSubmit = () => {
-	// 	const {
-	// 		name,
-	// 		email,
-	// 		remainNumber,
-	// 		author,
-	// 		cardNumber,
-	// 		phone
-	// 	} = this.state;
-	// 	const { editStudent, addStudent, student } = this.props;
-	// 	if(student.id){
-	// 		editStudent({
-	// 			id: student.id,
-	// 			name: name || student.name,
-	// 			email: email || student.email,
-	// 			remainNumber: remainNumber || student.remainNumber,
-	// 			author: author || student.author,
-	// 			cardNumber: cardNumber || student.cardNumber,
-	// 			phone: phone || student.phone,
-	// 			classId: student.class.id || 1
-	// 		})
-	// 	}
-	// 	addStudent({
-	// 		name,
-	// 		email,
-	// 		remainNumber,
-	// 		author,
-	// 		cardNumber,
-	// 		phone,
-	// 		classId: 1
-	// 	})
+		const {
+			bookName,
+			author,
+			categoryId,
+			isActive,
+			publisherHouseId,
+			quantity,
+			coverPrice
+		} = this.state;
+		const { addBook, editBook, book } = this.props;
+		if (book.id) {
+			editBook({
+				id: book.id,
+				isActive: isActive === 1 || book.isActive,
+				bookName: bookName || book.bookName,
+				categoryId: categoryId || book.category ? book.category.id : null,
+				quantity: quantity || book.quantity,
+				author: author || book.author,
+				coverPrice: coverPrice || book.coverPrice,
+				publisherHouseId: publisherHouseId || book.publisherHouse ? book.publisherHouse.id : null,
+			})
+		}
+		else {
+			addBook({
+				bookName,
+				author,
+				quantity,
+				categoryId,
+				isActive: isActive === 1,
+				publisherHouseId,
+				coverPrice
+			})
+		}
+
 		this.handleClose();
 	}
 
 	get Title() {
-		const { classes, open, edit, book = {},publishingCompanies={} } = this.props;
+		const { classes, open, edit, book = {}, publishingCompanies = {} } = this.props;
+		console.log(this.props);
 		if (edit && book.id) {
 			return "Sửa thông tin sách";
 		}
@@ -122,7 +143,8 @@ class FullScreenDialog extends React.Component {
 		return "Xem thông tin chi tiết";
 	}
 	render() {
-		const { classes, open, edit, book = {}, publishingCompanies = [], categories=[] } = this.props;
+		const { classes, open, edit, book = {}, publishingCompanies = [], categories = [] } = this.props;
+		console.log(this.props);
 		return (
 			<Dialog
 				fullScreen
@@ -149,9 +171,9 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Tên"
 						className={classes.textField}
-						value={this.state.name}
-						defaultValue={book.name}
-						onChange={this.handleChange("name")}
+						value={this.state.bookName}
+						defaultValue={book.bookName}
+						onChange={this.handleChange("bookName")}
 						margin="normal"
 					/>
 					<TextField
@@ -166,45 +188,77 @@ class FullScreenDialog extends React.Component {
 					/>
 					<TextField
 						disabled={!edit}
-						value={this.state.remainNumber}
-						defaultValue={book.remainNumber}
+						value={this.state.quantity}
+						defaultValue={book.quantity}
 						id="standard-required"
 						label="Số lượng còn lại"
-						onChange={this.handleChange("remainNumber")}
-						className={classes.textField}
+						onChange={this.handleChange("quantity")}
+						className={classes.textFieldFullWidth}
+						margin="normal"
+						type="number"
+					/>
+					<TextField
+						disabled={!edit}
+						value={this.state.coverPrice}
+						defaultValue={book.coverPrice}
+						id="standard-required"
+						label="Gia bia"
+						onChange={this.handleChange("coverPrice")}
+						className={classes.textFieldFullWidth}
 						margin="normal"
 						type="number"
 					/>
 					<FormControl className={classes.textField}>
-						<InputLabel htmlFor="category-helper">Loại:</InputLabel>
+						<InputLabel htmlFor="category-native-simple">Loại:</InputLabel>
 						<Select
-							className={classes.select}
-							value={this.state.category || book.category}
-							onChange={this.handleChange("category")}
-							input={<Input name="category" id="category-helper" />}
+							native
+							value={this.state.categoryId}
+							onChange={this.handleChange('categoryId')}
+							defaultValue={book.category ? book.category.id : null}
+							inputProps={{
+								name: 'age',
+								id: 'category-native-simple',
+							}}
 						>
-							<MenuItem value="">
-							<em>None</em>
-							</MenuItem>
+							<option value="" />
 							{categories.map(item => (
-								<MenuItem value={item.id}>{item.category}</MenuItem>
+								<option value={item.id}>{item.category}</option>
 							))}
 						</Select>
 					</FormControl>
 					<FormControl className={classes.textField}>
-						<InputLabel htmlFor="class-helper">Nhà xuất bản:</InputLabel>
+						<InputLabel htmlFor="age-native-simple">Nhà xuất bản:</InputLabel>
 						<Select
-							className={classes.select}
-							value={this.state.publishing || book.publishing}
-							onChange={this.handleChange("publishing")}
-							input={<Input name="class" id="class-helper" />}
+							native
+							value={this.state.publisherHouseId}
+							onChange={this.handleChange('publisherHouseId')}
+							defaultValue={book.publisherHouse ? book.publisherHouse.id : null}
+							inputProps={{
+								name: 'age',
+								id: 'age-native-simple',
+							}}
 						>
-							<MenuItem value="">
-							<em>None</em>
-							</MenuItem>
+							<option value="" />
 							{publishingCompanies.map(item => (
-								<MenuItem value={item.id}>{item.publisingCompany}</MenuItem>
+								<option value={item.id}>{item.publisingCompany}</option>
 							))}
+						</Select>
+					</FormControl>
+					<FormControl className={classes.textField}>
+						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
+						<Select
+							native
+							value={this.state.publishing}
+							onChange={this.handleChange('isActive')}
+							defaultValue={book.isActive}
+							inputProps={{
+								name: 'age',
+								id: 'age-native-simple',
+							}}
+						>
+							<option value="" />
+							<option value={1}>Active</option>
+							<option value={0}>Inactive</option>
 						</Select>
 					</FormControl>
 				</form>

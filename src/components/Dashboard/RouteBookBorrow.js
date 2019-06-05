@@ -16,15 +16,9 @@ import {
 } from '../../state/modules/routing';
 
 export default class RouteBookBorrow extends Component {
-	
-    componentDidMount() {
-		const { fetchBook } = this.props;
-        fetchBook();
-    }
     render() {
-		const { books } = this.props;
         return (
-            <BorrowBook books={books} />
+            <BorrowBook />
         )
     }
 }

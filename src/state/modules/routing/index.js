@@ -18,6 +18,7 @@ export const ROUTE_PEOPLE ='route/ROUTE_PEOPLE';
 export const ROUTE_BOOK_BORROW = 'route/ROUTE_BOOK_BORROW';
 export const ROUTE_BOOK = 'route/ROUTE_BOOK';
 export const ROUTE_TEST = 'route/ROUTE_TEST';
+export const ROUTE_BORROW = 'route/ROUTE_BORROW';
 
 // selector
 export const routeType = state => state.location.type
@@ -71,7 +72,13 @@ export const routesMap = {
     component: "Home", 
     requiresAuth: true,
     modalOver: ROUTE_ANONYMOUS,
-  }, 
+  },
+  [ROUTE_BORROW] : {
+    path: "/borrow-manage",
+    component: "BorrowManagement",
+    requiresAuth: true,
+    modalOver: ROUTE_ANONYMOUS,
+  },
   [ROUTE_TEST]: {
     path: "/testing-something",
     component: "Testing",

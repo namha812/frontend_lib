@@ -11,17 +11,22 @@ import {
   ROUTE_SIGNUP,
   ROUTE_ANONYMOUS,
   ROUTE_PEOPLE,
-  ROUTE_BOOK_BORROW, 
-  ROUTE_TEST,
-  ROUTE_CATEGORY
+  ROUTE_BOOK_BORROW,
+  ROUTE_BOOK,
+  ROUTE_BORROW,
+  ROUTE_TEST
 } from './state/modules/routing';
 import About from './pages/About';
 import Home from './pages/Home';
 import Login from './pages/Login'
 import SignUp from './pages/SignUp';
 import Anonymous from './pages/Anonymous';
+import PeopleManager from './pages/PeopleManagement';
+import BookBorrow from './pages/BookBorrow';
+import BookManager from './pages/BookManagement';
 import Testing from './pages/Testing';
-import Category from './pages/Category'
+import BorrowManagement from './pages/BorrowManagement';
+
 
 const routesMap = {
   [ROUTE_HOME]: Home,
@@ -30,10 +35,11 @@ const routesMap = {
   [ROUTE_SIGNUP]: SignUp,
   [NOT_FOUND]: Home,
   [ROUTE_ANONYMOUS]: Anonymous,
-  [ROUTE_PEOPLE]: Home,
-  [ROUTE_BOOK_BORROW]: Home,
-  [ROUTE_TEST]: Testing,
-  [ROUTE_CATEGORY]: Category
+  [ROUTE_PEOPLE]: PeopleManager,
+  [ROUTE_BOOK_BORROW]: BookBorrow,
+  [ROUTE_BOOK]: BookManager,
+  [ROUTE_BORROW]: BorrowManagement,
+  [ROUTE_TEST]: Testing
 }
 
 const mapStateToProps = state => {

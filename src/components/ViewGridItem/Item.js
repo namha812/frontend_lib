@@ -12,8 +12,9 @@ import { CardActions, Button } from "@material-ui/core";
 const styles = theme => ({
     card: {
         display: "flex",
-        maxWidth: 400,
-        height: 240
+        maxWidth: 350,
+        height: 240,
+        minWidth: 350
     },
     details: {
         maxWidth: 240,
@@ -25,7 +26,7 @@ const styles = theme => ({
         padding: 15
     },
     cover: {
-        width: 151
+        minWidth: 160
     },
     badge: {
         top: 10,
@@ -40,7 +41,7 @@ const styles = theme => ({
 });
 const descriptionDefault = "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes."
 function MediaControlCard(props) {
-    const { onSelectedBook, bookItem, anonymous, classes, imgUrl, name, author, remainNumber = 30, description = descriptionDefault } = props;
+    const { onSelectedBook, bookItem, anonymous, classes, imgUrl, name, author, quantity, content = descriptionDefault } = props;
     const onClickbook = () => {
         onSelectedBook(bookItem);
     }
@@ -61,13 +62,13 @@ function MediaControlCard(props) {
                     </Typography>
                     <Badge
                         classes={{ badge: classes.badge }}
-                        badgeContent={remainNumber}
+                        badgeContent={quantity}
                         color="primary"
                     >
                         <ShoppingCartIcon />
                     </Badge>
                     <Typography paragraph>
-                        {description}
+                        {content}
                     </Typography>
                     {!anonymous && <CardActions>
                         <Button size="small" color="primary" onClick={onClickbook}>

@@ -25,11 +25,11 @@ import bookMock from './books.json'
 
 function* fetchBookSaga(action) {
   yield put(fetchingBook());
-  // const res = yield fetchBookApi();
-  // if (res.data) {
-  //   yield put(fetchBook(res.data.data));
-  // }
-  yield put(fetchBook(bookMock));
+  const res = yield fetchBookApi();
+  if (res.data) {
+    yield put(fetchBook(res.data.data));
+  }
+  // yield put(fetchBook(bookMock));
   yield put(fetchedBook())
 }
 

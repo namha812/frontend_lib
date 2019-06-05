@@ -120,7 +120,7 @@ class FullScreenDialog extends React.Component {
 			isActive
 		} = this.state;
 		const { editStudent, addStudent, student } = this.props;
-		if(student.id){
+		if (student.id) {
 			editStudent({
 				id: student.id,
 				fullName: fullName || student.fullName,
@@ -133,16 +133,19 @@ class FullScreenDialog extends React.Component {
 				isActive: isActive || student.isActive
 			})
 		}
-		addStudent({
-			fullName,
-			email,
-			sex,
-			address,
-			cardNumber,
-			phone,
-			classId,
-			isActive
-		})
+		else {
+			addStudent({
+				fullName,
+				email,
+				sex,
+				address,
+				cardNumber,
+				phone,
+				classId,
+				isActive
+			})
+		}
+
 		this.handleClose();
 	}
 
@@ -244,31 +247,38 @@ class FullScreenDialog extends React.Component {
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="class-helper">Lớp học:</InputLabel>
+						<InputLabel htmlFor="age-native-simple">Lop:</InputLabel>
 						<Select
-							className={classes.select}
-							value={this.state.classId || (student.class ? student.class.classId : "")}
-							onChange={this.handleChange("classId")}
-							input={<Input name="class" id="class-helper" />}
+							native
+							value={this.state.classId}
+							onChange={this.handleChange('classId')}
+							defaultValue={student.class ? student.class.classId : null}
+							inputProps={{
+								name: 'age',
+								id: 'age-native-simple',
+							}}
 						>
-							<MenuItem value="">
-							<em>None</em>
-							</MenuItem>
+							<option value="" />
 							{classList.map(item => (
-								<MenuItem value={item.id}>{item.className}</MenuItem>
+								<option value={item.id}>{item.className}</option>
 							))}
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="isActive-helper">Trạng thái:</InputLabel>
+						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
-							className={classes.select}
-							value={this.state.isActive || student.isActive}
-							onChange={this.handleChange("isActive")}
-							input={<Input name="isActive" id="isActive-helper" />}
+							native
+							value={this.state.publishing}
+							onChange={this.handleChange('isActive')}
+							defaultValue={student.isActive}
+							inputProps={{
+								name: 'age',
+								id: 'age-native-simple',
+							}}
 						>
-							<MenuItem value={true}>Active</MenuItem>
-							<MenuItem value={false}>Inactive</MenuItem>
+							<option value="" />
+							<option value={1}>Active</option>
+							<option value={2}>Inactive</option>
 						</Select>
 					</FormControl>
 				</form>
