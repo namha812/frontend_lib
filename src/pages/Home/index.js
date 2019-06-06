@@ -25,8 +25,8 @@ import {
   fetchCategorySaga
 } from '../../state/modules/category'
 import {
-  fetchPublishingSaga
-} from '../../state/modules/publishing'
+  fetchPublisherSaga
+} from '../../state/modules/publisher';
 import Searchbox from '../../components/Searchbox';
 import {
 	routeType,
@@ -47,11 +47,11 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const {fetchCategory, fetchClass, fetchPublishing, fetchStudent,fetchBook} = this.props;
+    const {fetchCategory, fetchClass, fetchPublisher, fetchStudent,fetchBook} = this.props;
     fetchBook();
     fetchCategory();
     fetchClass();
-    fetchPublishing();
+    fetchPublisher();
     fetchStudent()
   }
 
@@ -128,14 +128,14 @@ export default connect(state => ({
   categories: state.category.categories,
   classList: state.classes.classes,
   books: state.book.books,
-  publishingCompanies: state.publishing.publisingCompany
+  publisherHouse: state.publisher.publisherHouse
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route
   }),
   fetchClass:compose(dispatch, fetchClassSaga),
   fetchCategory:compose(dispatch, fetchCategorySaga),
-  fetchPublishing:compose(dispatch, fetchPublishingSaga),
+  fetchPublisher:compose(dispatch, fetchPublisherSaga),
   fetchStudent:compose(dispatch, fetchStudentSaga),
   editStudent: compose(dispatch, editStudentSaga),
   addStudent: compose(dispatch, addStudentSaga),

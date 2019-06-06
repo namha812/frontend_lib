@@ -19,6 +19,7 @@ export const ROUTE_BOOK_BORROW = 'route/ROUTE_BOOK_BORROW';
 export const ROUTE_BOOK = 'route/ROUTE_BOOK';
 export const ROUTE_CATEGORY = 'route/ROUTE_CATEGORY';
 export const ROUTE_BORROW = 'route/ROUTE_BORROW';
+export const ROUTE_PUBLISHER_HOUSE = 'route/ROUTE_PUBLISHER_HOUSE';
 
 // selector
 export const routeType = state => state.location.type
@@ -37,17 +38,6 @@ export const routesMap = {
     path: "/login",
     component: "Auth",
     requiresAuth: false
-  },
-  [ROUTE_SIGNUP]: {
-    path: '/signup',
-    component: 'Signup',
-    requiresAuth: false
-  },
-  [ROUTE_PAYLOAD]: {
-    path: "/payload/:advertiserId",
-    modalOver: ROUTE_HOME,
-    component: "Home",
-    requiresAuth: true
   },
   [ROUTE_ANONYMOUS]: {
     path: "/anonymous",
@@ -82,6 +72,12 @@ export const routesMap = {
   [ROUTE_CATEGORY]: {
     path: "/category",
     component: "Category",
+    requiresAuth: true,
+    modalOver: ROUTE_ANONYMOUS
+  },
+  [ROUTE_PUBLISHER_HOUSE]: {
+    path: "/publisher-house",
+    component: 'PublisherHouse',
     requiresAuth: true,
     modalOver: ROUTE_ANONYMOUS
   }

@@ -7,11 +7,9 @@ import { reducer as formReducer } from 'redux-form'
 import auth from './modules/auth/index'
 import classes from "./modules/class/index"
 import category from "./modules/category/index"
-import publishing from "./modules/publishing/index"
+import publisher from "./modules/publisher/index"
 import book from './modules/book/index';
 import borrow from './modules/borrow/index';
-
-import test from './modules/testing/index';
 
 export const reducers = combineReducers({
   location, 
@@ -20,8 +18,7 @@ export const reducers = combineReducers({
   student: studentReducer,
   classes,
   category,
-  publishing,
+  publisher,
   book,
   borrow,
-  test
 })

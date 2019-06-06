@@ -47,10 +47,13 @@ class Category extends React.Component {
         document.title = "Quản lý danh mục sách"
     }
     handleView = (row) => (event) => {
-        console.log("view")
+        this.setState({
+            category: row,
+            open: true,
+            edit: false
+        })
     }
     handleEdit = (row) => (event) => {
-        console.log(row)
         this.setState({
             category: row,
             open: true,
@@ -88,7 +91,6 @@ class Category extends React.Component {
                         <TableRow>
                             <TableCell>Trạng thái</TableCell>
                             <TableCell>Danh mục sách</TableCell>
-                            <TableCell>Người tạo</TableCell>
                             <TableCell>Ngày Tạo</TableCell>
                             <TableCell>Thao tác</TableCell>
                         </TableRow>
@@ -118,7 +120,6 @@ class Category extends React.Component {
                                     />
                                 </TableCell>
                                 <TableCell >{row.name}</TableCell>
-                                <TableCell >{row.admin ? row.admin.name : "---"}</TableCell>
                                 <TableCell >{row.createdAt ? row.createdAt : "---"}</TableCell>
                                 <TableCell>
                                     <IconButton onClick={this.handleView(row)}>
@@ -127,9 +128,9 @@ class Category extends React.Component {
                                     <IconButton onClick={this.handleEdit(row)}>
                                         <Edit />
                                     </IconButton>
-                                    <IconButton onClick={this.handleDelete(row)}>
+                                    {/* <IconButton onClick={this.handleDelete(row)}>
                                         <DeleteIcon />
-                                    </IconButton>
+                                    </IconButton> */}
                                 </TableCell>
                             </TableRow>
                         );
@@ -140,7 +141,7 @@ class Category extends React.Component {
                         <AddIcon color="white" />
                     </IconButton>
                 </Fab>
-                <CategoryDialog editCategory={editCategory} addCategory={addCategory} category={category} student={[]} classList={[]} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+                <CategoryDialog editCategory={editCategory} addCategory={addCategory} category={category} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
             </Paper>
         )
     }

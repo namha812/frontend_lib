@@ -130,7 +130,6 @@ class FullScreenDialog extends React.Component {
 
 		this.handleClose();
 	}
-
 	get Title() {
 		const { classes, open, edit, book = {}, publishingCompanies = {} } = this.props;
 		console.log(this.props);

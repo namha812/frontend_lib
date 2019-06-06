@@ -44,15 +44,18 @@ class PublisherHouse extends React.Component {
         edit: false
     }
     componentDidMount() {
-        document.title = "Quản lý danh mục sách"
+        document.title = "Quản lý nhà xuất bản"
     }
     handleView = (row) => (event) => {
-        console.log("view")
+        this.setState({
+            publisherHouse: row,
+            open: true,
+            edit: false
+        })
     }
     handleEdit = (row) => (event) => {
-        console.log(row)
         this.setState({
-            category: row,
+            publisherHouse: row,
             open: true,
             edit: true
         })
@@ -64,7 +67,7 @@ class PublisherHouse extends React.Component {
         this.setState({
             open: true,
             edit: true,
-            category: {}
+            publisherHouse: {}
         });
     }
     handleCloseDialog = () => {
@@ -75,26 +78,26 @@ class PublisherHouse extends React.Component {
     render() {
         const {
             classes,
-            categories = [],
             loadingState,
-            editCategory,
-            addCategory
+            addPublisher,
+            editPublisher,
+            publisherHouses = []
         } = this.props;
-        const { open, edit, category } = this.state;
+        const { open, edit, publisherHouse } = this.state;
         return (
             <Paper>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
                             <TableCell>Trạng thái</TableCell>
-                            <TableCell>Danh mục sách</TableCell>
-                            <TableCell>Người tạo</TableCell>
+                            <TableCell>Tên nhà xuất bản</TableCell>
+                            <TableCell>Địa chỉ</TableCell>
                             <TableCell>Ngày Tạo</TableCell>
                             <TableCell>Thao tác</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!categories.length &&
+                        {!publisherHouses.length &&
                             <TableRow>
                                 <TableCell colSpan={7} style={{ textAlign: "center" }}>
                                     {loadingState ? "Đang tải..." : "Không có dữ liệu"}
@@ -102,7 +105,7 @@ class PublisherHouse extends React.Component {
                             </TableRow>
                         }
                     </TableBody>
-                    {categories.map(row => {
+                    {publisherHouses.map(row => {
                         return (
                             <TableRow key={row.id}>
                                 <TableCell>
@@ -118,7 +121,7 @@ class PublisherHouse extends React.Component {
                                     />
                                 </TableCell>
                                 <TableCell >{row.name}</TableCell>
-                                <TableCell >{row.admin ? row.admin.name : "---"}</TableCell>
+                                <TableCell >{row.address ? row.address : "---"}</TableCell>
                                 <TableCell >{row.createdAt ? row.createdAt : "---"}</TableCell>
                                 <TableCell>
                                     <IconButton onClick={this.handleView(row)}>
@@ -140,7 +143,7 @@ class PublisherHouse extends React.Component {
                         <AddIcon color="white" />
                     </IconButton>
                 </Fab>
-                <CategoryDialog editCategory={editCategory} addCategory={addCategory} category={category} student={[]} classList={[]} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+                <PublisherHouseDialog editPublisher={editPublisher} addPublisher={addPublisher} publisherHouse={publisherHouse} student={[]} classList={[]} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
             </Paper>
         )
     }

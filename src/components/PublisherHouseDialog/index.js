@@ -67,6 +67,7 @@ class FullScreenDialog extends React.Component {
 	state = {
 		name: null,
 		isActive: null,
+		address: null
 	}
 
 	handleClickOpen = () => {
@@ -97,20 +98,23 @@ class FullScreenDialog extends React.Component {
 	handleSubmit = () => {
 		const {
 			name,
-			isActive
+			isActive,
+			address
 		} = this.state;
-		const { editCategory, addCategory, category } = this.props;
-		if (category.id) { 
-			editCategory({
-				id: category.id,
-				name: name || category.name,
-				isActive: isActive || category.isActive
+		const { editPublisher, addPublisher, publisherHouse } = this.props;
+		if (publisherHouse.id) { 
+			editPublisher({
+				id: publisherHouse.id,
+				name: name || publisherHouse.name,
+				isActive: isActive || publisherHouse.isActive,
+				address: address || publisherHouse.address
 			})
 		}
 		else {
-			addCategory({
+			addPublisher({
 				name,
-				isActive
+				isActive,
+				address
 			})
 		}
 
@@ -118,17 +122,17 @@ class FullScreenDialog extends React.Component {
 	}
 
 	get Title() {
-		const { edit, category = {} } = this.props;
-		if (edit && category.id) {
+		const { edit, publisherHouse = {} } = this.props;
+		if (edit && publisherHouse.id) {
 			return "Sửa thông tin";
 		}
 		if (edit) {
-			return "Thêm danh mục sách";
+			return "Thêm nhà xuất bản";
 		}
 		return "Xem thông tin chi tiết";
 	}
 	render() {
-        const { classes, open, edit , category = {} } = this.props;
+        const { classes, open, edit , publisherHouse = {} } = this.props;
         console.log(this.state)
 		return (
 			<Dialog
@@ -157,19 +161,28 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Tên"
 						value={this.state.name}
-						defaultValue={category.name}
+						defaultValue={publisherHouse.name}
 						onChange={this.handleChange("name")}
 						margin="normal"
 					/>
-					
+					<TextField
+                        fullWidth
+						disabled={!edit}
+						id="standard-name"
+						label="Địa chỉ"
+						value={this.state.address}
+						defaultValue={publisherHouse.address}
+						onChange={this.handleChange("address")}
+						margin="normal"
+					/>
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
-                            
+                            disabled={!edit}
 							native
-							value={this.state.publishing}
+							value={this.state.publisher}
 							onChange={this.handleChange('isActive')}
-							defaultValue={category.isActive}
+							defaultValue={publisherHouse.isActive}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',

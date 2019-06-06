@@ -18,8 +18,8 @@ import {
   fetchCategorySaga
 } from '../../state/modules/category'
 import {
-  fetchPublishingSaga
-} from '../../state/modules/publishing'
+  fetchPublisherSaga
+} from '../../state/modules/publisher'
 import {
   fetchStudentSaga
 } from '../../state/modules/student'
@@ -40,11 +40,11 @@ class BookBorrowPage extends Component {
   }
 
   componentDidMount() {
-    const {fetchCategory, fetchStudent, fetchPublishing, fetchBook} = this.props;
+    const {fetchCategory, fetchStudent, fetchPublisher, fetchBook} = this.props;
     fetchBook();
     fetchStudent();
     fetchCategory();
-    fetchPublishing();
+    fetchPublisher();
   }
 
   recallApi = (route) => {
@@ -109,7 +109,7 @@ export default connect(state => ({
   route: state.location.type,
   categories: state.category.categories,
   books: state.book.books,
-  publishingCompanies: state.publishing.publisingCompany,
+  publisherHouse: state.publisher.publisherHouse,
   students: state.student.students
 }), (dispatch) => ({
   redirect: (route) => dispatch({
@@ -119,7 +119,7 @@ export default connect(state => ({
   fetchStudent:compose(dispatch, fetchStudentSaga),
   fetchClass:compose(dispatch, fetchClassSaga),
   fetchCategory:compose(dispatch, fetchCategorySaga),
-  fetchPublishing:compose(dispatch, fetchPublishingSaga),
+  fetchPublisher:compose(dispatch, fetchPublisherSaga),
   fetchBook:compose(dispatch, fetchBookSaga),
   editBook: compose(dispatch, editBookSaga),
   addBook: compose(dispatch, addBookSaga),
