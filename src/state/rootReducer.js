@@ -20,5 +20,9 @@ export const reducers = combineReducers({
   category,
   publisher,
   book,
+<<<<<<< HEAD
   borrow,
+=======
+  borrow
+>>>>>>> feature/paybook
 })

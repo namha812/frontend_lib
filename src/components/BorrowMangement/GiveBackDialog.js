@@ -19,6 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import { format } from 'date-fns';
 
 const styles = {
   appBar: {
@@ -36,12 +37,13 @@ function Transition(props) {
 class FullScreenDialog extends React.Component {
   state = {
     openForm: false,
-    currentItem: {}
+    currentItem: {},
+    note: ""
   };
 
   handleClose = () => {
-      const {handleCloseDialog} = this.props;
-      handleCloseDialog();
+    const { handleCloseDialog } = this.props;
+    handleCloseDialog();
   };
 
   giveBookBack = (row) => (event) => {
@@ -51,6 +53,26 @@ class FullScreenDialog extends React.Component {
   handleCloseForm = () => {
     this.setState({ openForm: false });
   };
+
+  onChangenote = (event) => {
+    const { value } = event.target;
+    this.setState({
+      note: value
+    })
+  }
+
+  handleApplyForm = () => {
+    const { currentItem, note } = this.state;
+    console.log(currentItem);
+    const { payBook } = this.props;
+    payBook({
+      id: currentItem.id,
+      payTotal: currentItem.borrowTotal,
+      note
+    })
+    this.handleCloseForm();
+    this.handleClose();
+  }
 
   render() {
     const { classes, borrowItem = [], open } = this.props;
@@ -76,41 +98,41 @@ class FullScreenDialog extends React.Component {
               </Button>
             </Toolbar>
           </AppBar>
-        <Table className={classes.table}>
+          <Table className={classes.table}>
             <TableHead>
-            <TableRow>
-                <TableCell>Trạng thái</TableCell>
+              <TableRow>
+                <TableCell>Ten sach</TableCell>
                 <TableCell>Ngày mượn</TableCell>
                 <TableCell>Ngày trả</TableCell>
                 <TableCell>Ghi chú</TableCell>
-                <TableCell>Số lượng</TableCell>
+                <TableCell>Số lượng muon</TableCell>
                 <TableCell>Trạng thái</TableCell>
                 <TableCell>Chức năng</TableCell>
-            </TableRow>
+              </TableRow>
             </TableHead>
             <TableBody>
-            {borrowPay && borrowPay.map(row => {
+              {borrowPay && borrowPay.map(row => {
                 return (
-                <TableRow key={row.id}>
+                  <TableRow key={row.id}>
                     <TableCell>
-                    {row.status}
+                      {row.book.bookName}
                     </TableCell>
-                    <TableCell>{row.borrowDate}</TableCell>
-                    <TableCell>{row.expiryDate}</TableCell>
-                    <TableCell>{row.note}</TableCell>
+                    <TableCell>{format(new Date(row.borrowDate), "DD/MM/YYYY")}</TableCell>
+                    <TableCell>{format(new Date(row.expiryDate), "DD/MM/YYYY")}</TableCell>
+                    <TableCell>{row.note ? row.note : "---"}</TableCell>
                     <TableCell>{row.borrowTotal}</TableCell>
                     <TableCell>
-                    {row.isExpiry ? <span style={{color:"#D8000C"}}>Hết hạn</span> : <span style={{color:"#4F8A10"}}>Còn hạn</span>}</TableCell>
+                      {row.isExpiry ? <span style={{ color: "#D8000C" }}>Hết hạn</span> : <span style={{ color: "#4F8A10" }}>Còn hạn</span>}</TableCell>
                     <TableCell>
                       <Button onClick={this.giveBookBack(row)} color="primary" className={classes.button}>
                         Trả sách
                       </Button>
                     </TableCell>
-                </TableRow>
+                  </TableRow>
                 );
-            })}
+              })}
             </TableBody>
-        </Table>
+          </Table>
         </Dialog>
         <Dialog
           open={this.state.openForm}
@@ -120,17 +142,17 @@ class FullScreenDialog extends React.Component {
           <DialogTitle id="form-dialog-title">Trả sách</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {borrowItem.fullName} trả lại sách, số lượng: {this.state.currentItem.borrowTotal}. Ngày mượn: {this.state.currentItem.borrowDate}
+              {borrowItem.fullName} trả lại sách, số lượng: {this.state.currentItem.borrowTotal}. Ngày mượn: {format(new Date(this.state.currentItem.borrowDate), "DD/MM/YYYY")}
             </DialogContentText>
             <DialogContentText>
               Trạng thái: {
                 this.state.currentItem.isExpiry ?
-                  <span style={{color:"#D8000C"}}>Hết hạn</span> 
-                  : 
-                  <span style={{color:"#4F8A10"}}>Còn hạn</span>
+                  <span style={{ color: "#D8000C" }}>Hết hạn</span>
+                  :
+                  <span style={{ color: "#4F8A10" }}>Còn hạn</span>
               }
             </DialogContentText>
-            
+
             <TextField
               autoFocus
               margin="dense"
@@ -138,13 +160,14 @@ class FullScreenDialog extends React.Component {
               label="Tình trạng sách"
               type="email"
               fullWidth
+              onChange={this.onChangenote}
             />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleCloseForm} color="primary">
               Hủy
             </Button>
-            <Button onClick={this.handleCloseForm} color="primary">
+            <Button onClick={this.handleApplyForm} color="primary">
               Đồng ý trả
             </Button>
           </DialogActions>
