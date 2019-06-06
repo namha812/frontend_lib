@@ -66,14 +66,9 @@ class PeopleManagement extends React.Component {
 	render() {
 		const { 
 			classes,
-<<<<<<< HEAD
 			borrowList = [],
-			loadingState
-=======
-			borrowList,
 			loadingState,
 			payBook
->>>>>>> feature/paybook
 		} = this.props;
 		const { open, edit, currentBook, book } = this.state;
 		return (

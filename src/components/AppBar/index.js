@@ -141,19 +141,6 @@ class PrimarySearchAppBar extends React.Component {
 			</Menu>
 		);
 
-		const renderContactMenu = (
-			<Menu
-				anchorEl={contactAnchorEl}
-				anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-				transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-				open={isContactMenuOpen}
-				onClose={this.handleContactMenuClose}
-			>
-				<MenuItem onClick={this.handleContactMenuClose}>Contact Us</MenuItem>
-				<MenuItem onClick={this.handleContactMenuClose}>0339505386</MenuItem>
-			</Menu>
-		);
-
 		return (
 			<div className={classes.root}>
 				<AppBar position="static">
@@ -182,18 +169,11 @@ class PrimarySearchAppBar extends React.Component {
 							>
 								<AccountCircle />
 							</IconButton>
-							<IconButton
-								aria-owns={isContactMenuOpen ? 'material-appbar' : null}
-								aria-haspopup="true"
-								onClick={this.handleContactMenuOpen}
-								color="inherit">
-								<ContactIcon />
-							</IconButton>
+							
 						</div>
 					</Toolbar>
 				</AppBar>
 				{renderMenu}
-				{renderContactMenu}
 			</div>
 		);
 	}
