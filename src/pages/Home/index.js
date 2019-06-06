@@ -47,7 +47,8 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const {fetchCategory, fetchClass, fetchPublishing, fetchStudent} = this.props;
+    const {fetchCategory, fetchClass, fetchPublishing, fetchStudent,fetchBook} = this.props;
+    fetchBook();
     fetchCategory();
     fetchClass();
     fetchPublishing();

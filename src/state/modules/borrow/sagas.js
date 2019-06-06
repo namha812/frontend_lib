@@ -6,15 +6,15 @@ import {
   fetchBookSaga
 } from '../book/index'
 
-import borrow from './mock.json';
+// import borrow from './mock.json';
 
 import {
   fetchBorrow
 } from './index'
 
 function* fetchBorrowSaga(action) {
-  // const {data} =  yield borrowApi.fetchBorrowList();
-  // const borrow = data.data
+  const {data} =  yield borrowApi.fetchBorrowList();
+  const borrow = data.data
   yield put(fetchBorrow(borrow));
 }
 

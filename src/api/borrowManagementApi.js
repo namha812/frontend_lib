@@ -1,7 +1,7 @@
 import baseApi from './baseApi'
 
 export const fetchBorrowList = () => {
-  return baseApi.get('/brrowPay');
+  return baseApi.get('/borrowPay');
 }
 
 export const fetchBorrowById = (id) => {
@@ -15,7 +15,4 @@ export const borrowBookApi = (payload) => {
 export const giveBookBack = (payload) => {
     return baseApi.post('/aaaaa', payload);
 
-}
-export const deleteBook = (bookId) => {
-  return baseApi.delete(`/Book/${bookId}`);
 }

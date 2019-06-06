@@ -61,7 +61,9 @@ class BorrowBook extends Component {
       currentBook: {}
     }));
   };
-
+  componentDidMount(){
+    document.title = "Mượn sách"
+  }
   handleClose = () => {
     this.setState({
       open: false,

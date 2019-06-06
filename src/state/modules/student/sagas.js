@@ -24,55 +24,6 @@ import {
   fetchStudentError
 } from './index'
 
-import {
-  ROUTE_HOME
-} from '../routing';
-
-const studenmock = [
-  {
-    "id": 5,
-    "fullName": "Hà Văn Nam",
-    "email": "nam@gmail.cm",
-    "sex": 1,
-    "address": "sóc sơn - hà nội",
-    "cardNumber": "1234",
-    "phone": null,
-    "isActive": null,
-    "class": {
-        "id": 1,
-        "className": "Class 1"
-    }
-  },
-  {
-    "id": 7,
-    "fullName": "Nguyễn Văn B",
-    "email": "nguyenb@gmail.com",
-    "sex": 1,
-    "address": "Hoàng Mai - Hà N",
-    "cardNumber": "345",
-    "phone": null,
-    "isActive": true,
-    "class": {
-    "id": 2,
-    "className": "Class 2"
-    }
-  },
-  {
-    "id": 8,
-    "fullName": "Nguyễn Thị B",
-    "email": "thib@gmail.com",
-    "sex": 2,
-    "address": "Thanh Xuân - Hà Nội",
-    "cardNumber": "2341",
-    "phone": null,
-    "isActive": true,
-    "class": {
-    "id": 2,
-    "className": "Class 2"
-    }
-  }
-]
-
 function* fetchStudentSaga(action) {
   yield put(fetchingStudent());
   const res = yield fetchStudentApi();

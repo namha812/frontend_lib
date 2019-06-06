@@ -21,6 +21,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import GiveBackDialog from './GiveBackDialog'
 
 import BookDialog from '../BookDialog';
 // import book from './book.json'
@@ -45,66 +46,22 @@ const styles = theme => ({
     },
 });
 
-
 class PeopleManagement extends React.Component {
 	state = {
         // book: book,
-		currentBook: {},
-		deleteDialogState: false,
-		open: false,
-		edit: false
-	}
-
-	onAddBook = () => {
-		this.setState({
-			open: true,
-			edit: true,
-			currentBook: {}
-		});
+		currentBorrowItem: {},
+		open: false
 	}
 
 	handleCloseDialog = () => {
 		this.setState({ open: false });
 	}
-	handleView = (Book) => () => {
-		this.setState(
-			{
-				open: true,
-				edit: false,
-				currentBook: Book
-			}
-		);
+	
+	onClickGiveBookBack = (row) => (event) => {
+		this.setState({open: true, currentBorrowItem: row})
 	}
-	handleEdit = (Book) => () => {
-		this.setState({
-			open: true,
-			edit: true,
-			currentBook: Book
-		});
-	}
-	handleDelete = (Book) => () => {
-		this.setState({
-			deleteDialogState: true,
-			currentBook: Book
-		})
-	}
-
-	handleDisagree = () => {
-		this.handleClose();
-	}
-	handleAgree = () => {
-		const { currentBook } = this.state;
-		this.props.deleteBook(currentBook.id);
-		this.handleClose();
-	}
-	handleClose = () => {
-		this.setState({
-			deleteDialogState: false
-		})
-    }
-    
-    handleChangeStatus = (book) => (event) => {
-
+    componentDidMount() {
+        document.title = "Quản lý mượn sách"
     }
 	render() {
 		const { 
@@ -129,7 +86,7 @@ class PeopleManagement extends React.Component {
 						{!borrowList.length && 
 							<TableRow>
 								<TableCell colSpan={7} style={{textAlign: "center"}}>
-									{loadingState ? "Loading" : "No data"}
+									{loadingState ? "Đang tải..." : "Không có dữ liệu"}
 								</TableCell>
 
 							</TableRow>}
@@ -143,7 +100,7 @@ class PeopleManagement extends React.Component {
 									<TableCell >{row.cardNumber ? row.cardNumber : "-"}</TableCell>
 									<TableCell >{row.total}</TableCell>
 									<TableCell>
-                                        <Button color="primary" className={classes.button}>
+                                        <Button onClick={this.onClickGiveBookBack(row)} color="primary" className={classes.button}>
                                             Trả sách
                                         </Button>
 									</TableCell>
@@ -152,6 +109,7 @@ class PeopleManagement extends React.Component {
 						})}
 					</TableBody>
 				</Table>
+				<GiveBackDialog open={this.state.open} handleCloseDialog={this.handleCloseDialog} borrowItem={this.state.currentBorrowItem}/>
 			</Paper>
 		);
 	}

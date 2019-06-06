@@ -76,6 +76,10 @@ class FullScreenDialog extends React.Component {
 		classId: null
 	}
 
+	componentDidMount() {
+        document.title = "Quản lý độc giả"
+    }
+
 	handleClickOpen = () => {
 		this.setState({ open: true });
 	};
@@ -278,7 +282,7 @@ class FullScreenDialog extends React.Component {
 						>
 							<option value="" />
 							<option value={1}>Active</option>
-							<option value={2}>Inactive</option>
+							<option value={0}>Inactive</option>
 						</Select>
 					</FormControl>
 				</form>

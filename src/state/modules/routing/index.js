@@ -17,7 +17,7 @@ export const ROUTE_ANONYMOUS = 'route/ROUTE_ANONYMOUS';
 export const ROUTE_PEOPLE ='route/ROUTE_PEOPLE';
 export const ROUTE_BOOK_BORROW = 'route/ROUTE_BOOK_BORROW';
 export const ROUTE_BOOK = 'route/ROUTE_BOOK';
-export const ROUTE_TEST = 'route/ROUTE_TEST';
+export const ROUTE_CATEGORY = 'route/ROUTE_CATEGORY';
 export const ROUTE_BORROW = 'route/ROUTE_BORROW';
 
 // selector
@@ -79,9 +79,9 @@ export const routesMap = {
     requiresAuth: true,
     modalOver: ROUTE_ANONYMOUS,
   },
-  [ROUTE_TEST]: {
-    path: "/testing-something",
-    component: "Testing",
+  [ROUTE_CATEGORY]: {
+    path: "/category",
+    component: "Category",
     requiresAuth: true,
     modalOver: ROUTE_ANONYMOUS
   }

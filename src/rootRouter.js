@@ -14,7 +14,7 @@ import {
   ROUTE_BOOK_BORROW,
   ROUTE_BOOK,
   ROUTE_BORROW,
-  ROUTE_TEST
+  ROUTE_CATEGORY
 } from './state/modules/routing';
 import About from './pages/About';
 import Home from './pages/Home';
@@ -24,7 +24,7 @@ import Anonymous from './pages/Anonymous';
 import PeopleManager from './pages/PeopleManagement';
 import BookBorrow from './pages/BookBorrow';
 import BookManager from './pages/BookManagement';
-import Testing from './pages/Testing';
+import Category from './pages/Category';
 import BorrowManagement from './pages/BorrowManagement';
 
 
@@ -39,7 +39,7 @@ const routesMap = {
   [ROUTE_BOOK_BORROW]: BookBorrow,
   [ROUTE_BOOK]: BookManager,
   [ROUTE_BORROW]: BorrowManagement,
-  [ROUTE_TEST]: Testing
+  [ROUTE_CATEGORY]: Category
 }
 
 const mapStateToProps = state => {

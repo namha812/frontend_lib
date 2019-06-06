@@ -19,7 +19,8 @@ import {
 	ROUTE_PEOPLE,
   ROUTE_BOOK_BORROW,
   ROUTE_BOOK,
-  ROUTE_BORROW
+  ROUTE_BORROW,
+  ROUTE_CATEGORY
 } from '../../state/modules/routing';
 const ListDrawer = [
   {
@@ -44,9 +45,14 @@ const ListDrawer = [
   },
   {
     id: 5,
-    title: "Phân quyền",
-    path: ""
-  }
+    title: "Quản lý loại sách",
+    path: ROUTE_CATEGORY
+  },
+  // {
+  //   id: 5,
+  //   title: "Phân quyền",
+  //   path: ""
+  // }
 ]
 
 const styles = {

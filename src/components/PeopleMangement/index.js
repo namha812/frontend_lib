@@ -125,7 +125,7 @@ class PeopleManagement extends React.Component {
 						{!students.length && 
 							<TableRow>
 								<TableCell colSpan={7} style={{textAlign: "center"}}>
-									{loadingState ? "Loading" : "No data"}
+									{loadingState ? "Đang tải..." : "Không có dữ liệu"}
 								</TableCell>
 
 							</TableRow>}
