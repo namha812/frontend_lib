@@ -11,8 +11,6 @@ import publishing from "./modules/publishing/index"
 import book from './modules/book/index';
 import borrow from './modules/borrow/index';
 
-import test from './modules/testing/index';
-
 export const reducers = combineReducers({
   location, 
   form: formReducer,
@@ -22,6 +20,5 @@ export const reducers = combineReducers({
   category,
   publishing,
   book,
-  borrow,
-  test
+  borrow
 })

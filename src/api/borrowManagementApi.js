@@ -12,7 +12,8 @@ export const borrowBookApi = (payload) => {
   return baseApi.post('/borrowPay/borrow', payload);
 }
 
-export const giveBookBack = (payload) => {
-    return baseApi.post('/aaaaa', payload);
+export const payBookApi = (payload) => {
+  const {id, ...remainsProps} = payload;
+  return baseApi.put(`/borrowPay/payment/${payload.id}`, {...remainsProps});
 
 }

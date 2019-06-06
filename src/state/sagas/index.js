@@ -8,7 +8,6 @@ import classSaga from "../modules/class/sagas"
 import category from "../modules/category/sagas"
 import publish from "../modules/publishing/sagas"
 import book from '../modules/book/sagas'
-import test from '../modules/testing/sagas'
 import borrow from '../modules/borrow/sagas'
 
 export function * sagas () {
@@ -20,7 +19,6 @@ export function * sagas () {
     yield fork(category),
     yield fork(book),
     yield fork(publish),
-    yield fork(test),
     yield fork(borrow)
   ])
 }
