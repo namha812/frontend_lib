@@ -13,7 +13,6 @@ import {
 } from '../routing'
 
 function* loginSaga(action) {
-  console.log(action);
   const { username, password } = action.payload;
   const user = {
     username,

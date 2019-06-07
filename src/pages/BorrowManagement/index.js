@@ -26,6 +26,7 @@ class BorrowMangementPage extends Component {
 
   componentDidMount() {
     const {fetchBorrow} = this.props;
+    document.title = "Quản lý sách"
     fetchBorrow();
   }
 
@@ -77,7 +78,6 @@ class BorrowMangementPage extends Component {
             loginStatus,
             ...remainProps
         } = this.props;
-        console.log(this.props);
         return (
             <React.Fragment>
                 <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />

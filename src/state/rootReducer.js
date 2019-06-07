@@ -10,6 +10,8 @@ import category from "./modules/category/index"
 import publisher from "./modules/publisher/index"
 import book from './modules/book/index';
 import borrow from './modules/borrow/index';
+import account from './modules/account/index';
+import historyInput from './modules/historyInput/index';
 
 export const reducers = combineReducers({
   location, 
@@ -21,4 +23,6 @@ export const reducers = combineReducers({
   publisher,
   book,
   borrow,
+  account,
+  historyInput
 })

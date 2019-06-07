@@ -36,6 +36,7 @@ class PeopleManagementPage extends Component {
   }
 
   componentDidMount() {
+    document.title = "Quản lý độc giả"
     const { fetchClass, fetchStudent } = this.props;
     fetchStudent();
     fetchClass();

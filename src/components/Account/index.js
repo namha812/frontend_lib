@@ -21,7 +21,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import PublisherHouseDialog from '../PublisherHouseDialog';
+import AccountDialog from '../AccountDialog';
 
 const styles = theme => ({
     root: {
@@ -38,21 +38,21 @@ const styles = theme => ({
         right: 20
     },
 });
-class PublisherHouse extends React.Component {
+class Account extends React.Component {
     state = {
         open: false,
         edit: false
     }
     handleView = (row) => (event) => {
         this.setState({
-            publisherHouse: row,
+            account: row,
             open: true,
             edit: false
         })
     }
     handleEdit = (row) => (event) => {
         this.setState({
-            publisherHouse: row,
+            account: row,
             open: true,
             edit: true
         })
@@ -61,7 +61,7 @@ class PublisherHouse extends React.Component {
         this.setState({
             open: true,
             edit: true,
-            publisherHouse: {}
+            account: {}
         });
     }
     handleCloseDialog = () => {
@@ -73,25 +73,26 @@ class PublisherHouse extends React.Component {
         const {
             classes,
             loadingState,
-            addPublisher,
-            editPublisher,
-            publisherHouses = []
+            addAccount,
+            editAccount,
+            accounts
         } = this.props;
-        const { open, edit, publisherHouse } = this.state;
+        const { open, edit, account } = this.state;
         return (
             <Paper>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
                             <TableCell>Trạng thái</TableCell>
-                            <TableCell>Tên nhà xuất bản</TableCell>
+                            <TableCell>Họ và tên</TableCell>
+                            <TableCell>Email</TableCell>
                             <TableCell>Địa chỉ</TableCell>
-                            <TableCell>Ngày Tạo</TableCell>
+                            <TableCell>Role</TableCell>
                             <TableCell>Thao tác</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!publisherHouses.length &&
+                        {!accounts.length &&
                             <TableRow>
                                 <TableCell colSpan={7} style={{ textAlign: "center" }}>
                                     {loadingState ? "Đang tải..." : "Không có dữ liệu"}
@@ -99,7 +100,7 @@ class PublisherHouse extends React.Component {
                             </TableRow>
                         }
                     </TableBody>
-                    {publisherHouses.map(row => {
+                    {accounts.map(row => {
                         return (
                             <TableRow key={row.id}>
                                 <TableCell>
@@ -114,9 +115,10 @@ class PublisherHouse extends React.Component {
                                         label={row.isActive === 1 ? "Active" : "Inactive"}
                                     />
                                 </TableCell>
-                                <TableCell >{row.name}</TableCell>
-                                <TableCell >{row.address ? row.address : "---"}</TableCell>
-                                <TableCell >{row.createdAt ? row.createdAt : "---"}</TableCell>
+                                <TableCell >{row.fullName}</TableCell>
+                                <TableCell >{row.email}</TableCell>
+                                <TableCell >{row.address}</TableCell>
+                                <TableCell >{row.isActive === 1 ? "Quản Lý" : "Nhân Viên"}</TableCell>
                                 <TableCell>
                                     <IconButton onClick={this.handleView(row)}>
                                         <ViewIcon />
@@ -124,9 +126,6 @@ class PublisherHouse extends React.Component {
                                     <IconButton onClick={this.handleEdit(row)}>
                                         <Edit />
                                     </IconButton>
-                                    {/* <IconButton onClick={this.handleDelete(row)}>
-                                        <DeleteIcon />
-                                    </IconButton> */}
                                 </TableCell>
                             </TableRow>
                         );
@@ -137,13 +136,13 @@ class PublisherHouse extends React.Component {
                         <AddIcon color="white" />
                     </IconButton>
                 </Fab>
-                <PublisherHouseDialog editPublisher={editPublisher} addPublisher={addPublisher} publisherHouse={publisherHouse} student={[]} classList={[]} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+                <AccountDialog editAccount={editAccount} addAccount={addAccount} account={account} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
             </Paper>
         )
     }
 }
-PublisherHouse.propTypes = {
+Account.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PublisherHouse);
+export default withStyles(styles)(Account);

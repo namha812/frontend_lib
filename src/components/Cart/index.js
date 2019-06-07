@@ -148,9 +148,9 @@ class Cart extends React.Component {
 										{row.number}
 									</CustomTableCell>
 									<CustomTableCell>
-										<IconButton onClick={this.handleDeleteClick(row)}>
+										{/* <IconButton onClick={this.handleDeleteClick(row)}>
 											<DeleteIcon />
-										</IconButton>
+										</IconButton> */}
 									</CustomTableCell>
 								</TableRow>
 							);

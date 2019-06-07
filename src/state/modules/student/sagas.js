@@ -45,7 +45,6 @@ function* addStudentSaga(action) {
 }
 
 function* editStudentSaga(action) {
-  console.log(action);
   const { student } = action.payload;
   yield put(fetchingStudent());
   const res = yield updateStudentApi(student);
@@ -57,7 +56,6 @@ function* editStudentSaga(action) {
 
 function* deleteStudentSaga(action) {
   const { studentId } = action.payload;
-  console.log(action);
   yield put(fetchingStudent());
   const res = yield deleteStudentApi(studentId);
   if (res.data) {

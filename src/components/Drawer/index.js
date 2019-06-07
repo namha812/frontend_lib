@@ -21,7 +21,9 @@ import {
   ROUTE_BOOK,
   ROUTE_BORROW,
   ROUTE_CATEGORY,
-  ROUTE_PUBLISHER_HOUSE
+  ROUTE_PUBLISHER_HOUSE,
+  ROUTE_ACCOUNT,
+  ROUTE_HISTORY_INPUT
 } from '../../state/modules/routing';
 const ListDrawer = [
   {
@@ -53,12 +55,17 @@ const ListDrawer = [
     id: 6,
     title: "Quản lý nhà xuất bản",
     path: ROUTE_PUBLISHER_HOUSE
+  },
+  {
+    id: 7,
+    title: "Lịch sử nhập kho",
+    path: ROUTE_HISTORY_INPUT
+  },
+  {
+    id: 8,
+    title: "Quản lý tài khoản",
+    path: ROUTE_ACCOUNT
   }
-  // {
-  //   id: 5,
-  //   title: "Phân quyền",
-  //   path: ""
-  // }
 ]
 
 const styles = {

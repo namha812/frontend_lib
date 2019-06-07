@@ -21,7 +21,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import PublisherHouseDialog from '../PublisherHouseDialog';
+import CategoryDialog from '../CategoryDialog';
+import lodash from 'lodash'
 
 const styles = theme => ({
     root: {
@@ -38,31 +39,17 @@ const styles = theme => ({
         right: 20
     },
 });
-class PublisherHouse extends React.Component {
+class HitoryInput extends React.Component {
     state = {
         open: false,
         edit: false
     }
     handleView = (row) => (event) => {
         this.setState({
-            publisherHouse: row,
+            category: row,
             open: true,
             edit: false
         })
-    }
-    handleEdit = (row) => (event) => {
-        this.setState({
-            publisherHouse: row,
-            open: true,
-            edit: true
-        })
-    }
-    onAddCategory = () => {
-        this.setState({
-            open: true,
-            edit: true,
-            publisherHouse: {}
-        });
     }
     handleCloseDialog = () => {
         this.setState({
@@ -72,26 +59,27 @@ class PublisherHouse extends React.Component {
     render() {
         const {
             classes,
+            historyInput = [],
             loadingState,
-            addPublisher,
-            editPublisher,
-            publisherHouses = []
         } = this.props;
-        const { open, edit, publisherHouse } = this.state;
+        const { open, edit, category } = this.state;
         return (
             <Paper>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Trạng thái</TableCell>
-                            <TableCell>Tên nhà xuất bản</TableCell>
-                            <TableCell>Địa chỉ</TableCell>
-                            <TableCell>Ngày Tạo</TableCell>
-                            <TableCell>Thao tác</TableCell>
+                            <TableCell>ID</TableCell>
+                            <TableCell>Tên sách</TableCell>
+                            <TableCell>Tác giả</TableCell>
+                            <TableCell>Số lượng nhập thêm</TableCell>
+                            <TableCell>Người tạo</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Chức vụ</TableCell>
+                            <TableCell>Ngày tạo</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!publisherHouses.length &&
+                        {!historyInput.length &&
                             <TableRow>
                                 <TableCell colSpan={7} style={{ textAlign: "center" }}>
                                     {loadingState ? "Đang tải..." : "Không có dữ liệu"}
@@ -99,35 +87,18 @@ class PublisherHouse extends React.Component {
                             </TableRow>
                         }
                     </TableBody>
-                    {publisherHouses.map(row => {
+                    {historyInput.map(row => {
                         return (
                             <TableRow key={row.id}>
-                                <TableCell>
-                                    <FormControlLabel
-                                        control={
-                                            <Switch
-                                                checked={row.isActive === 1}
-                                                value={row.isActive === 1}
-                                                disable
-                                            />
-                                        }
-                                        label={row.isActive === 1 ? "Active" : "Inactive"}
-                                    />
-                                </TableCell>
-                                <TableCell >{row.name}</TableCell>
-                                <TableCell >{row.address ? row.address : "---"}</TableCell>
-                                <TableCell >{row.createdAt ? row.createdAt : "---"}</TableCell>
-                                <TableCell>
-                                    <IconButton onClick={this.handleView(row)}>
-                                        <ViewIcon />
-                                    </IconButton>
-                                    <IconButton onClick={this.handleEdit(row)}>
-                                        <Edit />
-                                    </IconButton>
-                                    {/* <IconButton onClick={this.handleDelete(row)}>
-                                        <DeleteIcon />
-                                    </IconButton> */}
-                                </TableCell>
+                                <TableCell>{row.id}</TableCell>
+                                <TableCell>{lodash.get(row, 'book.bookName', '---')}</TableCell>
+                                <TableCell>{lodash.get(row, 'book.author', '---')}</TableCell>
+                                <TableCell>{lodash.get(row, 'quantity', '---')}</TableCell>
+                                <TableCell>{lodash.get(row, 'account.fullName', '---')}</TableCell>
+                                <TableCell>{lodash.get(row, 'account.email', '---')}</TableCell>
+                                <TableCell>{lodash.get(row, 'account.role', '---') == 1 ? "Quản lý" : "Nhân viên"}</TableCell>
+                                <TableCell>{lodash.get(row, 'createdAt', '---')}</TableCell>
+                                
                             </TableRow>
                         );
                     })}
@@ -137,13 +108,13 @@ class PublisherHouse extends React.Component {
                         <AddIcon color="white" />
                     </IconButton>
                 </Fab>
-                <PublisherHouseDialog editPublisher={editPublisher} addPublisher={addPublisher} publisherHouse={publisherHouse} student={[]} classList={[]} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+                {/* <CategoryDialog historyInput={historyInput} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} /> */}
             </Paper>
         )
     }
 }
-PublisherHouse.propTypes = {
+HitoryInput.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PublisherHouse);
+export default withStyles(styles)(HitoryInput);

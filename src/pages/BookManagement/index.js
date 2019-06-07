@@ -89,7 +89,6 @@ class BookMangementPage extends Component {
       loginStatus,
       ...remainProps
     } = this.props;
-    console.log(this.props)
     return (
       <React.Fragment>
         <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
@@ -111,7 +110,7 @@ export default connect(state => ({
   categories: state.category.categories,
   classList: state.classes.classes,
   books: state.book.books,
-  publisherHouse: state.publisher.publisherHouse
+  publisherHouses: state.publisher.publisherHouses
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route

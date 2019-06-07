@@ -103,7 +103,6 @@ class Home extends Component {
       loginStatus,
       ...remainProps
     } = this.props;
-    console.log(this.props)
     return (
       <React.Fragment>
         <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />

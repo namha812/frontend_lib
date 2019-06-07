@@ -129,7 +129,6 @@ class FullScreenDialog extends React.Component {
 	}
 	render() {
         const { classes, open, edit , category = {} } = this.props;
-        console.log(this.state)
 		return (
 			<Dialog
 				fullScreen

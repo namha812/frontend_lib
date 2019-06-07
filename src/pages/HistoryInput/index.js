@@ -5,15 +5,12 @@ import { compose } from "redux";
 import Appbar from '../../components/AppBar';
 import Drawer from '../../components/Drawer';
 import Searchbox from '../../components/Searchbox';
-import PublisherHouse from '../../components/PublisherHouse';
+import HistoryInput from '../../components/HistoryInput';
 import * as routeTypes from '../../state/modules/routing';
 import {
-    fetchPublisherSaga,
-    editPublisherSaga,
-    addPublisherSaga
-} from '../../state/modules/publisher'
-
-class PublisherHousePage extends Component {
+    fetchHistorySaga
+} from '../../state/modules/historyInput'
+class HistoryPage extends Component {
     state = {
         openDrawer: false,
         type: null
@@ -29,9 +26,10 @@ class PublisherHousePage extends Component {
     }
 
     componentDidMount() {
-        const { fetchPublisher } = this.props;
-        document.title = "Quản lý nhà xuất bản"
-        fetchPublisher(); 
+        const { fetchHistory } = this.props;
+        document.title = "Lịch sử nhập kho"
+        console.log("fetchHistory")
+        fetchHistory(); 
     }
     onChangeRoute = (route) => {
         this.props.redirect(route);
@@ -44,22 +42,19 @@ class PublisherHousePage extends Component {
                 <Appbar loginStatus={true} openDrawer={this.onOpenDrawer} />
                 <Drawer loginStatus={true} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
                 <Searchbox loginStatus={loginStatus} placeholder="Search" />
-                <PublisherHouse {...remainProps}/>
+                <HistoryInput {...remainProps}/>
             </React.Fragment>
         )
-
     }
 }
 
 export default connect(state => ({
     loginStatus: state.auth.loginStatus,
-    publisherHouses: state.publisher.publisherHouses
+    historyInput: state.historyInput.historyInput
 }), (dispatch) => ({ //connect and dispatch your action to call into your reducer - remember your payload.
     redirect: (route) => dispatch({
         type: route
     }),
-    fetchPublisher:compose(dispatch, fetchPublisherSaga),
-    addPublisher: compose(dispatch, addPublisherSaga),
-    editPublisher: compose(dispatch, editPublisherSaga)
-}))(PublisherHousePage);
+    fetchHistory:compose(dispatch, fetchHistorySaga),
+}))(HistoryPage);
 

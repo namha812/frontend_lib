@@ -41,6 +41,7 @@ class BookBorrowPage extends Component {
 
   componentDidMount() {
     const {fetchCategory, fetchStudent, fetchPublisher, fetchBook} = this.props;
+    document.title = "Mượn sách"
     fetchBook();
     fetchStudent();
     fetchCategory();
@@ -91,7 +92,6 @@ class BookBorrowPage extends Component {
       loginStatus,
       ...remainProps
     } = this.props;
-    console.log(this.props)
     return (
       <React.Fragment>
         <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />

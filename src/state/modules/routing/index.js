@@ -20,6 +20,8 @@ export const ROUTE_BOOK = 'route/ROUTE_BOOK';
 export const ROUTE_CATEGORY = 'route/ROUTE_CATEGORY';
 export const ROUTE_BORROW = 'route/ROUTE_BORROW';
 export const ROUTE_PUBLISHER_HOUSE = 'route/ROUTE_PUBLISHER_HOUSE';
+export const ROUTE_ACCOUNT = 'route/ROUTE_ACCOUNT';
+export const ROUTE_HISTORY_INPUT = 'route/ROUTE_HISTORY_INPUT';
 
 // selector
 export const routeType = state => state.location.type
@@ -78,6 +80,18 @@ export const routesMap = {
   [ROUTE_PUBLISHER_HOUSE]: {
     path: "/publisher-house",
     component: 'PublisherHouse',
+    requiresAuth: true,
+    modalOver: ROUTE_ANONYMOUS
+  },
+  [ROUTE_ACCOUNT]: {
+    path: "/account",
+    component: 'Account',
+    requiresAuth: true,
+    modalOver: ROUTE_ANONYMOUS
+  },
+  [ROUTE_HISTORY_INPUT]: {
+    path: "/history-input",
+    component: 'HistoryInput',
     requiresAuth: true,
     modalOver: ROUTE_ANONYMOUS
   }

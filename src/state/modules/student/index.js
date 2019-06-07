@@ -30,7 +30,6 @@ const studentReducer = createReducer(defaultState, {
     fetched: true
   }),
   [FETCH_STUDENT]: (state, action) => {
-    console.log(action);
     return  {
       ...state,
       students: action.payload.students

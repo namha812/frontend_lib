@@ -123,7 +123,6 @@ class PrimarySearchAppBar extends React.Component {
 	render() {
 		const { anchorEl, contactAnchorEl } = this.state;
 		const { classes, loginStatus } = this.props;
-		console.log('app bar props:' , this.props);
 		const isMenuOpen = Boolean(anchorEl);
 		const isContactMenuOpen = Boolean(contactAnchorEl);
 		const renderMenu = (

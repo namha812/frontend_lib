@@ -35,13 +35,14 @@ const styles = (theme) => ({
 	container: {
 		display: "flex",
 		flexWrap: "wrap",
-		justifyContent: "space-between",
+		justifyContent: "left",
 		padding: 10
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
-		width: "48%"
+		width: "60%",
+		float: "left"
 	},
 	formControl: {
 		margin: theme.spacing.unit,
@@ -65,9 +66,13 @@ function Transition(props) {
 class FullScreenDialog extends React.Component {
 
 	state = {
-		name: null,
-		isActive: null,
-		address: null
+		fullName: null,
+		isActive: 1,
+		email: null,
+		address: null,
+		password: null,
+		rePassword: null,
+		role: 2
 	}
 
 	handleClickOpen = () => {
@@ -79,8 +84,11 @@ class FullScreenDialog extends React.Component {
 		this.setState(
 			{
 				open: false,
-				name: null,
+				fullName: null,
 				isActive: null,
+				email: null,
+				address: null,
+				role: null
 			}
 		);
 	};
@@ -97,24 +105,31 @@ class FullScreenDialog extends React.Component {
 
 	handleSubmit = () => {
 		const {
-			name,
+			fullName,
 			isActive,
-			address
+			email,
+			address,
+			password,
+			role
 		} = this.state;
-		const { editPublisher, addPublisher, publisherHouse } = this.props;
-		if (publisherHouse.id) { 
-			editPublisher({
-				id: publisherHouse.id,
-				name: name || publisherHouse.name,
-				isActive: isActive || publisherHouse.isActive,
-				address: address || publisherHouse.address
+		const { editAccount, addAccount, account } = this.props;
+		if (account.id) {
+			editAccount({
+				id: account.id,
+				fullName: fullName || account.fullName,
+				isActive: isActive || account.isActive,
+				email: email || account.email,
+				address: address || account.address
 			})
 		}
 		else {
-			addPublisher({
-				name,
+			addAccount({
+				fullName,
 				isActive,
-				address
+				email,
+				address,
+				password,
+				role
 			})
 		}
 
@@ -122,17 +137,36 @@ class FullScreenDialog extends React.Component {
 	}
 
 	get Title() {
-		const { edit, publisherHouse = {} } = this.props;
-		if (edit && publisherHouse.id) {
+		const { edit, account = {} } = this.props;
+		if (edit && account.id) {
 			return "Sửa thông tin";
 		}
 		if (edit) {
-			return "Thêm nhà xuất bản";
+			return "Thêm nhân viên";
 		}
 		return "Xem thông tin chi tiết";
 	}
+
+	get Error() {
+		const { password, rePassword } = this.state;
+		if (password === null || rePassword === null) {
+			return false;
+		}
+		return password !== rePassword;
+	}
+
+	get validate() {
+		const {
+			fullName,
+			isActive,
+			email,
+			password,
+		} = this.state;
+		return fullName !== null && email !== null && password !== null; 
+	}
+
 	render() {
-        const { classes, open, edit , publisherHouse = {} } = this.props;
+		const { classes, open, edit, account = {} } = this.props;
 		return (
 			<Dialog
 				fullScreen
@@ -148,46 +182,98 @@ class FullScreenDialog extends React.Component {
 						<Typography variant="h6" color="inherit" className={classes.flex}>
 							{this.Title}
 						</Typography>
-						{edit && <Button color="inherit" onClick={this.handleSubmit}>
+						{edit && <Button disabled={!this.validate && !account.id} color="inherit" onClick={this.handleSubmit}>
 							Lưu
 						</Button>}
 					</Toolbar>
 				</AppBar>
 				<form className={classes.container} noValidate autoComplete="off">
 					<TextField
-                        fullWidth
+						fullWidth
 						disabled={!edit}
 						id="standard-name"
-						label="Tên"
-						value={this.state.name}
-						defaultValue={publisherHouse.name}
-						onChange={this.handleChange("name")}
+						label="Họ và tên"
+						value={this.state.fullName}
+						defaultValue={account.fullName}
+						onChange={this.handleChange("fullName")}
 						margin="normal"
 					/>
 					<TextField
-                        fullWidth
+						fullWidth
+						disabled={!edit || account.id}
+						id="standard-name"
+						label="Email"
+						value={this.state.email}
+						defaultValue={account.email}
+						onChange={this.handleChange("email")}
+						margin="normal"
+						type="email"
+					/>
+					{!account.id && <TextField
+						fullWidth
 						disabled={!edit}
+						id="standard-name"
+						label="Mật khẩu"
+						value={this.state.password}
+						defaultValue={account.password}
+						onChange={this.handleChange("password")}
+						margin="normal"
+						type="password"
+					/>}
+					{!account.id && <TextField
+						error={this.Error}
+						fullWidth
+						disabled={!edit}
+						hidden={account.id}
+						id="standard-name"
+						label="Nhập lại mật khẩu"
+						value={this.state.rePassword}
+						defaultValue={account.rePassword}
+						onChange={this.handleChange("rePassword")}
+						margin="normal"
+						type="password"
+					/>}
+					<TextField
+						fullWidth
+						disabled={!edit}
+						hidden={account.id}
 						id="standard-name"
 						label="Địa chỉ"
 						value={this.state.address}
-						defaultValue={publisherHouse.address}
+						defaultValue={account.address}
 						onChange={this.handleChange("address")}
 						margin="normal"
 					/>
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
-                            disabled={!edit}
+							disabled={!edit}
 							native
-							value={this.state.publisher}
-							onChange={this.handleChange('isActive')}
-							defaultValue={publisherHouse.isActive}
+							value={this.state.role}
+							onChange={this.handleChange('role')}
+							defaultValue={account.role}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',
 							}}
 						>
-							<option value="" />
+							<option value={2}>Nhân viên</option>
+							<option value={1}>Quản lý</option>
+						</Select>
+					</FormControl>
+					<FormControl className={classes.formControl}>
+						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
+						<Select
+							disabled={!edit}
+							native
+							value={this.state.publishing}
+							onChange={this.handleChange('isActive')}
+							defaultValue={account.isActive}
+							inputProps={{
+								name: 'age',
+								id: 'age-native-simple',
+							}}
+						>
 							<option value={1}>Active</option>
 							<option value={0}>Inactive</option>
 						</Select>

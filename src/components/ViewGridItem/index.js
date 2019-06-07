@@ -34,7 +34,6 @@ const styles = {
 
 function MediaCard(props) {
 	const { classes, inBorrowTab = false, onSelectedBook, books = [] } = props;
-	console.log(props);
 	return (
 		<React.Fragment>
 			<div className={classes.container}>

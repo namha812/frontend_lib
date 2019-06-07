@@ -4,7 +4,7 @@ const baseApi = axios.create({
         baseURL: 'http://localhost:3001',
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbE5hbWUiOiJIw6AgVsSDbiBOYW0gIiwiZW1haWwiOiJuYW1oYTgxMkBnbWFpbC5jb20iLCJyb2xlIjoiMSIsImlhdCI6MTU1OTc5MDEwNSwiZXhwIjoxNTU5ODI2MTA1fQ.Ag-3ExQ6YdRwZwgiW8xLvW5kiey49IHNh2mKMpYWMIQ"
+            "Authorization": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbE5hbWUiOiJIw6AgVsSDbiBOYW0gIiwiZW1haWwiOiJuYW1oYTgxMkBnbWFpbC5jb20iLCJyb2xlIjoiMSIsImlhdCI6MTU1OTg5Mjk2NywiZXhwIjoxNTU5OTI4OTY3fQ.z-mKsckmKCC_mdTAdqPF2DlnlGnmvKwOgvrxhNjxkvw"
         }
     })
 export default baseApi

@@ -153,9 +153,9 @@ class PeopleManagement extends React.Component {
 										<IconButton onClick={this.handleEdit(row)}>
 											<Edit />
 										</IconButton>
-										<IconButton onClick={this.handleDelete(row)}>
+										{/* <IconButton onClick={this.handleDelete(row)}>
 											<DeleteIcon />
-										</IconButton>
+										</IconButton> */}
 									</TableCell>
 								</TableRow>
 							);

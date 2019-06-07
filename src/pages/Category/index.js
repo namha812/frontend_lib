@@ -30,6 +30,7 @@ class CategoryPage extends Component {
 
     componentDidMount() {
         const { fetchCategory } = this.props;
+        document.title = "Quản lý danh mục sách"
         fetchCategory(); 
     }
     onChangeRoute = (route) => {

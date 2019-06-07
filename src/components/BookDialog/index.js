@@ -57,8 +57,8 @@ class FullScreenDialog extends React.Component {
 		bookName: null,
 		author: null,
 		category: null,
-		isActive: 1,
-		publisherHouse: null,
+		isActive: null,
+		publisherHouseId: null,
 		quantity: null,
 		coverPrice: null
 	}
@@ -75,8 +75,8 @@ class FullScreenDialog extends React.Component {
 				bookName: null,
 				author: null,
 				category: null,
-				isActive: 1,
-				publisherHouse: null,
+				isActive: null,
+				publisherHouseId: null,
 				quantity: null,
 				coverPrice: null
 			}
@@ -103,17 +103,17 @@ class FullScreenDialog extends React.Component {
 			quantity,
 			coverPrice
 		} = this.state;
-		const { addBook, editBook, book } = this.props;
+		const { addBook, editBook, book, publisherHouses = [], categories = [] } = this.props;
 		if (book.id) {
 			editBook({
 				id: book.id,
-				isActive: isActive === 1 || book.isActive,
+				isActive: isActive!== null ? parseInt(isActive,10) : book.isActive,
 				bookName: bookName || book.bookName,
-				categoryId: categoryId || book.category ? book.category.id : null,
+				categoryId: categoryId ? parseInt(categoryId) : (book.category ? book.category.id : null),
 				quantity: quantity || book.quantity,
 				author: author || book.author,
 				coverPrice: coverPrice || book.coverPrice,
-				publisherHouseId: publisherHouseId || book.publisherHouse ? book.publisherHouse.id : null,
+				publisherHouseId: publisherHouseId ? parseInt(publisherHouseId) : (book.publisherHouse ? book.publisherHouse.id : null),
 			})
 		}
 		else {
@@ -121,9 +121,9 @@ class FullScreenDialog extends React.Component {
 				bookName,
 				author,
 				quantity,
-				categoryId,
-				isActive: isActive === 1,
-				publisherHouseId,
+				categoryId: parseInt(categoryId) || categories[0].id,
+				isActive: parseInt(isActive, 10) || 1,
+				publisherHouseId: parseInt(publisherHouseId) || publisherHouses[0].id,
 				coverPrice
 			})
 		}
@@ -131,8 +131,7 @@ class FullScreenDialog extends React.Component {
 		this.handleClose();
 	}
 	get Title() {
-		const { classes, open, edit, book = {}, publishingCompanies = {} } = this.props;
-		console.log(this.props);
+		const { classes, open, edit, book = {}, publisherHouses = {} } = this.props;
 		if (edit && book.id) {
 			return "Sửa thông tin sách";
 		}
@@ -142,8 +141,7 @@ class FullScreenDialog extends React.Component {
 		return "Xem thông tin chi tiết";
 	}
 	render() {
-		const { classes, open, edit, book = {}, publishingCompanies = [], categories = [] } = this.props;
-		console.log(this.props);
+		const { classes, open, edit, book = {}, publisherHouses = [], categories = [] } = this.props;
 		return (
 			<Dialog
 				fullScreen
@@ -201,7 +199,7 @@ class FullScreenDialog extends React.Component {
 						value={this.state.coverPrice}
 						defaultValue={book.coverPrice}
 						id="standard-required"
-						label="Gia bia"
+						label="Giá Bìa"
 						onChange={this.handleChange("coverPrice")}
 						className={classes.textFieldFullWidth}
 						margin="normal"
@@ -219,9 +217,8 @@ class FullScreenDialog extends React.Component {
 								id: 'category-native-simple',
 							}}
 						>
-							<option value="" />
 							{categories.map(item => (
-								<option value={item.id}>{item.category}</option>
+								<option value={item.id}>{item.name}</option>
 							))}
 						</Select>
 					</FormControl>
@@ -237,9 +234,8 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							<option value="" />
-							{publishingCompanies.map(item => (
-								<option value={item.id}>{item.publisingCompany}</option>
+							{publisherHouses.map(item => (
+								<option value={item.id}>{item.name}</option>
 							))}
 						</Select>
 					</FormControl>
@@ -255,7 +251,6 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							<option value="" />
 							<option value={1}>Active</option>
 							<option value={0}>Inactive</option>
 						</Select>

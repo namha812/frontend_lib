@@ -43,9 +43,6 @@ class Category extends React.Component {
         open: false,
         edit: false
     }
-    componentDidMount() {
-        document.title = "Quản lý danh mục sách"
-    }
     handleView = (row) => (event) => {
         this.setState({
             category: row,
@@ -59,9 +56,6 @@ class Category extends React.Component {
             open: true,
             edit: true
         })
-    }
-    handleDelete = (row) => (event) => {
-        console.log("del")
     }
     onAddCategory = () => {
         this.setState({

@@ -114,11 +114,10 @@ class BookManage extends React.Component {
 			loadingState,
 			editBook,
 			addBook,
-			publishingCompanies,
+			publisherHouses,
 			categories
 		} = this.props;
 		const { open, edit, currentBook, book } = this.state;
-		console.log(books)
 		return (
 			<Paper className={classes.root}>
 				<Table className={classes.table}>
@@ -173,9 +172,9 @@ class BookManage extends React.Component {
 										<IconButton onClick={this.handleEdit(row)}>
 											<Edit />
 										</IconButton>
-										<IconButton onClick={this.handleDelete(row)}>
+										{/* <IconButton onClick={this.handleDelete(row)}>
 											<DeleteIcon />
-										</IconButton>
+										</IconButton> */}
 									</TableCell>
 								</TableRow>
 							);
@@ -187,7 +186,7 @@ class BookManage extends React.Component {
 						<AddIcon color="white" />
 					</IconButton>
 				</Fab>
-				<BookDialog publishingCompanies={publishingCompanies} categories={categories} editBook={editBook} addBook={addBook} book={currentBook} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+				<BookDialog publisherHouses={publisherHouses} categories={categories} editBook={editBook} addBook={addBook} book={currentBook} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
 				<Dialog
 					open={this.state.deleteDialogState}
 					onClose={this.handleClose}
