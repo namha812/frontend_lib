@@ -9,7 +9,8 @@ import BorrowMangement from '../../components/BorrowMangement'
 import * as routeTypes from '../../state/modules/routing';
 import {
    fetchBorrow,
-   fetchBorrowSaga
+   fetchBorrowSaga,
+   payBookSaga
 } from '../../state/modules/borrow/index'
 import {
 	ROUTE_HOME,
@@ -99,5 +100,6 @@ export default connect(state => ({
       type: route
     }),
     fetchBorrow: compose(dispatch, fetchBorrowSaga),
+    payBook: compose(dispatch, payBookSaga)
   }))(BorrowMangementPage);
   

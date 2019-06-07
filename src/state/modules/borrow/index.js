@@ -3,6 +3,7 @@ import { createReducer } from '../../reducers/helper'
 export const FETCH_BORROW = 'FETCH_BORROW';
 export const FETCH_BORROW_SAGA = 'FETCH_BORROW_SAGA';
 export const BORROW_BOOK_SAGA = 'BORROW_BOOK_SAGA';
+export const PAY_BOOK_SAGA = 'PAY_BOOK_SAGA';
 
 const defaultState = {
   borrows: []
@@ -31,4 +32,8 @@ export const borrowBookSaga = (payload) => ({
   payload
 })
 
+export const payBookSaga = (payload) => ({
+  type: PAY_BOOK_SAGA,
+  payload
+})
 export default testReducer;

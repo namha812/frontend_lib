@@ -66,8 +66,9 @@ class PeopleManagement extends React.Component {
 	render() {
 		const { 
 			classes,
-			borrowList,
-			loadingState
+			borrowList = [],
+			loadingState,
+			payBook
 		} = this.props;
 		const { open, edit, currentBook, book } = this.state;
 		return (
@@ -109,7 +110,7 @@ class PeopleManagement extends React.Component {
 						})}
 					</TableBody>
 				</Table>
-				<GiveBackDialog open={this.state.open} handleCloseDialog={this.handleCloseDialog} borrowItem={this.state.currentBorrowItem}/>
+				<GiveBackDialog payBook={payBook} open={this.state.open} handleCloseDialog={this.handleCloseDialog} borrowItem={this.state.currentBorrowItem}/>
 			</Paper>
 		);
 	}
