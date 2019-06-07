@@ -17,7 +17,8 @@ import {
   ROUTE_CATEGORY,
   ROUTE_PUBLISHER_HOUSE,
   ROUTE_ACCOUNT,
-  ROUTE_HISTORY_INPUT
+  ROUTE_HISTORY_INPUT,
+  ROUTE_LOGOUT
 } from './state/modules/routing';
 import About from './pages/About';
 import Home from './pages/Home';
@@ -40,6 +41,7 @@ const routesMap = {
   [ROUTE_LOGIN]: Login,
   [ROUTE_SIGNUP]: SignUp,
   [NOT_FOUND]: Home,
+  [ROUTE_LOGOUT]: Home,
   [ROUTE_ANONYMOUS]: Anonymous,
   [ROUTE_PEOPLE]: PeopleManager,
   [ROUTE_BOOK_BORROW]: BookBorrow,

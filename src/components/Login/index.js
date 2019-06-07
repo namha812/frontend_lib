@@ -35,7 +35,7 @@ class Login extends Component {
       <div className = 'container'>
         <div className = 'bodylogin'>
           <div className = 'form-container'>
-            <div className = 'form'>
+            <form onSubmit={this.handleLogin} className = 'form'>
               <span className="login-form-title">
                 Login
               </span>
@@ -56,18 +56,12 @@ class Login extends Component {
                 />
               </div>
               <div className='btnBottom'>
-                <Button 
-                  color='primary' 
-                  variant='contained' 
-                  className='btnLogin' 
-                  onClick={this.handleLogin}>
-                  Login
-                </Button>
+                <input className='btnLogin'  type = "submit"  value="Đăng nhập"/>
               </div>
               <div>
                 Not a member? <Link to={routeSignup()}>Signup Page</Link>
               </div>
-            </div>
+            </form>
           </div> 
         </div>
       </div>

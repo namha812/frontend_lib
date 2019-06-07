@@ -10,6 +10,8 @@ import * as routeTypes from '../../state/modules/routing';
 import {
     fetchHistorySaga
 } from '../../state/modules/historyInput'
+import {logoutSaga} from '../../state/modules/auth';
+
 class HistoryPage extends Component {
     state = {
         openDrawer: false,
@@ -39,7 +41,7 @@ class HistoryPage extends Component {
         const { loginStatus, ...remainProps } = this.props;
         return (
             <React.Fragment>
-                <Appbar loginStatus={true} openDrawer={this.onOpenDrawer} />
+                <Appbar logout={this.props.logout} loginStatus={true} openDrawer={this.onOpenDrawer} />
                 <Drawer loginStatus={true} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
                 <Searchbox loginStatus={loginStatus} placeholder="Search" />
                 <HistoryInput {...remainProps}/>
@@ -56,5 +58,7 @@ export default connect(state => ({
         type: route
     }),
     fetchHistory:compose(dispatch, fetchHistorySaga),
+    logout: compose(dispatch, logoutSaga)
+
 }))(HistoryPage);
 

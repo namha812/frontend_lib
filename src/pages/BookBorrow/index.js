@@ -32,11 +32,13 @@ import {
 } from '../../state/modules/routing';
 import BookBorrow from '../../components/BookBorrow';
 import { borrowBookSaga } from '../../state/modules/borrow';
+import {logoutSaga} from '../../state/modules/auth';
 
 class BookBorrowPage extends Component {
   state = {
     openDrawer: false,
-    type: null
+    type: null,
+    searchValue: ""
   }
 
   componentDidMount() {
@@ -62,26 +64,12 @@ class BookBorrowPage extends Component {
   }
 
   onChangeSearchValue = (value) => {
-    const {location} = this.props;
-    switch (location.type) {
-			case ROUTE_HOME:
-        //callSearchBookApi();
-        break;
-			case ROUTE_BOOK_BORROW:
-        //callSearchBookApi();
-        break;
-      case ROUTE_PEOPLE:
-        //call searchpeopleApi();
-        break;
-			case ROUTE_BOOK:
-        //callSearchBookApi();
-        break;
-      default:
-        break;
-		};
+    this.setState({
+      searchValue: value
+    })
   }
   render() {
-    const { openDrawer } = this.state
+    const { openDrawer,searchValue } = this.state
     const { 
       location,
       loginStatus,
@@ -89,10 +77,10 @@ class BookBorrowPage extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
-        <Drawer loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
+        <Appbar logout={this.props.logout} loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
+        <Drawer  loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
         <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue}/>
-        <BorrowBook {...remainProps} />
+        <BorrowBook searchValue={searchValue} {...remainProps} />
       </React.Fragment>
     );
   }
@@ -118,5 +106,6 @@ export default connect(state => ({
   fetchBook:compose(dispatch, fetchBookSaga),
   editBook: compose(dispatch, editBookSaga),
   addBook: compose(dispatch, addBookSaga),
-  deleteBook: compose(dispatch, deleteBookSaga)
+  deleteBook: compose(dispatch, deleteBookSaga),
+  logout: compose(dispatch, logoutSaga)
 }))(BookBorrowPage);

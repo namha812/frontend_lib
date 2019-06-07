@@ -11,7 +11,9 @@ import {
   fetchCategorySaga,
   editCategorySaga,
   addCategorySaga
-} from '../../state/modules/category'
+} from '../../state/modules/category';
+import {logoutSaga} from '../../state/modules/auth';
+
 
 class CategoryPage extends Component {
   state = {
@@ -48,7 +50,7 @@ class CategoryPage extends Component {
     const { loginStatus, ...remainProps } = this.props;
     return (
       <React.Fragment>
-        <Appbar loginStatus={true} openDrawer={this.onOpenDrawer} />
+        <Appbar logout={this.props.logout} loginStatus={true} openDrawer={this.onOpenDrawer} />
         <Drawer loginStatus={true} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
         <Searchbox onChangeSearchValue={this.onChangeSearchValue} loginStatus={loginStatus} placeholder="Search" />
         <Category searchValue={searchValue} {...remainProps} />
@@ -67,5 +69,7 @@ export default connect(state => ({
   fetchCategory: compose(dispatch, fetchCategorySaga),
   editCategory: compose(dispatch, editCategorySaga),
   addCategory: compose(dispatch, addCategorySaga),
+  logout: compose(dispatch, logoutSaga)
+
 }))(CategoryPage);
 

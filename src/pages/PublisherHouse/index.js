@@ -11,7 +11,9 @@ import {
     fetchPublisherSaga,
     editPublisherSaga,
     addPublisherSaga
-} from '../../state/modules/publisher'
+} from '../../state/modules/publisher';
+import {logoutSaga} from '../../state/modules/auth';
+
 
 class PublisherHousePage extends Component {
     state = {
@@ -41,7 +43,7 @@ class PublisherHousePage extends Component {
         const { loginStatus, ...remainProps } = this.props;
         return (
             <React.Fragment>
-                <Appbar loginStatus={true} openDrawer={this.onOpenDrawer} />
+                <Appbar logout={this.props.logout} loginStatus={true} openDrawer={this.onOpenDrawer} />
                 <Drawer loginStatus={true} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
                 <Searchbox loginStatus={loginStatus} placeholder="Search" />
                 <PublisherHouse {...remainProps}/>
@@ -60,6 +62,8 @@ export default connect(state => ({
     }),
     fetchPublisher:compose(dispatch, fetchPublisherSaga),
     addPublisher: compose(dispatch, addPublisherSaga),
-    editPublisher: compose(dispatch, editPublisherSaga)
+    editPublisher: compose(dispatch, editPublisherSaga),
+    logout: compose(dispatch, logoutSaga)
+
 }))(PublisherHousePage);
 

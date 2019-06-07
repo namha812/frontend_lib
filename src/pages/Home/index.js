@@ -37,6 +37,8 @@ import {
   ROUTE_BOOK_BORROW,
   ROUTE_BOOK
 } from '../../state/modules/routing';
+import {logoutSaga} from '../../state/modules/auth';
+
 
 class Home extends Component {
   state = {
@@ -90,7 +92,7 @@ class Home extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
+        <Appbar logout={this.props.logout} loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
         <Drawer loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
         <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue} />
         <Dashboard
@@ -129,6 +131,8 @@ export default connect(state => ({
   fetchBook: compose(dispatch, fetchBookSaga),
   editBook: compose(dispatch, editBookSaga),
   addBook: compose(dispatch, addBookSaga),
-  deleteBook: compose(dispatch, deleteBookSaga)
+  deleteBook: compose(dispatch, deleteBookSaga),
+  logout: compose(dispatch, logoutSaga)
+
 
 }))(Home);

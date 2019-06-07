@@ -120,6 +120,11 @@ class PrimarySearchAppBar extends React.Component {
 		this.props.openDrawer();
 	}
 
+	handleLogout = () => {
+		this.props.logout();
+		this.handleMenuClose()
+	}
+
 	render() {
 		const { anchorEl, contactAnchorEl } = this.state;
 		const { classes, loginStatus } = this.props;
@@ -133,10 +138,11 @@ class PrimarySearchAppBar extends React.Component {
 				open={isMenuOpen}
 				onClose={this.handleMenuClose}
 			>
-				<Link to={routeLogin()}>
-					<MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-				</Link>
-				<MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+				{!loginStatus && <Link to={routeLogin()}>
+					<MenuItem onClick={this.handleMenuClose}>Đăng nhập</MenuItem>
+				</Link>}
+				{loginStatus && <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>}
+				{loginStatus && <MenuItem onClick={this.handleLogout}>Đăng xuất</MenuItem>}
 			</Menu>
 		);
 

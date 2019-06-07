@@ -105,13 +105,13 @@ class BorrowBook extends Component {
   }
 
   render() {
-    const { classes, books, students } = this.props;
+    const { classes, books, students, searchValue } = this.props;
     const { selectedBook, currentBook, numberOfBook,error } = this.state;
     return (
       <div>
         <div className={classes.card}>
           <div>
-            <ViewGridItem books={books} onSelectedBook={this.onSelectedBook} inBorrowTab />
+            <ViewGridItem searchValue={searchValue} books={books} onSelectedBook={this.onSelectedBook} inBorrowTab />
           </div>
           <Cart borrowBook={this.borrowBook} students={students} selectedBook={selectedBook} removeBook={this.removeBook} />
         </div>

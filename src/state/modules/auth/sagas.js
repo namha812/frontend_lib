@@ -1,5 +1,5 @@
 import { all, call, delay, fork, takeLatest, put, select, takeEvery } from 'redux-saga/effects';
-import { LOGIN_SAGA, CHECK_LOGIN } from './index'
+import { LOGIN_SAGA, CHECK_LOGIN, LOGOUT_SAGA } from './index'
 import { loginApi, signupApi } from '../../../api/userApi';
 import { fetchStudent } from '../../../api/studentApi';
 import { routeType } from '../routing/index'
@@ -7,7 +7,8 @@ import { routeType } from '../routing/index'
 import {
   loadingLogin,
   loadedLogin,
-  errorLogin
+  errorLogin,
+  logout
 } from './index'
 
 import {
@@ -31,7 +32,6 @@ function* loginSaga(action) {
   localStorage.setItem('email', res.data.user.email);
   localStorage.setItem('id', res.data.user.id);
   localStorage.setItem('role', res.data.user.role);
-
 };
 
 function* checkLoginSaga(action) {
@@ -52,19 +52,36 @@ function* checkLoginSaga(action) {
         role
       }
     }));
+    if(routeState === 'route/ROUTE_LOGIN') {
+      yield put({
+        type: "route/ROUTE_HOME"
+      })
+    }
   } else {
     if (routeState !== "route/ROUTE_HOME") {
       yield put({
         type: "route/ROUTE_LOGIN"
       })
     }
-
   }
+}
+
+function* logoutSaga(action) {
+  localStorage.removeItem('token');
+  localStorage.removeItem('fullname');
+  localStorage.removeItem('email');
+  localStorage.removeItem('id');
+  localStorage.removeItem('role');
+  yield put(logout());
+  yield put({
+    type: "route/ROUTE_HOME"
+  });
 }
 
 export default function* auth() {
   yield all([
     takeEvery(LOGIN_SAGA, loginSaga),
-    takeEvery(CHECK_LOGIN, checkLoginSaga)
+    takeEvery(CHECK_LOGIN, checkLoginSaga),
+    takeEvery(LOGOUT_SAGA, logoutSaga)
   ])
 }

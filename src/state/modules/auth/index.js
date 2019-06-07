@@ -9,7 +9,8 @@ export const LOADING_SIGNUP = 'loading signup';
 export const LOADED_SIGNUP = 'loaded signup';
 export const SIGNUP_ERROR = 'signup error';
 export const CHECK_LOGIN = 'check login';
-
+export const LOGOUT = 'log out';
+export const LOGOUT_SAGA = 'log out saga'
 
 const defaultState = {
   loading: false,
@@ -44,6 +45,17 @@ const authReducer = createReducer(defaultState, {
     loaded: true,
     OAuthErrorCode: action.payload.OAuthErrorCode,
     OAuthErrorDescription: action.payload.OAuthErrorDescription
+  }),
+  [LOGOUT]: (state, action) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    loginStatus: false,
+    user: {},
+    OAuthToken: null,
+    OAuthErrorCode: null,
+    OAuthErrorDescription: null,
+    sessionToken: null
   })
 })
 
@@ -69,5 +81,13 @@ export const errorLogin = (payload) => ({
 export const checkLogin = () => ({
   type: CHECK_LOGIN
 })
+
+export const logout = () => ({
+ type: LOGOUT
+})
+
+export const logoutSaga = () => ({
+  type: LOGOUT_SAGA
+ })
 
 export default authReducer;

@@ -22,6 +22,7 @@ export const ROUTE_BORROW = 'route/ROUTE_BORROW';
 export const ROUTE_PUBLISHER_HOUSE = 'route/ROUTE_PUBLISHER_HOUSE';
 export const ROUTE_ACCOUNT = 'route/ROUTE_ACCOUNT';
 export const ROUTE_HISTORY_INPUT = 'route/ROUTE_HISTORY_INPUT';
+export const ROUTE_LOGOUT = 'route/ROUTE_LOGOUT'
 
 // selector
 export const routeType = state => state.location.type
@@ -31,6 +32,10 @@ export const routesMap = {
     path: "/",
     component: "Searchbox",
   },
+  [ROUTE_LOGOUT]: {
+    path: "/logout",
+    component: "Home",
+  }, 
   [ROUTE_ABOUT]:
   {
     path: '/about',

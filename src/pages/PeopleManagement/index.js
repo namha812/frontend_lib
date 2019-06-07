@@ -5,6 +5,8 @@ import { compose } from "redux";
 import Appbar from '../../components/AppBar';
 import Drawer from '../../components/Drawer';
 import PeopleManagement from '../../components/PeopleMangement'
+import {logoutSaga} from '../../state/modules/auth';
+
 import {
   fetchStudentSaga,
   addStudentSaga,
@@ -81,7 +83,7 @@ class PeopleManagementPage extends Component {
     console.log(this.props)
     return (
       <React.Fragment>
-        <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
+        <Appbar logout={this.props.logout} loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
         <Drawer loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
         <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue}/>
         <PeopleManagement
@@ -111,6 +113,8 @@ export default connect(state => ({
   fetchStudent:compose(dispatch, fetchStudentSaga),
   editStudent: compose(dispatch, editStudentSaga),
   addStudent: compose(dispatch, addStudentSaga),
-  deleteStudent: compose(dispatch, deleteStudentSaga)
+  deleteStudent: compose(dispatch, deleteStudentSaga),
+  logout: compose(dispatch, logoutSaga)
+
   
 }))(PeopleManagementPage);

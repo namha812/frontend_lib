@@ -6,7 +6,7 @@ import Appbar from '../../components/AppBar';
 import Drawer from '../../components/Drawer';
 import Searchbox from '../../components/Searchbox';
 import Account from '../../components/Account';
-import * as routeTypes from '../../state/modules/routing';
+import {logoutSaga} from '../../state/modules/auth';
 import {
     fetchAccountSaga,
     addAccountSaga,
@@ -37,10 +37,10 @@ class AccountPage extends Component {
     }
     render() {
         const { openDrawer } = this.state;
-        const { loginStatus, ...remainProps } = this.props;
+        const { loginStatus,logout, ...remainProps } = this.props;
         return (
             <React.Fragment>
-                <Appbar loginStatus={true} openDrawer={this.onOpenDrawer} />
+                <Appbar logout = {logout} loginStatus={true} openDrawer={this.onOpenDrawer} />
                 <Drawer loginStatus={true} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
                 <Searchbox loginStatus={loginStatus} placeholder="Search" />
                 <Account {...remainProps}/>
@@ -58,6 +58,7 @@ export default connect(state => ({
     }),
     fetchAccount: compose(dispatch, fetchAccountSaga),
     addAccount: compose(dispatch, addAccountSaga),
-    editAccount: compose(dispatch, editAccountSaga)
+    editAccount: compose(dispatch, editAccountSaga),
+    logout: compose(dispatch, logoutSaga)
 }))(AccountPage);
 
