@@ -123,7 +123,6 @@ class PrimarySearchAppBar extends React.Component {
 	render() {
 		const { anchorEl, contactAnchorEl } = this.state;
 		const { classes, loginStatus } = this.props;
-		console.log('app bar props:' , this.props);
 		const isMenuOpen = Boolean(anchorEl);
 		const isContactMenuOpen = Boolean(contactAnchorEl);
 		const renderMenu = (
@@ -169,11 +168,6 @@ class PrimarySearchAppBar extends React.Component {
 							{loginStatus && <IconButton color="inherit">
 								<HomeIcon />
 							</IconButton>}
-							{loginStatus && <IconButton color="inherit">
-								<Badge badgeContent={17} color="secondary">
-									<NotificationsIcon />
-								</Badge>
-							</IconButton>}
 							<IconButton
 								aria-owns={isMenuOpen ? 'material-appbar' : null}
 								aria-haspopup="true"
@@ -181,13 +175,6 @@ class PrimarySearchAppBar extends React.Component {
 								color="inherit"
 							>
 								<AccountCircle />
-							</IconButton>
-							<IconButton
-								aria-owns={isContactMenuOpen ? 'material-appbar' : null}
-								aria-haspopup="true"
-								onClick={this.handleContactMenuOpen}
-								color="inherit">
-								<ContactIcon />
 							</IconButton>
 						</div>
 					</Toolbar>

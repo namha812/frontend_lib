@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -21,9 +22,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 
 import BookDialog from '../BookDialog';
-import BookManagement from '../../pages/BookManagement';
+import TablePaginationActionsWrapped from '../TablePaginationActions';
+
 // import book from './book.json'
 
 
@@ -50,7 +54,9 @@ class BookManage extends React.Component {
 		currentBook: {},
 		deleteDialogState: false,
 		open: false,
-		edit: false
+		edit: false,
+		page: 0,
+		rowsPerPage: 10,
 	}
 
 	onAddBook = () => {
@@ -101,24 +107,40 @@ class BookManage extends React.Component {
 		})
 	}
 
+	
+	handleChangePage = (event, page) => {
+		this.setState({ page });
+	};
+
+	handleChangeRowsPerPage = event => {
+		this.setState({ rowsPerPage: event.target.value });
+	};
+
 	handleChangeStatus = (book) => (event) => {
 
 	}
+
+	get books() {
+		const { page, rowsPerPage } = this.state;
+		const { searchValue, books = [] } = this.props;
+		return _.slice(books.filter(item => {
+			return _.includes(_.toLower(item.bookName), _.toLower(searchValue));
+		}), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+	}
+
 	componentDidMount() {
         document.title = "Quản lý sách"
     }
 	render() {
 		const {
 			classes,
-			books,
 			loadingState,
 			editBook,
 			addBook,
 			publishingCompanies,
 			categories
 		} = this.props;
-		const { open, edit, currentBook, book } = this.state;
-		console.log(books)
+		const { open, edit, currentBook, rowsPerPage, page } = this.state;
 		return (
 			<Paper className={classes.root}>
 				<Table className={classes.table}>
@@ -135,14 +157,14 @@ class BookManage extends React.Component {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{!books.length &&
+						{!this.books.length &&
 							<TableRow>
 								<TableCell colSpan={7} style={{ textAlign: "center" }}>
 									{loadingState ? "Đang tải..." : "Không có dữ liệu"}
 								</TableCell>
 
 							</TableRow>}
-						{books.map(row => {
+						{this.books.map(row => {
 							return (
 								<TableRow key={row.id}>
 									<TableCell>
@@ -181,6 +203,23 @@ class BookManage extends React.Component {
 							);
 						})}
 					</TableBody>
+					<TableFooter>
+							<TableRow>
+								<TablePagination
+									rowsPerPageOptions={[5, 10, 25]}
+									colSpan={3}
+									count={this.books.length}
+									rowsPerPage={rowsPerPage}
+									page={page}
+									SelectProps={{
+										native: true,
+									}}
+									onChangePage={this.handleChangePage}
+									onChangeRowsPerPage={this.handleChangeRowsPerPage}
+									ActionsComponent={TablePaginationActionsWrapped}
+								/>
+							</TableRow>
+						</TableFooter>
 				</Table>
 				<Fab color="primary" className={classes.fab}>
 					<IconButton onClick={this.onAddBook}>

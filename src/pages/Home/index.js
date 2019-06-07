@@ -17,7 +17,10 @@ import {
   addBookSaga,
   editBookSaga,
   deleteBookSaga
-} from '../../state/modules/book'
+} from '../../state/modules/book';
+import {
+  checkLogin
+} from '../../state/modules/auth'
 import {
   fetchClassSaga
 } from '../../state/modules/class'
@@ -29,44 +32,67 @@ import {
 } from '../../state/modules/publishing'
 import Searchbox from '../../components/Searchbox';
 import {
-	routeType,
-	ROUTE_HOME,
-	ROUTE_ABOUT,
-	ROUTE_LOGIN,
-	ROUTE_SIGNUP,
-	ROUTE_ANONYMOUS,
-	ROUTE_PEOPLE,
-	ROUTE_BOOK_BORROW,
-	ROUTE_BOOK
+  ROUTE_HOME,
+  ROUTE_PEOPLE,
+  ROUTE_BOOK_BORROW,
+  ROUTE_BOOK
 } from '../../state/modules/routing';
 
 class Home extends Component {
   state = {
     openDrawer: false,
-    type: null
+    type: null,
+    searchValue: ""
   }
 
   componentDidMount() {
-    const {fetchCategory, fetchClass, fetchPublishing, fetchStudent,fetchBook} = this.props;
+    const {
+      loginStatus,
+      fetchCategory,
+      fetchClass,
+      fetchPublishing,
+      fetchStudent,
+      fetchBook
+    } = this.props;
     fetchBook();
-    fetchCategory();
-    fetchClass();
-    fetchPublishing();
-    fetchStudent()
+    if (loginStatus) {
+      fetchCategory();
+      fetchClass();
+      fetchPublishing();
+      fetchStudent()
+    }
   }
 
   componentDidUpdate() {
-    const { type } = this.props;
-  }
-
-  recallApi = (route) => {
-
+    // console.log("did update");
+    // const {
+    //   loginStatus,
+    //   fetchCategory,
+    //   fetchClass,
+    //   fetchPublishing,
+    //   fetchStudent,
+    //   student,
+    //   classList,
+    //   categories,
+    //   publishingCompanies
+    // } = this.props;
+    // if (!student.length) {
+    //   fetchStudent()
+    // }
+    // if (!classList.length) {
+    //   fetchClass();
+    // }
+    // if (!categories.length) {
+    //   fetchCategory();
+    // }
+    // if (!publishingCompanies.length) {
+    //   fetchPublishing();
+    // }
   }
 
   onChangeRoute = (route) => {
     const { redirect } = this.props;
     redirect(route);
-    this.recallApi(route);
   }
 
   onCloseDrawer = (event) => {
@@ -78,27 +104,13 @@ class Home extends Component {
   }
 
   onChangeSearchValue = (value) => {
-    const {location} = this.props;
-    switch (location.type) {
-			case ROUTE_HOME:
-        //callSearchBookApi();
-        break;
-			case ROUTE_BOOK_BORROW:
-        //callSearchBookApi();
-        break;
-      case ROUTE_PEOPLE:
-        //call searchpeopleApi();
-        break;
-			case ROUTE_BOOK:
-        //callSearchBookApi();
-        break;
-      default:
-        break;
-		};
+    this.setState({
+      searchValue: value
+    })
   }
   render() {
-    const { openDrawer } = this.state
-    const { 
+    const { openDrawer, searchValue } = this.state
+    const {
       location,
       loginStatus,
       ...remainProps
@@ -108,9 +120,10 @@ class Home extends Component {
       <React.Fragment>
         <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
         <Drawer loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
-        <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue}/>
+        <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue} />
         <Dashboard
-          type={location.type} 
+          searchValue={searchValue}
+          type={location.type}
           routeTypes={routeTypes}
           loginStatus={loginStatus}
           {...remainProps}
@@ -133,16 +146,17 @@ export default connect(state => ({
   redirect: (route) => dispatch({
     type: route
   }),
-  fetchClass:compose(dispatch, fetchClassSaga),
-  fetchCategory:compose(dispatch, fetchCategorySaga),
-  fetchPublishing:compose(dispatch, fetchPublishingSaga),
-  fetchStudent:compose(dispatch, fetchStudentSaga),
+  checkLogin: compose(dispatch, checkLogin),
+  fetchClass: compose(dispatch, fetchClassSaga),
+  fetchCategory: compose(dispatch, fetchCategorySaga),
+  fetchPublishing: compose(dispatch, fetchPublishingSaga),
+  fetchStudent: compose(dispatch, fetchStudentSaga),
   editStudent: compose(dispatch, editStudentSaga),
   addStudent: compose(dispatch, addStudentSaga),
   deleteStudent: compose(dispatch, deleteStudentSaga),
-  fetchBook:compose(dispatch, fetchBookSaga),
+  fetchBook: compose(dispatch, fetchBookSaga),
   editBook: compose(dispatch, editBookSaga),
   addBook: compose(dispatch, addBookSaga),
   deleteBook: compose(dispatch, deleteBookSaga)
-  
+
 }))(Home);

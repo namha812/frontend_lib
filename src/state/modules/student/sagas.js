@@ -27,6 +27,7 @@ import {
 function* fetchStudentSaga(action) {
   yield put(fetchingStudent());
   const res = yield fetchStudentApi();
+  console.log(res);
   if (res.data) {
     yield put(fetchStudent(res.data.data));
   }

@@ -47,14 +47,9 @@ class BookBorrowPage extends Component {
     fetchPublishing();
   }
 
-  recallApi = (route) => {
-
-  }
-
   onChangeRoute = (route) => {
     const { redirect } = this.props;
     redirect(route);
-    this.recallApi(route);
   }
 
   onCloseDrawer = (event) => {

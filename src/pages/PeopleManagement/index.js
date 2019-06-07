@@ -32,7 +32,8 @@ import {
 class PeopleManagementPage extends Component {
   state = {
     openDrawer: false,
-    type: null
+    type: null,
+    searchValue: ""
   }
 
   componentDidMount() {
@@ -64,26 +65,12 @@ class PeopleManagementPage extends Component {
   }
 
   onChangeSearchValue = (value) => {
-    const {location} = this.props;
-    switch (location.type) {
-			case ROUTE_HOME:
-        //callSearchBookApi();
-        break;
-			case ROUTE_BOOK_BORROW:
-        //callSearchBookApi();
-        break;
-      case ROUTE_PEOPLE:
-        //call searchpeopleApi();
-        break;
-			case ROUTE_BOOK:
-        //callSearchBookApi();
-        break;
-      default:
-        break;
-		};
+    this.setState({
+      searchValue: value
+    })
   }
   render() {
-    const { openDrawer } = this.state
+    const { openDrawer, searchValue } = this.state
     const { 
       location,
       loginStatus,
@@ -99,6 +86,7 @@ class PeopleManagementPage extends Component {
         <PeopleManagement
           students={student.students}
           loadingState={student.fetching}
+          searchValue={searchValue}
           {...remainProps}
         />
       </React.Fragment>

@@ -18,13 +18,13 @@ import {
 
 class index extends Component {
 	componentDidMount() {
-        const { fetchBook } = this.props;
-        fetchBook();
-    }
+		const { fetchBook } = this.props;
+		fetchBook();
+	}
 	render() {
-		const {books, OAuthToken} = this.props;
+		const { books, OAuthToken, ...remainProps } = this.props;
 		return (
-			<ViewGridItem books={books} OAuthToken={OAuthToken}/>
+			<ViewGridItem {...remainProps} books={books} OAuthToken={OAuthToken} />
 		);
 	}
 }

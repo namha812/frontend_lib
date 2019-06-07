@@ -2,20 +2,20 @@ import { createReducer } from '../../reducers/helper'
 
 export const LOGIN_SAGA = 'login saga';
 export const SIGNUP_SAGA = 'signup saga';
-
 export const LOADING_LOGIN = 'loading login';
 export const LOADED_LOGIN = 'loaded login';
 export const LOGIN_ERROR = 'login error';
-
 export const LOADING_SIGNUP = 'loading signup';
 export const LOADED_SIGNUP = 'loaded signup';
 export const SIGNUP_ERROR = 'signup error';
+export const CHECK_LOGIN = 'check login';
 
 
 const defaultState = {
   loading: false,
   loaded: false,
-  loginStatus: true,
+  loginStatus: false,
+  user: {},
   OAuthToken: null,
   OAuthErrorCode: null,
   OAuthErrorDescription: null,
@@ -26,14 +26,18 @@ const authReducer = createReducer(defaultState, {
     ...state,
     loading: true
   }),
-  [LOADED_LOGIN]: (state, action) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    loginStatus: true,
-    OAuthToken: action.payload.OAuthToken,
-    sessionToken: action.payload.sessionToken
-  }),
+  [LOADED_LOGIN]: (state, action) => {
+    console.log(action);
+    return ({
+      ...state,
+      loading: false,
+      loaded: true,
+      loginStatus: true,
+      OAuthToken: action.payload.token,
+      sessionToken: action.payload.sessionToken,
+      user: action.payload.user
+    })
+  },
   [LOGIN_ERROR]: (state, action) => ({
     ...state,
     loading: false,
@@ -62,5 +66,8 @@ export const errorLogin = (payload) => ({
   payload
 })
 
+export const checkLogin = () => ({
+  type: CHECK_LOGIN
+})
 
 export default authReducer;

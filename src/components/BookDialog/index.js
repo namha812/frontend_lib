@@ -107,7 +107,7 @@ class FullScreenDialog extends React.Component {
 		if (book.id) {
 			editBook({
 				id: book.id,
-				isActive: isActive === 1 || book.isActive,
+				isActive: isActive === "1" || book.isActive,
 				bookName: bookName || book.bookName,
 				categoryId: categoryId || book.category ? book.category.id : null,
 				quantity: quantity || book.quantity,
@@ -122,7 +122,7 @@ class FullScreenDialog extends React.Component {
 				author,
 				quantity,
 				categoryId,
-				isActive: isActive === 1,
+				isActive: isActive === "1",
 				publisherHouseId,
 				coverPrice
 			})
@@ -144,7 +144,7 @@ class FullScreenDialog extends React.Component {
 	}
 	render() {
 		const { classes, open, edit, book = {}, publishingCompanies = [], categories = [] } = this.props;
-		console.log(this.props);
+		console.log(this.state);
 		return (
 			<Dialog
 				fullScreen

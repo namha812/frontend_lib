@@ -3,16 +3,17 @@ import { FETCH_CATEGORY_SAGA, EDIT_CATEGORY_SAGA, ADD_CATEGORY_SAGA } from './in
 import { fetchCategoryApi, updateCategoryApi, createCategoryApi } from '../../../api/categoryApi';
 
 import {
-    fetchCategory
+  fetchCategory
 } from './index'
 import {
   ROUTE_HOME
 } from '../routing'
 
 function* fetchCategorySaga(action) {
-    const {data} =  yield fetchCategoryApi()
-    const category = data.data
-    yield put(fetchCategory(category));
+  const { data } = yield fetchCategoryApi()
+  if (data) {
+    yield put(fetchCategory(data.data));
+  }
 }
 
 function* editCategorySaga(action) {

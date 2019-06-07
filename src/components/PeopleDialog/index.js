@@ -281,8 +281,8 @@ class FullScreenDialog extends React.Component {
 							}}
 						>
 							<option value="" />
-							<option value={1}>Active</option>
-							<option value={0}>Inactive</option>
+							<option value={true}>Active</option>
+							<option value={false}>Inactive</option>
 						</Select>
 					</FormControl>
 				</form>
