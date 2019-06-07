@@ -28,8 +28,8 @@ import {
   fetchCategorySaga
 } from '../../state/modules/category'
 import {
-  fetchPublishingSaga
-} from '../../state/modules/publishing'
+  fetchPublisherSaga
+} from '../../state/modules/publisher';
 import Searchbox from '../../components/Searchbox';
 import {
   ROUTE_HOME,
@@ -50,7 +50,7 @@ class Home extends Component {
       loginStatus,
       fetchCategory,
       fetchClass,
-      fetchPublishing,
+      fetchPublisher,
       fetchStudent,
       fetchBook
     } = this.props;
@@ -58,36 +58,9 @@ class Home extends Component {
     if (loginStatus) {
       fetchCategory();
       fetchClass();
-      fetchPublishing();
+      fetchPublisher();
       fetchStudent()
     }
-  }
-
-  componentDidUpdate() {
-    // console.log("did update");
-    // const {
-    //   loginStatus,
-    //   fetchCategory,
-    //   fetchClass,
-    //   fetchPublishing,
-    //   fetchStudent,
-    //   student,
-    //   classList,
-    //   categories,
-    //   publishingCompanies
-    // } = this.props;
-    // if (!student.length) {
-    //   fetchStudent()
-    // }
-    // if (!classList.length) {
-    //   fetchClass();
-    // }
-    // if (!categories.length) {
-    //   fetchCategory();
-    // }
-    // if (!publishingCompanies.length) {
-    //   fetchPublishing();
-    // }
   }
 
   onChangeRoute = (route) => {
@@ -115,7 +88,6 @@ class Home extends Component {
       loginStatus,
       ...remainProps
     } = this.props;
-    console.log(this.props)
     return (
       <React.Fragment>
         <Appbar loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
@@ -141,7 +113,7 @@ export default connect(state => ({
   categories: state.category.categories,
   classList: state.classes.classes,
   books: state.book.books,
-  publishingCompanies: state.publishing.publisingCompany
+  publisherHouse: state.publisher.publisherHouse
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route
@@ -149,7 +121,7 @@ export default connect(state => ({
   checkLogin: compose(dispatch, checkLogin),
   fetchClass: compose(dispatch, fetchClassSaga),
   fetchCategory: compose(dispatch, fetchCategorySaga),
-  fetchPublishing: compose(dispatch, fetchPublishingSaga),
+  fetchPublisher: compose(dispatch, fetchPublisherSaga),
   fetchStudent: compose(dispatch, fetchStudentSaga),
   editStudent: compose(dispatch, editStudentSaga),
   addStudent: compose(dispatch, addStudentSaga),

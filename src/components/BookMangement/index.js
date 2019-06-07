@@ -107,7 +107,7 @@ class BookManage extends React.Component {
 		})
 	}
 
-	
+
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	};
@@ -129,15 +129,15 @@ class BookManage extends React.Component {
 	}
 
 	componentDidMount() {
-        document.title = "Quản lý sách"
-    }
+		document.title = "Quản lý sách"
+	}
 	render() {
 		const {
 			classes,
 			loadingState,
 			editBook,
 			addBook,
-			publishingCompanies,
+			publisherHouses,
 			categories
 		} = this.props;
 		const { open, edit, currentBook, rowsPerPage, page } = this.state;
@@ -195,38 +195,38 @@ class BookManage extends React.Component {
 										<IconButton onClick={this.handleEdit(row)}>
 											<Edit />
 										</IconButton>
-										<IconButton onClick={this.handleDelete(row)}>
+										{/* <IconButton onClick={this.handleDelete(row)}>
 											<DeleteIcon />
-										</IconButton>
+										</IconButton> */}
 									</TableCell>
 								</TableRow>
 							);
 						})}
 					</TableBody>
 					<TableFooter>
-							<TableRow>
-								<TablePagination
-									rowsPerPageOptions={[5, 10, 25]}
-									colSpan={3}
-									count={this.books.length}
-									rowsPerPage={rowsPerPage}
-									page={page}
-									SelectProps={{
-										native: true,
-									}}
-									onChangePage={this.handleChangePage}
-									onChangeRowsPerPage={this.handleChangeRowsPerPage}
-									ActionsComponent={TablePaginationActionsWrapped}
-								/>
-							</TableRow>
-						</TableFooter>
+						<TableRow>
+							<TablePagination
+								rowsPerPageOptions={[5, 10, 25]}
+								colSpan={3}
+								count={this.books.length}
+								rowsPerPage={rowsPerPage}
+								page={page}
+								SelectProps={{
+									native: true,
+								}}
+								onChangePage={this.handleChangePage}
+								onChangeRowsPerPage={this.handleChangeRowsPerPage}
+								ActionsComponent={TablePaginationActionsWrapped}
+							/>
+						</TableRow>
+					</TableFooter>
 				</Table>
 				<Fab color="primary" className={classes.fab}>
 					<IconButton onClick={this.onAddBook}>
 						<AddIcon color="white" />
 					</IconButton>
 				</Fab>
-				<BookDialog publishingCompanies={publishingCompanies} categories={categories} editBook={editBook} addBook={addBook} book={currentBook} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+				<BookDialog publisherHouses={publisherHouses} categories={categories} editBook={editBook} addBook={addBook} book={currentBook} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
 				<Dialog
 					open={this.state.deleteDialogState}
 					onClose={this.handleClose}

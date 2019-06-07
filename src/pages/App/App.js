@@ -25,8 +25,8 @@ import {
   fetchCategorySaga
 } from '../../state/modules/category'
 import {
-  fetchPublishingSaga
-} from '../../state/modules/publishing'
+  fetchPublisherSaga
+} from '../../state/modules/publisher'
 import Searchbox from '../../components/Searchbox';
 import {
   ROUTE_HOME,
@@ -56,7 +56,7 @@ export default connect(state => ({
   categories: state.category.categories,
   classList: state.classes.classes,
   books: state.book.books,
-  publishingCompanies: state.publishing.publisingCompany
+  publisherCompanies: state.publisher.publiserCompany
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route
@@ -64,7 +64,7 @@ export default connect(state => ({
   checkLogin: compose(dispatch, checkLogin),
   fetchClass: compose(dispatch, fetchClassSaga),
   fetchCategory: compose(dispatch, fetchCategorySaga),
-  fetchPublishing: compose(dispatch, fetchPublishingSaga),
+  fetchPublisher: compose(dispatch, fetchPublisherSaga),
   fetchStudent: compose(dispatch, fetchStudentSaga),
   editStudent: compose(dispatch, editStudentSaga),
   addStudent: compose(dispatch, addStudentSaga),

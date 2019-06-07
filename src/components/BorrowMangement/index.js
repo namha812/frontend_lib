@@ -74,7 +74,7 @@ class PeopleManagement extends React.Component {
 	render() {
 		const {
 			classes,
-			borrowList,
+			borrowList = [],
 			loadingState,
 			payBook
 		} = this.props;

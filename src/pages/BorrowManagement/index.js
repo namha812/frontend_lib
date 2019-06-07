@@ -28,6 +28,7 @@ class BorrowMangementPage extends Component {
 
   componentDidMount() {
     const { fetchBorrow } = this.props;
+    document.title = "Quản lý sách"
     fetchBorrow();
   }
 

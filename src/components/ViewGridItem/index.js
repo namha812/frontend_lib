@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Pagination from "material-ui-flat-pagination";
 import Item from './Item';
-import dataMock from './data.json';
 import _ from 'lodash';
 const styles = {
 	container: {

@@ -18,8 +18,8 @@ import {
   fetchCategorySaga
 } from '../../state/modules/category'
 import {
-  fetchPublishingSaga
-} from '../../state/modules/publishing'
+  fetchPublisherSaga
+} from '../../state/modules/publisher';
 import Searchbox from '../../components/Searchbox';
 import {
   ROUTE_HOME,
@@ -36,10 +36,10 @@ class BookMangementPage extends Component {
   }
 
   componentDidMount() {
-    const { fetchCategory, fetchPublishing, fetchBook } = this.props;
+    const {fetchCategory, fetchPublisher, fetchBook} = this.props;
     fetchBook();
     fetchCategory();
-    fetchPublishing();
+    fetchPublisher();
   }
 
   componentDidUpdate() {
@@ -98,15 +98,16 @@ export default connect(state => ({
   categories: state.category.categories,
   classList: state.classes.classes,
   books: state.book.books,
-  publishingCompanies: state.publishing.publisingCompany
+  publisherHouses: state.publisher.publisherHouses
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route
   }),
-  fetchClass: compose(dispatch, fetchClassSaga),
-  fetchCategory: compose(dispatch, fetchCategorySaga),
-  fetchPublishing: compose(dispatch, fetchPublishingSaga),
-  fetchBook: compose(dispatch, fetchBookSaga),
+
+  fetchClass:compose(dispatch, fetchClassSaga),
+  fetchCategory:compose(dispatch, fetchCategorySaga),
+  fetchPublisher:compose(dispatch, fetchPublisherSaga),
+  fetchBook:compose(dispatch, fetchBookSaga),
   editBook: compose(dispatch, editBookSaga),
   addBook: compose(dispatch, addBookSaga),
   deleteBook: compose(dispatch, deleteBookSaga)

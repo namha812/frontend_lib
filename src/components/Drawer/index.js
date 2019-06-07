@@ -20,7 +20,10 @@ import {
   ROUTE_BOOK_BORROW,
   ROUTE_BOOK,
   ROUTE_BORROW,
-  ROUTE_CATEGORY
+  ROUTE_CATEGORY,
+  ROUTE_PUBLISHER_HOUSE,
+  ROUTE_ACCOUNT,
+  ROUTE_HISTORY_INPUT
 } from '../../state/modules/routing';
 const ListDrawer = [
   {
@@ -45,14 +48,24 @@ const ListDrawer = [
   },
   {
     id: 5,
-    title: "Quản lý loại sách",
+    title: "Quản lý danh mục sách",
     path: ROUTE_CATEGORY
   },
-  // {
-  //   id: 5,
-  //   title: "Phân quyền",
-  //   path: ""
-  // }
+  {
+    id: 6,
+    title: "Quản lý nhà xuất bản",
+    path: ROUTE_PUBLISHER_HOUSE
+  },
+  {
+    id: 7,
+    title: "Lịch sử nhập kho",
+    path: ROUTE_HISTORY_INPUT
+  },
+  {
+    id: 8,
+    title: "Quản lý tài khoản",
+    path: ROUTE_ACCOUNT
+  }
 ]
 
 const styles = {
