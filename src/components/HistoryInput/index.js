@@ -15,6 +15,7 @@ import lodash from 'lodash';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TablePaginationActionsWrapped from '../TablePaginationActions';
+import {format} from "date-fns";
 
 const styles = theme => ({
     root: {
@@ -98,7 +99,7 @@ class HitoryInput extends React.Component {
                                 <TableCell>{lodash.get(row, 'account.fullName', '---')}</TableCell>
                                 <TableCell>{lodash.get(row, 'account.email', '---')}</TableCell>
                                 <TableCell>{lodash.get(row, 'account.role', '---') == 1 ? "Quản lý" : "Nhân viên"}</TableCell>
-                                <TableCell>{lodash.get(row, 'createdAt', '---')}</TableCell>
+                                <TableCell>{row.createdAt ? format(new Date(row.createdAt), "DD/MM/YYYY") : "---"}</TableCell>
 
                             </TableRow>
                         );
@@ -121,11 +122,6 @@ class HitoryInput extends React.Component {
                         </TableRow>
                     </TableFooter>
                 </Table>
-                <Fab color="primary" className={classes.fab}>
-                    <IconButton onClick={this.onAddCategory}>
-                        <AddIcon color="white" />
-                    </IconButton>
-                </Fab>
             </Paper>
         )
     }

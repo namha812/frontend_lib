@@ -75,7 +75,7 @@ class FullScreenDialog extends React.Component {
 				bookName: null,
 				author: null,
 				category: null,
-				isActive: null,
+				isActive: true,
 				publisherHouseId: null,
 				quantity: null,
 				coverPrice: null
@@ -208,7 +208,6 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.textField}>
 						<InputLabel htmlFor="category-native-simple">Loại:</InputLabel>
 						<Select
-							native
 							value={this.state.categoryId}
 							onChange={this.handleChange('categoryId')}
 							defaultValue={book.category ? book.category.id : null}
@@ -218,14 +217,13 @@ class FullScreenDialog extends React.Component {
 							}}
 						>
 							{categories.map(item => (
-								<option value={item.id}>{item.name}</option>
+								<MenuItem value={item.id}>{item.name}</MenuItem>
 							))}
 						</Select>
 					</FormControl>
 					<FormControl className={classes.textField}>
 						<InputLabel htmlFor="age-native-simple">Nhà xuất bản:</InputLabel>
 						<Select
-							native
 							value={this.state.publisherHouseId}
 							onChange={this.handleChange('publisherHouseId')}
 							defaultValue={book.publisherHouse ? book.publisherHouse.id : null}
@@ -235,15 +233,14 @@ class FullScreenDialog extends React.Component {
 							}}
 						>
 							{publisherHouses.map(item => (
-								<option value={item.id}>{item.name}</option>
+								<MenuItem value={item.id}>{item.name}</MenuItem>
 							))}
 						</Select>
 					</FormControl>
 					<FormControl className={classes.textField}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
-							native
-							value={this.state.publishing}
+							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							defaultValue={book.isActive}
 							inputProps={{
@@ -251,8 +248,8 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							<option value={1}>Active</option>
-							<option value={0}>Inactive</option>
+							<MenuItem value={true}>Active</MenuItem>
+							<MenuItem value={false}>Inactive</MenuItem>
 						</Select>
 					</FormControl>
 				</form>

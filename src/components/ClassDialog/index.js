@@ -35,14 +35,13 @@ const styles = (theme) => ({
 	container: {
 		display: "flex",
 		flexWrap: "wrap",
-		justifyContent: "left",
+		justifyContent: "space-between",
 		padding: 10
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
-		width: "60%",
-		float: "left"
+		width: "48%"
 	},
 	formControl: {
 		margin: theme.spacing.unit,
@@ -66,13 +65,8 @@ function Transition(props) {
 class FullScreenDialog extends React.Component {
 
 	state = {
-		fullName: null,
+		name: null,
 		isActive: true,
-		email: null,
-		address: null,
-		password: null,
-		rePassword: null,
-		role: 2
 	}
 
 	handleClickOpen = () => {
@@ -84,11 +78,8 @@ class FullScreenDialog extends React.Component {
 		this.setState(
 			{
 				open: false,
-				fullName: null,
+				className: null,
 				isActive: true,
-				email: null,
-				address: null,
-				role: null
 			}
 		);
 	};
@@ -105,31 +96,21 @@ class FullScreenDialog extends React.Component {
 
 	handleSubmit = () => {
 		const {
-			fullName,
-			isActive,
-			email,
-			address,
-			password,
-			role
+			className,
+			isActive
 		} = this.state;
-		const { editAccount, addAccount, account } = this.props;
-		if (account.id) {
-			editAccount({
-				id: account.id,
-				fullName: fullName || account.fullName,
-				isActive: isActive || account.isActive,
-				email: email || account.email,
-				address: address || account.address
+		const { editClass, addClass, classeItem } = this.props;
+		if (classeItem.id) { 
+			editClass({
+				id: classeItem.id,
+				className: className || classeItem.name,
+				isActive: isActive || classeItem.isActive
 			})
 		}
 		else {
-			addAccount({
-				fullName,
-				isActive,
-				email,
-				address,
-				password,
-				role
+			addClass({
+				className,
+				isActive
 			})
 		}
 
@@ -137,36 +118,17 @@ class FullScreenDialog extends React.Component {
 	}
 
 	get Title() {
-		const { edit, account = {} } = this.props;
-		if (edit && account.id) {
+		const { edit, classeItem = {} } = this.props;
+		if (edit && classeItem.id) {
 			return "Sửa thông tin";
 		}
 		if (edit) {
-			return "Thêm nhân viên";
+			return "Thêm danh lớp học";
 		}
 		return "Xem thông tin chi tiết";
 	}
-
-	get Error() {
-		const { password, rePassword } = this.state;
-		if (password === null || rePassword === null) {
-			return false;
-		}
-		return password !== rePassword;
-	}
-
-	get validate() {
-		const {
-			fullName,
-			isActive,
-			email,
-			password,
-		} = this.state;
-		return fullName !== null && email !== null && password !== null; 
-	}
-
 	render() {
-		const { classes, open, edit, account = {} } = this.props;
+        const { classes, open, edit , classeItem = {} } = this.props;
 		return (
 			<Dialog
 				fullScreen
@@ -182,85 +144,23 @@ class FullScreenDialog extends React.Component {
 						<Typography variant="h6" color="inherit" className={classes.flex}>
 							{this.Title}
 						</Typography>
-						{edit && <Button disabled={!this.validate && !account.id} color="inherit" onClick={this.handleSubmit}>
+						{edit && <Button color="inherit" onClick={this.handleSubmit}>
 							Lưu
 						</Button>}
 					</Toolbar>
 				</AppBar>
 				<form className={classes.container} noValidate autoComplete="off">
 					<TextField
-						fullWidth
+                        fullWidth
 						disabled={!edit}
 						id="standard-name"
-						label="Họ và tên"
-						value={this.state.fullName}
-						defaultValue={account.fullName}
-						onChange={this.handleChange("fullName")}
+						label="Tên"
+						value={this.state.className}
+						defaultValue={classeItem.className}
+						onChange={this.handleChange("className")}
 						margin="normal"
 					/>
-					<TextField
-						fullWidth
-						disabled={!edit || account.id}
-						id="standard-name"
-						label="Email"
-						value={this.state.email}
-						defaultValue={account.email}
-						onChange={this.handleChange("email")}
-						margin="normal"
-						type="email"
-					/>
-					{!account.id && <TextField
-						fullWidth
-						disabled={!edit}
-						id="standard-name"
-						label="Mật khẩu"
-						value={this.state.password}
-						defaultValue={account.password}
-						onChange={this.handleChange("password")}
-						margin="normal"
-						type="password"
-					/>}
-					{!account.id && <TextField
-						error={this.Error}
-						fullWidth
-						disabled={!edit}
-						hidden={account.id}
-						id="standard-name"
-						label="Nhập lại mật khẩu"
-						value={this.state.rePassword}
-						defaultValue={account.rePassword}
-						onChange={this.handleChange("rePassword")}
-						margin="normal"
-						type="password"
-					/>}
-					<TextField
-						fullWidth
-						disabled={!edit}
-						hidden={account.id}
-						id="standard-name"
-						label="Địa chỉ"
-						value={this.state.address}
-						defaultValue={account.address}
-						onChange={this.handleChange("address")}
-						margin="normal"
-					/>
-					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
-						<Select
-							disabled={!edit}
-							native
-							value={this.state.role}
-							onChange={this.handleChange('role')}
-							defaultValue={account.role}
-							inputProps={{
-								name: 'age',
-								id: 'age-native-simple',
-							}}
-						>
-							<MenuItem value={2}>Nhân viên</MenuItem>
-							<MenuItem value={1}>Quản lý</MenuItem>
-						</Select>
-					</FormControl>
+					
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
@@ -268,7 +168,7 @@ class FullScreenDialog extends React.Component {
 							native
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
-							defaultValue={account.isActive}
+							defaultValue={classeItem.isActive}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',

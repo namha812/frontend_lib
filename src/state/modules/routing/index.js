@@ -22,7 +22,8 @@ export const ROUTE_BORROW = 'route/ROUTE_BORROW';
 export const ROUTE_PUBLISHER_HOUSE = 'route/ROUTE_PUBLISHER_HOUSE';
 export const ROUTE_ACCOUNT = 'route/ROUTE_ACCOUNT';
 export const ROUTE_HISTORY_INPUT = 'route/ROUTE_HISTORY_INPUT';
-export const ROUTE_LOGOUT = 'route/ROUTE_LOGOUT'
+export const ROUTE_LOGOUT = 'route/ROUTE_LOGOUT';
+export const ROUTE_CLASS = 'route/ROUTE_CLASS';
 
 // selector
 export const routeType = state => state.location.type
@@ -99,6 +100,12 @@ export const routesMap = {
     component: 'HistoryInput',
     requiresAuth: true,
     modalOver: ROUTE_ANONYMOUS
+  },
+  [ROUTE_CLASS]: {
+    path: "/class",
+    component: 'Class',
+    requiresAuth: true,
+    modalOver: ROUTE_CLASS
   }
 }
 

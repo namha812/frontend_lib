@@ -78,6 +78,15 @@ class Account extends React.Component {
             accounts
         } = this.props;
         const { open, edit, account } = this.state;
+        const role = localStorage.getItem('role');
+        if(parseInt(role) !== 1){
+            return (
+                <div style={{
+                    width: "100%",
+                    textAlign: "center"
+                }}>Bạn không có quyền truy cập trang này ... </div>
+            )
+        }
         return (
             <Paper>
                 <Table className={classes.table}>
@@ -107,18 +116,18 @@ class Account extends React.Component {
                                     <FormControlLabel
                                         control={
                                             <Switch
-                                                checked={row.isActive === 1}
-                                                value={row.isActive === 1}
+                                                checked={row.isActive}
+                                                value={row.isActive}
                                                 disable
                                             />
                                         }
-                                        label={row.isActive === 1 ? "Active" : "Inactive"}
+                                        label={row.isActive ? "Active" : "Inactive"}
                                     />
                                 </TableCell>
                                 <TableCell >{row.fullName}</TableCell>
                                 <TableCell >{row.email}</TableCell>
                                 <TableCell >{row.address}</TableCell>
-                                <TableCell >{row.isActive === 1 ? "Quản Lý" : "Nhân Viên"}</TableCell>
+                                <TableCell >{row.role === 1 ? "Quản Lý" : "Nhân Viên"}</TableCell>
                                 <TableCell>
                                     <IconButton onClick={this.handleView(row)}>
                                         <ViewIcon />

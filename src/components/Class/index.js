@@ -20,7 +20,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import { format } from 'date-fns';
 
-import CategoryDialog from '../CategoryDialog';
+import ClassDialog from '../ClassDialog';
 import TablePaginationActionsWrapped from '../TablePaginationActions';
 
 
@@ -39,26 +39,23 @@ const styles = theme => ({
     right: 20
   },
 });
-class Category extends React.Component {
+class Classes extends React.Component {
   state = {
     open: false,
     edit: false,
     page: 0,
     rowsPerPage: 10
   }
-  componentDidMount() {
-    document.title = "Quản lý danh mục sách"
-  }
   handleView = (row) => (event) => {
     this.setState({
-      category: row,
+      classeItem: row,
       open: true,
       edit: false
     })
   }
   handleEdit = (row) => (event) => {
     this.setState({
-      category: row,
+      classeItem: row,
       open: true,
       edit: true
     })
@@ -75,11 +72,11 @@ class Category extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  onAddCategory = () => {
+  onAddClass = () => {
     this.setState({
       open: true,
       edit: true,
-      category: {}
+      classeItem: {}
     });
   }
   handleCloseDialog = () => {
@@ -88,11 +85,11 @@ class Category extends React.Component {
     });
   }
 
-  get categories() {
+  get classList() {
     const { page, rowsPerPage } = this.state;
-    const { searchValue, categories = [] } = this.props;
-    return _.slice(categories.filter(item => {
-      return _.includes(_.toLower(item.name), _.toLower(searchValue));
+    const { searchValue, classList = [] } = this.props;
+    return _.slice(classList.filter(item => {
+      return _.includes(_.toLower(item.className), _.toLower(searchValue));
     }), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
   }
 
@@ -100,11 +97,10 @@ class Category extends React.Component {
     const {
       classes,
       loadingState,
-      editCategory,
-      addCategory
+      editClass,
+      addClass,
     } = this.props;
-    console.log(this.props);
-    const { open, edit, category, page, rowsPerPage } = this.state;
+    const { open, edit, classeItem, page, rowsPerPage } = this.state;
     return (
       <Paper>
         <Table className={classes.table}>
@@ -118,14 +114,14 @@ class Category extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {!this.categories.length &&
+            {!this.classList.length &&
               <TableRow>
                 <TableCell colSpan={7} style={{ textAlign: "center" }}>
                   {loadingState ? "Đang tải..." : "Không có dữ liệu"}
                 </TableCell>
               </TableRow>
             }
-            {this.categories.map(row => {
+            {this.classList.map(row => {
               return (
                 <TableRow key={row.id}>
                   <TableCell>
@@ -140,7 +136,7 @@ class Category extends React.Component {
                       label={row.isActive ? "Active" : "Inactive"}
                     />
                   </TableCell>
-                  <TableCell >{row.name}</TableCell>
+                  <TableCell >{row.className}</TableCell>
                   <TableCell >{row.admin ? row.admin.name : "---"}</TableCell>
                   <TableCell >{row.createdAt ? format(new Date(row.createdAt), "DD/MM/YYYY") : "---"}</TableCell>
                   <TableCell>
@@ -150,9 +146,6 @@ class Category extends React.Component {
                     <IconButton onClick={this.handleEdit(row)}>
                       <Edit />
                     </IconButton>
-                    {/* <IconButton onClick={this.handleDelete(row)}>
-                                        <DeleteIcon />
-                                    </IconButton> */}
                   </TableCell>
                 </TableRow>
               );
@@ -163,7 +156,7 @@ class Category extends React.Component {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 colSpan={3}
-                count={this.categories.length}
+                count={this.classList.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
@@ -177,17 +170,17 @@ class Category extends React.Component {
           </TableFooter>
         </Table>
         <Fab color="primary" className={classes.fab}>
-          <IconButton onClick={this.onAddCategory}>
+          <IconButton onClick={this.onAddClass}>
             <AddIcon color="white" />
           </IconButton>
         </Fab>
-        <CategoryDialog editCategory={editCategory} addCategory={addCategory} category={category} student={[]} classList={[]} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
+        <ClassDialog editClass={editClass} addClass={addClass} classeItem={classeItem} open={open} handleCloseDialog={this.handleCloseDialog} edit={edit} />
       </Paper>
     )
   }
 }
-Category.propTypes = {
+Classes.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Category);
+export default withStyles(styles)(Classes);

@@ -9,6 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import lodash from 'lodash';
 import {
 	routeType,
 	ROUTE_HOME,
@@ -23,18 +24,14 @@ import {
   ROUTE_CATEGORY,
   ROUTE_PUBLISHER_HOUSE,
   ROUTE_ACCOUNT,
-  ROUTE_HISTORY_INPUT
+  ROUTE_HISTORY_INPUT,
+  ROUTE_CLASS
 } from '../../state/modules/routing';
-const ListDrawer = [
+let ListDrawer = [
   {
     id: 1,
     title: "Mượn sách",
     path: ROUTE_BOOK_BORROW
-  },
-  {
-    id: 2,
-    title: "Quản lý độc giả",
-    path: ROUTE_PEOPLE
   },
   {
     id: 3,
@@ -62,6 +59,16 @@ const ListDrawer = [
     path: ROUTE_HISTORY_INPUT
   },
   {
+    id: 2,
+    title: "Quản lý độc giả",
+    path: ROUTE_PEOPLE
+  },
+  {
+    id: 9,
+    title: "Quản lý lớp học",
+    path: ROUTE_CLASS
+  },
+  {
     id: 8,
     title: "Quản lý tài khoản",
     path: ROUTE_ACCOUNT
@@ -86,7 +93,12 @@ class TemporaryDrawer extends React.Component {
   }
   render() {
     const { classes, openDrawer, onClose, loginStatus } = this.props;
-
+    const role = localStorage.getItem('role');
+    if(parseInt(role) !== 1) {
+      ListDrawer = lodash.remove(ListDrawer, (o)=> {
+        return o.id !== 8;
+      })
+    }
     const sideList = (
       <div className={classes.list}>
         <List>

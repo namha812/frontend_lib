@@ -71,9 +71,10 @@ class FullScreenDialog extends React.Component {
 		address: null,
 		cardNumber: null,
 		phone: null,
-		isActive: null,
+		isActive: true,
 		className: null,
-		classId: null
+		classId: null,
+		publishing: true
 	}
 
 	handleClickOpen = () => {
@@ -91,7 +92,7 @@ class FullScreenDialog extends React.Component {
 				address: null,
 				cardNumber: null,
 				phone: null,
-				isActive: null,
+				isActive: true,
 				className: null,
 				classId: null,
 			}
@@ -100,6 +101,7 @@ class FullScreenDialog extends React.Component {
 
 	handleChange = (name) => event => {
 		const value = event.target.value;
+		console.log(typeof value);
 		this.setState(state => {
 			return {
 				...state,
@@ -119,7 +121,7 @@ class FullScreenDialog extends React.Component {
 			classId,
 			isActive
 		} = this.state;
-		const { editStudent, addStudent, student } = this.props;
+		const { editStudent, addStudent, student, classList } = this.props;
 		if (student.id) {
 			editStudent({
 				id: student.id,
@@ -137,12 +139,12 @@ class FullScreenDialog extends React.Component {
 			addStudent({
 				fullName,
 				email,
-				sex,
+				sex: sex || 1,
 				address,
 				cardNumber,
 				phone,
-				classId,
-				isActive
+				classId: classId || classList[0].id,
+				isActive: isActive
 			})
 		}
 
@@ -150,7 +152,7 @@ class FullScreenDialog extends React.Component {
 	}
 
 	get Title() {
-		const { classes, open, edit, student } = this.props;
+		const { edit, student } = this.props;
 		if (edit && student.id) {
 			return "Sửa thông tin";
 		}
@@ -158,6 +160,10 @@ class FullScreenDialog extends React.Component {
 			return "Thêm học sinh / độc giả";
 		}
 		return "Xem thông tin chi tiết";
+	}
+
+	handleChangeNew = e => {
+		console.log(typeof e.target.value);
 	}
 	render() {
 		const { classes, open, edit, student, classList } = this.props;
@@ -238,7 +244,7 @@ class FullScreenDialog extends React.Component {
 						<InputLabel htmlFor="sex-helper">Giới tính:</InputLabel>
 						<Select
 							className={classes.select}
-							value={this.state.sex || student.sex}
+							value={this.state.sex ? this.state.sex : (student.sex || 1)}
 							onChange={this.handleChange("sex")}
 							input={<Input name="sex" id="sex-helper" />}
 						>
@@ -247,9 +253,8 @@ class FullScreenDialog extends React.Component {
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="age-native-simple">Lop:</InputLabel>
+						<InputLabel htmlFor="age-native-simple">Lớp:</InputLabel>
 						<Select
-							native
 							value={this.state.classId}
 							onChange={this.handleChange('classId')}
 							defaultValue={student.class ? student.class.classId : null}
@@ -258,17 +263,15 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							<option value="" />
 							{classList.map(item => (
-								<option value={item.id}>{item.className}</option>
+								<MenuItem value={item.id}>{item.className}</MenuItem>
 							))}
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
-							native
-							value={this.state.publishing}
+							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							defaultValue={student.isActive}
 							inputProps={{
@@ -276,9 +279,8 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							<option value="" />
-							<option value={true}>Active</option>
-							<option value={false}>Inactive</option>
+							<MenuItem value={true}>Active</MenuItem>
+							<MenuItem value={false}>Inactive</MenuItem>
 						</Select>
 					</FormControl>
 				</form>

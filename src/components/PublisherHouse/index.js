@@ -8,20 +8,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ViewIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import PublisherHouseDialog from '../PublisherHouseDialog';
+import {format} from 'date-fns';
 
 const styles = theme => ({
     root: {
@@ -106,17 +100,17 @@ class PublisherHouse extends React.Component {
                                     <FormControlLabel
                                         control={
                                             <Switch
-                                                checked={row.isActive === 1}
-                                                value={row.isActive === 1}
+                                                checked={row.isActive}
+                                                value={row.isActive}
                                                 disable
                                             />
                                         }
-                                        label={row.isActive === 1 ? "Active" : "Inactive"}
+                                        label={row.isActive ? "Active" : "Inactive"}
                                     />
                                 </TableCell>
                                 <TableCell >{row.name}</TableCell>
                                 <TableCell >{row.address ? row.address : "---"}</TableCell>
-                                <TableCell >{row.createdAt ? row.createdAt : "---"}</TableCell>
+                                <TableCell >{row.createdAt ? format(new Date(row.createdAt), "DD/MM/YYYY") : "---"}</TableCell>
                                 <TableCell>
                                     <IconButton onClick={this.handleView(row)}>
                                         <ViewIcon />

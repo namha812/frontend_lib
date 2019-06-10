@@ -66,7 +66,7 @@ class FullScreenDialog extends React.Component {
 
 	state = {
 		name: null,
-		isActive: null,
+		isActive: true,
 		address: null
 	}
 
@@ -178,8 +178,7 @@ class FullScreenDialog extends React.Component {
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
                             disabled={!edit}
-							native
-							value={this.state.publisher}
+							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							defaultValue={publisherHouse.isActive}
 							inputProps={{
@@ -187,9 +186,8 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							<option value="" />
-							<option value={1}>Active</option>
-							<option value={0}>Inactive</option>
+							<MenuItem value={true}>Active</MenuItem>
+							<MenuItem value={false}>Inactive</MenuItem>
 						</Select>
 					</FormControl>
 				</form>

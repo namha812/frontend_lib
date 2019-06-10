@@ -171,13 +171,13 @@ class BookManage extends React.Component {
 										<FormControlLabel
 											control={
 												<Switch
-													checked={row.isActive === 1}
+													checked={row.isActive}
 													onChange={this.handleChangeStatus(row)}
-													value={row.isActive === 1}
+													value={row.isActive}
 													disable
 												/>
 											}
-											label={row.isActive === 1 ? "Active" : "Inactive"}
+											label={row.isActive ? "Active" : "Inactive"}
 										/>
 									</TableCell>
 									<TableCell component="th" scope="row">
