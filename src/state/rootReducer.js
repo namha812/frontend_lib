@@ -12,6 +12,7 @@ import book from './modules/book/index';
 import borrow from './modules/borrow/index';
 import account from './modules/account/index';
 import historyInput from './modules/historyInput/index';
+import notification from './modules/notification/index';
 
 export const reducers = combineReducers({
   location, 
@@ -24,5 +25,6 @@ export const reducers = combineReducers({
   book,
   borrow,
   account,
-  historyInput
+  historyInput,
+  notification
 })

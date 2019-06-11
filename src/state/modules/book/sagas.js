@@ -21,8 +21,8 @@ import {
   fetchedBook,
   fetchBookError
 } from './index'
-import bookMock from './books.json'
-
+import {constants} from '../../../containers/ToastNotification';
+import {showToast} from '../notification/index';
 function* fetchBookSaga(action) {
   yield put(fetchingBook());
   const res = yield fetchBookApi();
@@ -38,7 +38,23 @@ function* addBookSaga(action) {
   yield put(fetchingBook());
   const res = yield addBookApi(book);
   if (res.data) {
-    //TODO:
+    //TODO:example for toasting a notification
+    //you can do the same thing in other saga :)) or in the component. just dispatch action showToast and call it with a payload like here. 
+    
+    const toast = {
+      message: "Thêm sách thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
+  }
+  if(res.err){
+    const toast = {
+      message: "Thêm sách không thành công",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
   }
   yield fetchBookSaga();
 }
@@ -49,6 +65,13 @@ function* editBookSaga(action) {
   const res = yield updateBookApi(book);
   if (res.data) {
     //TODO:
+    //TODO:example for toasting a notification
+    const toast = {
+      message: "Sửa thông tin sách thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
   }
   yield fetchBookSaga();
 }
@@ -59,6 +82,12 @@ function* deleteBookSaga(action) {
   const res = yield deleteBookApi(bookId);
   if (res.data) {
     //TODO:
+    const toast = {
+      message: "Xóa thông tin sách thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
   }
   yield fetchBookSaga();
 }
