@@ -36,15 +36,20 @@ class HistoryPage extends Component {
     onChangeRoute = (route) => {
         this.props.redirect(route);
     }
+    onChangeSearchValue = (value) => {
+        this.setState({
+          searchValue: value
+        })
+      }
     render() {
-        const { openDrawer } = this.state;
+        const { openDrawer, searchValue } = this.state;
         const { loginStatus, ...remainProps } = this.props;
         return (
             <React.Fragment>
                 <Appbar logout={this.props.logout} loginStatus={true} openDrawer={this.onOpenDrawer} />
                 <Drawer loginStatus={true} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
-                <Searchbox loginStatus={loginStatus} placeholder="Search" />
-                <HistoryInput {...remainProps}/>
+                <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue} />
+                <HistoryInput {...remainProps} searchValue={searchValue}/>
             </React.Fragment>
         )
     }

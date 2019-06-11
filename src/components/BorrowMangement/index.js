@@ -87,7 +87,7 @@ class PeopleManagement extends React.Component {
 							<TableCell>ID</TableCell>
 							<TableCell>Tên</TableCell>
 							<TableCell>Số CMT</TableCell>
-							<TableCell>Số lượng</TableCell>
+							<TableCell>Tổng số mượn</TableCell>
 							<TableCell>Thao tác</TableCell>
 						</TableRow>
 					</TableHead>
@@ -110,7 +110,7 @@ class PeopleManagement extends React.Component {
 									<TableCell >{row.total}</TableCell>
 									<TableCell>
 										<Button onClick={this.onClickGiveBookBack(row)} color="primary" className={classes.button}>
-											Trả sách
+											Xem danh sách
 										</Button>
 									</TableCell>
 								</TableRow>

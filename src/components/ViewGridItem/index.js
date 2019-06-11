@@ -42,7 +42,7 @@ class MediaCard extends Component {
 	get books() {
 		const { books = [], searchValue } = this.props;
 		const booksFilter = books.filter(item => {
-			return item.isActive === 1;
+			return item.isActive;
 		})
 		return booksFilter.filter(item => {
 			return _.includes(_.toLower(item.bookName), _.toLower(searchValue));

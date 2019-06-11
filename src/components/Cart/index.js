@@ -17,6 +17,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 
+import cx from 'classnames';
+
 const CustomTableCell = withStyles(theme => ({
 	head: {
 		backgroundColor: theme.palette.common.black,
@@ -44,7 +46,7 @@ const styles = theme => ({
 	container: {
 		display: "flex",
 		justifyContent: "center",
-    flexWrap: "wrap"
+		flexWrap: "wrap"
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
@@ -73,6 +75,9 @@ const styles = theme => ({
 		minWidth: 120,
 		width: "90%"
 	},
+	selectEmpty: {
+		marginTop: theme.spacing.unit,
+	  },
 });
 
 class Cart extends React.Component {
@@ -107,7 +112,12 @@ class Cart extends React.Component {
 			studentId: selectedStudent.id
 		}
 		borrowBook(data);
-		this.setState({selectedStudent: {}})
+		this.setState({ selectedStudent: {} })
+	}
+
+	onCancelClick = () => {
+		const { onCancelClick } = this.props;
+		onCancelClick();
 	}
 
 	onChangeSelected = (event) => {
@@ -120,6 +130,7 @@ class Cart extends React.Component {
 	render() {
 		const { selectedStudent } = this.state;
 		const { selectedBook, classes, students = [] } = this.props;
+		console.log(students)
 		if (!selectedBook.length) {
 			return null;
 		}
@@ -129,8 +140,8 @@ class Cart extends React.Component {
 					<TableHead>
 						<TableRow>
 							<CustomTableCell>Mã</CustomTableCell>
-							<CustomTableCell>Tên ấn phẩm</CustomTableCell>
-							<CustomTableCell>SL</CustomTableCell>
+							<CustomTableCell>Tên sách</CustomTableCell>
+							<CustomTableCell>Tác giả</CustomTableCell>
 							<CustomTableCell>Xóa</CustomTableCell>
 						</TableRow>
 					</TableHead>
@@ -145,7 +156,7 @@ class Cart extends React.Component {
 										{row.bookName}
 									</CustomTableCell>
 									<CustomTableCell component="th" scope="row">
-										{row.number}
+										{row.author}
 									</CustomTableCell>
 									<CustomTableCell>
 										<IconButton onClick={this.handleDeleteClick(row)}>
@@ -158,12 +169,12 @@ class Cart extends React.Component {
 					</TableBody>
 				</Table>
 				<div className={classes.textLabel}>Độc giả</div>
-				<form className={classes.container} noValidate autoComplete="off">
+				<form className={classes.container} noValidate autoComplete="true">
 					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="class-helper">Hoc sinh muon:</InputLabel>
+						<InputLabel htmlFor="class-helper">Học sinh mượn:</InputLabel>
 						<Select
-							className={classes.select}
-							value={selectedStudent.id}
+							className={cx([classes.select, classes.selectEmpty])}
+							value={selectedStudent.id || ""}
 							onChange={this.onChangeSelected}
 							input={<Input name="class" id="class-helper" />}
 						>
@@ -173,30 +184,39 @@ class Cart extends React.Component {
 						</Select>
 					</FormControl>
 					<TextField
-						id="standard-uncontrolled"
+						id="standard-name"
 						label="Địa chỉ"
-						defaultValue=""
 						className={classes.textField}
 						margin="normal"
-						value={selectedStudent.address}
+						value={selectedStudent.address || ""}
+						disabled={true}
 						onChange={this.handleChange("address")}
 
 					/>
 					<TextField
-						id="standard-required"
+						id="standard-name"
 						label="Số điện thoại"
-						defaultValue=""
 						className={classes.textField}
 						onChange={this.handleChange("phone")}
 						margin="normal"
-						value={selectedStudent.phone}
+						disabled={true}
+						value={selectedStudent.phone || ""}
+					/>
+					<TextField
+						id="standard-name"
+						label="Số chứng minh"
+						className={classes.textField}
+						onChange={this.handleChange("phone")}
+						margin="normal"
+						disabled={true}
+						value={selectedStudent.cardNumber || ""}
 					/>
 				</form>
 				<div className={classes.submitField}>
 					<Button onClick={this.onBorrowClick} variant="contained" color="primary" className={classes.button}>
 						Lưu
         </Button>
-					<Button variant="contained" className={classes.button}>
+					<Button variant="contained" className={classes.button} onClick={this.onCancelClick}>
 						Hủy
         </Button>
 				</div>

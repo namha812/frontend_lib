@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
+import lodash from 'lodash';
 
 const styles = (theme) => ({
 	appBar: {
@@ -57,7 +58,7 @@ class FullScreenDialog extends React.Component {
 		bookName: null,
 		author: null,
 		category: null,
-		isActive: null,
+		isActive: true,
 		publisherHouseId: null,
 		quantity: null,
 		coverPrice: null
@@ -107,13 +108,13 @@ class FullScreenDialog extends React.Component {
 		if (book.id) {
 			editBook({
 				id: book.id,
-				isActive: isActive!== null ? parseInt(isActive,10) : book.isActive,
+				isActive: isActive,
 				bookName: bookName || book.bookName,
-				categoryId: categoryId ? parseInt(categoryId) : (book.category ? book.category.id : null),
+				categoryId: categoryId || this.defaultCategory,
 				quantity: quantity || book.quantity,
 				author: author || book.author,
 				coverPrice: coverPrice || book.coverPrice,
-				publisherHouseId: publisherHouseId ? parseInt(publisherHouseId) : (book.publisherHouse ? book.publisherHouse.id : null),
+				publisherHouseId: publisherHouseId || this.defaultPublisherHouse,
 			})
 		}
 		else {
@@ -121,9 +122,9 @@ class FullScreenDialog extends React.Component {
 				bookName,
 				author,
 				quantity,
-				categoryId: parseInt(categoryId) || categories[0].id,
-				isActive: parseInt(isActive, 10) || 1,
-				publisherHouseId: parseInt(publisherHouseId) || publisherHouses[0].id,
+				categoryId: categoryId || this.defaultCategory,
+				isActive: isActive,
+				publisherHouseId: publisherHouseId || this.defaultPublisherHouse,
 				coverPrice
 			})
 		}
@@ -131,7 +132,7 @@ class FullScreenDialog extends React.Component {
 		this.handleClose();
 	}
 	get Title() {
-		const { classes, open, edit, book = {}, publisherHouses = {} } = this.props;
+		const { classes, open, edit, book = {} } = this.props;
 		if (edit && book.id) {
 			return "Sửa thông tin sách";
 		}
@@ -140,8 +141,39 @@ class FullScreenDialog extends React.Component {
 		}
 		return "Xem thông tin chi tiết";
 	}
+
+	get defaultPublisherHouse() {
+		const { publisherHouseId } = this.state;
+		if (publisherHouseId) {
+			return publisherHouseId;
+		}
+		const { book = {}, publisherHouses = [] } = this.props;
+		if (book.id) {
+			return book.publisherHouse.id
+		}
+		if (publisherHouses.length) {
+			return publisherHouses[0].id
+		}
+		return null;
+	}
+	get defaultCategory() {
+		const { categoryId } = this.state;
+		if (categoryId) {
+			return categoryId;
+		}
+		const { book = {}, categories = [] } = this.props;
+		if (book.id) {
+			return book.category.id
+		}
+		if (categories.length) {
+			return categories[0].id
+		}
+		return null;
+	}
+
 	render() {
 		const { classes, open, edit, book = {}, publisherHouses = [], categories = [] } = this.props;
+		console.log(publisherHouses)
 		return (
 			<Dialog
 				fullScreen
@@ -205,12 +237,11 @@ class FullScreenDialog extends React.Component {
 						margin="normal"
 						type="number"
 					/>
-					<FormControl className={classes.textField}>
+					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="category-native-simple">Loại:</InputLabel>
 						<Select
-							value={this.state.categoryId}
+							value={this.defaultCategory}
 							onChange={this.handleChange('categoryId')}
-							defaultValue={book.category ? book.category.id : null}
 							inputProps={{
 								name: 'age',
 								id: 'category-native-simple',
@@ -221,12 +252,11 @@ class FullScreenDialog extends React.Component {
 							))}
 						</Select>
 					</FormControl>
-					<FormControl className={classes.textField}>
+					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Nhà xuất bản:</InputLabel>
 						<Select
-							value={this.state.publisherHouseId}
+							value={this.defaultPublisherHouse}
 							onChange={this.handleChange('publisherHouseId')}
-							defaultValue={book.publisherHouse ? book.publisherHouse.id : null}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',
@@ -237,7 +267,7 @@ class FullScreenDialog extends React.Component {
 							))}
 						</Select>
 					</FormControl>
-					<FormControl className={classes.textField}>
+					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
 							value={this.state.isActive}

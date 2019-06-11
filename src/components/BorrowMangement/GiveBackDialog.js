@@ -74,6 +74,21 @@ class FullScreenDialog extends React.Component {
     this.handleClose();
   }
 
+  TimePay = (row) => {
+    let str = ""
+    if(row.status === 1 && row.isExpiry) {
+      return str = "Quá hạn";
+    }
+    if(row.status === 2 && row.isExpiry) {
+      return str = "Trả muộn";
+    }
+    if(row.status === 1 && !row.isExpiry) {
+      return str = "Đúng hạn";
+    }
+    if(row.status === 2 && !row.isExpiry) {
+      return str = "Còn hạn";
+    }
+  }
   render() {
     const { classes, borrowItem = [], open } = this.props;
     const { borrowPay } = borrowItem;
@@ -101,12 +116,13 @@ class FullScreenDialog extends React.Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Ten sach</TableCell>
+                <TableCell>Tên sách</TableCell>
                 <TableCell>Ngày mượn</TableCell>
+                <TableCell>Hạn trả</TableCell>
                 <TableCell>Ngày trả</TableCell>
                 <TableCell>Ghi chú</TableCell>
-                <TableCell>Số lượng muon</TableCell>
                 <TableCell>Trạng thái</TableCell>
+                <TableCell>Thời hạn</TableCell>
                 <TableCell>Chức năng</TableCell>
               </TableRow>
             </TableHead>
@@ -119,10 +135,13 @@ class FullScreenDialog extends React.Component {
                     </TableCell>
                     <TableCell>{format(new Date(row.borrowDate), "DD/MM/YYYY")}</TableCell>
                     <TableCell>{format(new Date(row.expiryDate), "DD/MM/YYYY")}</TableCell>
+                    <TableCell>{row.payDate ? format(new Date(row.payDate), "DD/MM/YYYY") : "---"}</TableCell>
                     <TableCell>{row.note ? row.note : "---"}</TableCell>
-                    <TableCell>{row.borrowTotal}</TableCell>
+                    <TableCell>{row.status === 1 ? "Chưa trả" : "Đã trả"}</TableCell>
                     <TableCell>
-                      {row.isExpiry ? <span style={{ color: "#D8000C" }}>Hết hạn</span> : <span style={{ color: "#4F8A10" }}>Còn hạn</span>}</TableCell>
+                      {row.isExpiry ? 
+                        <span style={{ color: "#D8000C" }}>{this.TimePay(row)}</span> : 
+                        <span style={{ color: "#4F8A10" }}>{this.TimePay(row)}</span>}</TableCell>
                     <TableCell>
                       <Button onClick={this.giveBookBack(row)} color="primary" className={classes.button}>
                         Trả sách

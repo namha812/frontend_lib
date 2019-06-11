@@ -165,7 +165,6 @@ class FullScreenDialog extends React.Component {
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
 							disabled={!edit}
-							native
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							defaultValue={classeItem.isActive}

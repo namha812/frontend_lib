@@ -9,12 +9,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from "@material-ui/core/styles";
-
-import Searchbox from '../Searchbox';
+import lodash from "lodash";
 
 const styles = theme => ({
   card: {
     display: "flex",
+    justifyContent: "space-between"
   },
   details: {
     maxWidth: 240,
@@ -44,7 +44,7 @@ class BorrowBook extends Component {
     selectedBook: [],
     open: false,
     currentBook: {},
-    numberOfBook: null,
+    numberOfBook: 1,
     error: null
   }
 
@@ -72,23 +72,20 @@ class BorrowBook extends Component {
     });
   };
 
-  onChangeNumber = (event) => {
-    const { currentBook } = this.state;
-    const { value } = event.target;
-    if(value > currentBook.quantity) {
-      this.setState({error: "So luong sach nhieu hon"})
-    }
-    else {
-      this.setState({error: null})
-    }
-    this.setState({ numberOfBook: value })
-  }
-
   onSelectedBook = (book) => {
+    book.number = 1
+    const { selectedBook } = this.state
+    let findBook = lodash.find(selectedBook, o => {
+      return o.id === book.id
+    })
+    if(findBook) {
+      return console.log("Sách này đã tồn tại")
+    }
     this.setState(state => ({
       ...state,
       currentBook: book,
-      open: true
+      selectedBook: [...selectedBook, book],
+      open: false
     }))
   }
 
@@ -103,50 +100,21 @@ class BorrowBook extends Component {
     const newSelectedBook = selectedBook.filter(bookSelected => book.id !== bookSelected.id);
     this.setState({ selectedBook: newSelectedBook });
   }
+  cancelCart = (book) => {
+    this.setState({ selectedBook: [] });
+  }
 
   render() {
     const { classes, books, students, searchValue } = this.props;
-    const { selectedBook, currentBook, numberOfBook,error } = this.state;
+    const { selectedBook } = this.state;
     return (
       <div>
         <div className={classes.card}>
           <div>
             <ViewGridItem searchValue={searchValue} books={books} onSelectedBook={this.onSelectedBook} inBorrowTab />
           </div>
-          <Cart borrowBook={this.borrowBook} students={students} selectedBook={selectedBook} removeBook={this.removeBook} />
+          <Cart borrowBook={this.borrowBook} students={students} selectedBook={selectedBook} removeBook={this.removeBook} onCancelClick={this.cancelCart}/>
         </div>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Muon sach</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Ban chuan bi cho muon sach {currentBook.name}. Hay nhap so luong sach ban muon muon:
-            </DialogContentText>
-            <TextField
-              autoFocus
-              error={error}
-              margin="dense"
-              id="name"
-              label="So luong"
-              type="number"
-              value={numberOfBook}
-              fullWidth
-              onChange={this.onChangeNumber}
-            />
-            <div>{error}</div>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Huy
-            </Button>
-            <Button onClick={this.handerAddBook} color="primary" disabled={error}>
-              Them
-            </Button>
-          </DialogActions>
-        </Dialog>
       </div>
     )
   }
