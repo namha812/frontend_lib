@@ -8,7 +8,6 @@ import {
 
 function* fetchHistoryInputSaga(action) {
     const {data} =  yield fetchHistoryInputApi();
-    console.log(data)
     const historyInput = data.data
     yield put(fetchHistory(historyInput));
 }

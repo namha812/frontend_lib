@@ -213,7 +213,7 @@ class Cart extends React.Component {
 					/>
 				</form>
 				<div className={classes.submitField}>
-					<Button onClick={this.onBorrowClick} variant="contained" color="primary" className={classes.button}>
+					<Button onClick={this.onBorrowClick} variant="contained" color="primary" className={classes.button} disabled={!selectedStudent.id}>
 						Lưu
         </Button>
 					<Button variant="contained" className={classes.button} onClick={this.onCancelClick}>

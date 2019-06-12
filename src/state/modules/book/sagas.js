@@ -38,9 +38,6 @@ function* addBookSaga(action) {
   yield put(fetchingBook());
   const res = yield addBookApi(book);
   if (res.data) {
-    //TODO:example for toasting a notification
-    //you can do the same thing in other saga :)) or in the component. just dispatch action showToast and call it with a payload like here. 
-    //done
     const toast = {
       message: "Thêm sách thành công",
       action: "Dismiss",

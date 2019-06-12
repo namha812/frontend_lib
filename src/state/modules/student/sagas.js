@@ -4,9 +4,6 @@ import {
   ADD_STUDENT_SAGA,
   EDIT_STUDENT_SAGA,
   DELETE_STUDENT_SAGA,
-  FETCHED_STUDENT,
-  FETCHING_STUDENT,
-  FETCH_STUDENT,
 
 } from './index'
 import {
@@ -17,17 +14,15 @@ import {
 } from '../../../api/studentApi';
 
 import {
-  addStudent,
   fetchStudent,
   fetchingStudent,
   fetchedStudent,
-  fetchStudentError
 } from './index'
-
+import {constants} from '../../../containers/ToastNotification';
+import {showToast} from '../notification/index';
 function* fetchStudentSaga(action) {
   yield put(fetchingStudent());
   const res = yield fetchStudentApi();
-  console.log(res);
   if (res.data) {
     yield put(fetchStudent(res.data.data));
   }
@@ -40,7 +35,20 @@ function* addStudentSaga(action) {
   yield put(fetchingStudent());
   const res = yield addStudentApi(student);
   if (res.data) {
-    //TODO:
+    const toast = {
+      message: "Thêm học sinh thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
+  }
+  if(res.err){
+    const toast = {
+      message: "Thêm học sinh không thành công",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
   }
   yield fetchStudentSaga();
 }
@@ -50,7 +58,20 @@ function* editStudentSaga(action) {
   yield put(fetchingStudent());
   const res = yield updateStudentApi(student);
   if (res.data) {
-    //TODO:
+    const toast = {
+      message: "Sửa học sinh thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
+  }
+  if(res.err){
+    const toast = {
+      message: "Sửa học sinh không thành công",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
   }
   yield fetchStudentSaga();
 }

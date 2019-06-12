@@ -1,6 +1,8 @@
 import { all, call, delay, fork, takeLatest, put, select, takeEvery, take } from 'redux-saga/effects';
-import { FETCH_BORROW, FETCH_BORROW_SAGA, BORROW_BOOK_SAGA, PAY_BOOK_SAGA } from './index'
+import { FETCH_BORROW_SAGA, BORROW_BOOK_SAGA, PAY_BOOK_SAGA } from './index'
 import * as borrowApi from '../../../api/borrowManagementApi';
+import {constants} from '../../../containers/ToastNotification';
+import {showToast} from '../notification/index';
 
 import {
   fetchBookSaga
@@ -19,14 +21,45 @@ function* fetchBorrowSaga(action) {
 }
 
 function* borrowBookSaga(action) {
-  yield borrowApi.borrowBookApi(action.payload);
+  const res = yield borrowApi.borrowBookApi(action.payload);
+  if (res.data) {
+    const toast = {
+      message: "Mượn sách thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
+  }
+  if(res.err){
+    const toast = {
+      message: "Mượn sách không thành công",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
+  }
   yield put(fetchBookSaga());
 }
 
 function* payBookSaga(actions) {
   const {payload} = actions;
-  console.log("aaaaaa",payload);
-  const data = yield borrowApi.payBookApi(payload);
+  const res = yield borrowApi.payBookApi(payload);
+  if (res.data) {
+    const toast = {
+      message: "Trả sách thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
+  }
+  if(res.err){
+    const toast = {
+      message: "Trả sách không thành công",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
+  }
   yield fetchBorrowSaga();
 }
 
