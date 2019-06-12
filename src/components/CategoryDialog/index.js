@@ -10,15 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from "@material-ui/core/TextField";
-import classNames from 'classnames';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
+import lodash from 'lodash';
 
 const styles = (theme) => ({
 	appBar: {
@@ -65,8 +61,10 @@ function Transition(props) {
 class FullScreenDialog extends React.Component {
 
 	state = {
-		name: null,
+		category: {},
+		name: "",
 		isActive: true,
+		description:""
 	}
 
 	handleClickOpen = () => {
@@ -80,6 +78,8 @@ class FullScreenDialog extends React.Component {
 				open: false,
 				name: null,
 				isActive: true,
+				description: null,
+				category: {}
 			}
 		);
 	};
@@ -97,24 +97,40 @@ class FullScreenDialog extends React.Component {
 	handleSubmit = () => {
 		const {
 			name,
-			isActive
+			isActive,
+			description
 		} = this.state;
 		const { editCategory, addCategory, category } = this.props;
-		if (category.id) { 
+		if (category.id) {
 			editCategory({
 				id: category.id,
-				name: name || category.name,
-				isActive: isActive || category.isActive
+				name: name,
+				isActive: isActive,
+				description: description
 			})
 		}
 		else {
 			addCategory({
 				name,
-				isActive
+				isActive,
+				description
 			})
 		}
-
 		this.handleClose();
+	}
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { category: nextCategory } = nextProps;
+		const { category: currentCategory } = prevState;
+		if(!lodash.isEmpty(nextCategory) && JSON.stringify(nextCategory) !== JSON.stringify(currentCategory)){
+			return {
+				name: nextCategory.name,
+				isActive: nextCategory.isActive,
+				description: nextCategory.description,
+				category: nextCategory
+			}
+		}
+		return;
 	}
 
 	get Title() {
@@ -128,7 +144,7 @@ class FullScreenDialog extends React.Component {
 		return "Xem thông tin chi tiết";
 	}
 	render() {
-        const { classes, open, edit , category = {} } = this.props;
+		const { classes, open, edit, category = {} } = this.props;
 		return (
 			<Dialog
 				fullScreen
@@ -144,30 +160,39 @@ class FullScreenDialog extends React.Component {
 						<Typography variant="h6" color="inherit" className={classes.flex}>
 							{this.Title}
 						</Typography>
-						{edit && <Button color="inherit" onClick={this.handleSubmit}>
+						{edit && <Button color="inherit" onClick={this.handleSubmit} disabled={!this.state.name}>
 							Lưu
 						</Button>}
 					</Toolbar>
 				</AppBar>
 				<form className={classes.container} noValidate autoComplete="off">
 					<TextField
-                        fullWidth
+						fullWidth
 						disabled={!edit}
 						id="standard-name"
 						label="Tên"
 						value={this.state.name}
-						defaultValue={category.name}
 						onChange={this.handleChange("name")}
 						margin="normal"
+						required
 					/>
-					
+					<TextField
+						fullWidth
+						disabled={!edit}
+						id="standard-name"
+						label="Mô tả"
+						value={this.state.description}
+						onChange={this.handleChange("description")}
+						margin="normal"
+						rows={5}
+						multiline
+					/>
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
 							disabled={!edit}
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
-							defaultValue={category.isActive}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',

@@ -76,15 +76,16 @@ class FullScreenDialog extends React.Component {
 				bookName: null,
 				author: null,
 				category: null,
-				isActive: true,
 				publisherHouseId: null,
 				quantity: null,
-				coverPrice: null
+				coverPrice: null,
+				isActive: true
 			}
 		);
 	};
 
 	handleChange = (name) => event => {
+		console.log("handleChange", name)
 		const value = event.target.value;
 		this.setState(state => {
 			return {
@@ -104,17 +105,17 @@ class FullScreenDialog extends React.Component {
 			quantity,
 			coverPrice
 		} = this.state;
-		const { addBook, editBook, book, publisherHouses = [], categories = [] } = this.props;
+		const { addBook, editBook, book } = this.props;
 		if (book.id) {
 			editBook({
 				id: book.id,
 				isActive: isActive,
-				bookName: bookName || book.bookName,
-				categoryId: categoryId || this.defaultCategory,
-				quantity: quantity || book.quantity,
-				author: author || book.author,
-				coverPrice: coverPrice || book.coverPrice,
-				publisherHouseId: publisherHouseId || this.defaultPublisherHouse,
+				bookName: bookName,
+				categoryId: categoryId,
+				quantity: quantity,
+				author: author,
+				coverPrice: coverPrice,
+				publisherHouseId: publisherHouseId,
 			})
 		}
 		else {
@@ -132,7 +133,7 @@ class FullScreenDialog extends React.Component {
 		this.handleClose();
 	}
 	get Title() {
-		const { classes, open, edit, book = {} } = this.props;
+		const { edit, book = {} } = this.props;
 		if (edit && book.id) {
 			return "Sửa thông tin sách";
 		}
@@ -141,7 +142,14 @@ class FullScreenDialog extends React.Component {
 		}
 		return "Xem thông tin chi tiết";
 	}
-
+	get validate() {
+		const {
+			bookName,
+			quantity,
+			coverPrice,
+		} = this.state;
+		return bookName && quantity  && coverPrice;
+	}
 	get defaultPublisherHouse() {
 		const { publisherHouseId } = this.state;
 		if (publisherHouseId) {
@@ -171,9 +179,26 @@ class FullScreenDialog extends React.Component {
 		return null;
 	}
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { book: nextBook } = nextProps;
+		const { book: currentBook } = prevState;
+		if (!lodash.isEmpty(nextBook) && JSON.stringify(nextBook) !== JSON.stringify(currentBook)) {
+			return {
+				bookName: nextBook.bookName,
+				isActive: nextBook.isActive,
+				categoryId: nextBook.categoryId,
+				publisherHouseId: nextBook.publisherHouseId,
+				quantity: nextBook.quantity,
+				coverPrice: nextBook.coverPrice,
+				author: nextBook.author,
+				book: nextBook
+			}
+		}
+		return;
+	}
+
 	render() {
 		const { classes, open, edit, book = {}, publisherHouses = [], categories = [] } = this.props;
-		console.log(publisherHouses)
 		return (
 			<Dialog
 				fullScreen
@@ -189,7 +214,7 @@ class FullScreenDialog extends React.Component {
 						<Typography variant="h6" color="inherit" className={classes.flex}>
 							{this.Title}
 						</Typography>
-						{edit && <Button color="inherit" onClick={this.handleSubmit}>
+						{edit && <Button color="inherit" onClick={this.handleSubmit} disabled={!this.validate}>
 							Lưu
 						</Button>}
 					</Toolbar>
@@ -204,6 +229,7 @@ class FullScreenDialog extends React.Component {
 						defaultValue={book.bookName}
 						onChange={this.handleChange("bookName")}
 						margin="normal"
+						required={true}
 					/>
 					<TextField
 						disabled={!edit}
@@ -222,9 +248,10 @@ class FullScreenDialog extends React.Component {
 						id="standard-required"
 						label="Số lượng còn lại"
 						onChange={this.handleChange("quantity")}
-						className={classes.textFieldFullWidth}
+						className={classes.textField}
 						margin="normal"
 						type="number"
+						required={true}
 					/>
 					<TextField
 						disabled={!edit}
@@ -233,9 +260,10 @@ class FullScreenDialog extends React.Component {
 						id="standard-required"
 						label="Giá Bìa"
 						onChange={this.handleChange("coverPrice")}
-						className={classes.textFieldFullWidth}
+						className={classes.textField}
 						margin="normal"
 						type="number"
+						required={true}
 					/>
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="category-native-simple">Loại:</InputLabel>
@@ -272,7 +300,6 @@ class FullScreenDialog extends React.Component {
 						<Select
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
-							defaultValue={book.isActive}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',

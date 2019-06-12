@@ -85,6 +85,7 @@ class Category extends React.Component {
   handleCloseDialog = () => {
     this.setState({
       open: false,
+      category: {}
     });
   }
 
@@ -141,7 +142,7 @@ class Category extends React.Component {
                     />
                   </TableCell>
                   <TableCell >{row.name}</TableCell>
-                  <TableCell >{row.admin ? row.admin.name : "---"}</TableCell>
+                  <TableCell >{row.admin ? row.admin.fullName : "---"}</TableCell>
                   <TableCell >{row.createdAt ? format(new Date(row.createdAt), "DD/MM/YYYY") : "---"}</TableCell>
                   <TableCell>
                     <IconButton onClick={this.handleView(row)}>
@@ -150,9 +151,6 @@ class Category extends React.Component {
                     <IconButton onClick={this.handleEdit(row)}>
                       <Edit />
                     </IconButton>
-                    {/* <IconButton onClick={this.handleDelete(row)}>
-                                        <DeleteIcon />
-                                    </IconButton> */}
                   </TableCell>
                 </TableRow>
               );

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,15 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from "@material-ui/core/TextField";
-import classNames from 'classnames';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
 
 const styles = (theme) => ({
 	appBar: {
@@ -80,7 +76,10 @@ class FullScreenDialog extends React.Component {
 			{
 				open: false,
 				name: null,
-				isActive: null,
+				isActive: true,
+				address: null,
+				description:"",
+				nextPublisher: {}
 			}
 		);
 	};
@@ -99,22 +98,25 @@ class FullScreenDialog extends React.Component {
 		const {
 			name,
 			isActive,
-			address
+			address,
+			description
 		} = this.state;
 		const { editPublisher, addPublisher, publisherHouse } = this.props;
 		if (publisherHouse.id) { 
 			editPublisher({
 				id: publisherHouse.id,
-				name: name || publisherHouse.name,
-				isActive: isActive || publisherHouse.isActive,
-				address: address || publisherHouse.address
+				name: name,
+				isActive: isActive,
+				address: address,
+				description: description
 			})
 		}
 		else {
 			addPublisher({
 				name,
 				isActive,
-				address
+				address,
+				description
 			})
 		}
 
@@ -131,8 +133,24 @@ class FullScreenDialog extends React.Component {
 		}
 		return "Xem thông tin chi tiết";
 	}
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { publisherHouse: nextPublisher } = nextProps;
+		const { publisherHouse: currentPublisher } = prevState;
+		if(!isEmpty(nextPublisher) && JSON.stringify(nextPublisher) !== JSON.stringify(currentPublisher)){
+			return {
+				name: nextPublisher.name,
+				isActive: nextPublisher.isActive,
+				description: nextPublisher.description,
+				address: nextPublisher.address,
+				publisherHouse: nextPublisher,
+			}
+		}
+		return;
+	}
+
 	render() {
-        const { classes, open, edit , publisherHouse = {} } = this.props;
+        const { classes, open, edit } = this.props;
 		return (
 			<Dialog
 				fullScreen
@@ -148,7 +166,7 @@ class FullScreenDialog extends React.Component {
 						<Typography variant="h6" color="inherit" className={classes.flex}>
 							{this.Title}
 						</Typography>
-						{edit && <Button color="inherit" onClick={this.handleSubmit}>
+						{edit && <Button color="inherit" onClick={this.handleSubmit} disabled={!this.state.name}>
 							Lưu
 						</Button>}
 					</Toolbar>
@@ -160,7 +178,6 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Tên"
 						value={this.state.name}
-						defaultValue={publisherHouse.name}
 						onChange={this.handleChange("name")}
 						margin="normal"
 					/>
@@ -170,9 +187,19 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Địa chỉ"
 						value={this.state.address}
-						defaultValue={publisherHouse.address}
 						onChange={this.handleChange("address")}
 						margin="normal"
+					/>
+					<TextField
+						fullWidth
+						disabled={!edit}
+						id="standard-name"
+						label="Mô tả"
+						value={this.state.description}
+						onChange={this.handleChange("description")}
+						margin="normal"
+						rows={5}
+						multiline
 					/>
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
@@ -180,7 +207,6 @@ class FullScreenDialog extends React.Component {
                             disabled={!edit}
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
-							defaultValue={publisherHouse.isActive}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',

@@ -10,16 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from "@material-ui/core/TextField";
-import classNames from 'classnames';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-
+import lodash from 'lodash';
 const styles = (theme) => ({
 	appBar: {
 		position: 'relative',
@@ -88,9 +83,11 @@ class FullScreenDialog extends React.Component {
 				isActive: true,
 				email: null,
 				address: null,
-				role: null
+				role: 2,
+				account: {}
 			}
 		);
+		console.log(this.state)
 	};
 
 	handleChange = (name) => event => {
@@ -110,16 +107,15 @@ class FullScreenDialog extends React.Component {
 			email,
 			address,
 			password,
-			role
 		} = this.state;
 		const { editAccount, addAccount, account } = this.props;
 		if (account.id) {
 			editAccount({
 				id: account.id,
-				fullName: fullName || account.fullName,
-				isActive: isActive || account.isActive,
-				email: email || account.email,
-				address: address || account.address
+				fullName: fullName,
+				isActive: isActive,
+				email: email,
+				address: address
 			})
 		}
 		else {
@@ -129,11 +125,25 @@ class FullScreenDialog extends React.Component {
 				email,
 				address,
 				password,
-				role
 			})
 		}
 
 		this.handleClose();
+	}
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { account: nextAccount } = nextProps;
+		const { account: currentAccount } = prevState;
+		if (!lodash.isEmpty(nextAccount) && JSON.stringify(nextAccount) !== JSON.stringify(currentAccount)) {
+			return {
+				fullName: nextAccount.fullName,
+				isActive: nextAccount.isActive,
+				email: nextAccount.email,
+				address: nextAccount.address,
+				password: nextAccount.password,
+				account: nextAccount
+			}
+		}
+		return;
 	}
 
 	get Title() {
@@ -158,11 +168,12 @@ class FullScreenDialog extends React.Component {
 	get validate() {
 		const {
 			fullName,
-			isActive,
 			email,
 			password,
+			rePassword,
+			account = {}
 		} = this.state;
-		return fullName !== null && email !== null && password !== null; 
+		return fullName && email && (!account.id ? (password && password === rePassword) : true); 
 	}
 
 	render() {
@@ -182,7 +193,7 @@ class FullScreenDialog extends React.Component {
 						<Typography variant="h6" color="inherit" className={classes.flex}>
 							{this.Title}
 						</Typography>
-						{edit && <Button disabled={!this.validate && !account.id} color="inherit" onClick={this.handleSubmit}>
+						{edit && <Button disabled={!this.validate} color="inherit" onClick={this.handleSubmit}>
 							Lưu
 						</Button>}
 					</Toolbar>
@@ -194,7 +205,6 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Họ và tên"
 						value={this.state.fullName}
-						defaultValue={account.fullName}
 						onChange={this.handleChange("fullName")}
 						margin="normal"
 					/>
@@ -204,7 +214,6 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Email"
 						value={this.state.email}
-						defaultValue={account.email}
 						onChange={this.handleChange("email")}
 						margin="normal"
 						type="email"
@@ -215,7 +224,6 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Mật khẩu"
 						value={this.state.password}
-						defaultValue={account.password}
 						onChange={this.handleChange("password")}
 						margin="normal"
 						type="password"
@@ -228,7 +236,6 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Nhập lại mật khẩu"
 						value={this.state.rePassword}
-						defaultValue={account.rePassword}
 						onChange={this.handleChange("rePassword")}
 						margin="normal"
 						type="password"
@@ -240,18 +247,15 @@ class FullScreenDialog extends React.Component {
 						id="standard-name"
 						label="Địa chỉ"
 						value={this.state.address}
-						defaultValue={account.address}
 						onChange={this.handleChange("address")}
 						margin="normal"
 					/>
 					<FormControl className={classes.formControl}>
-						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
+						<InputLabel htmlFor="age-native-simple">Chức vụ:</InputLabel>
 						<Select
 							disabled={!edit}
-							native
 							value={this.state.role}
 							onChange={this.handleChange('role')}
-							defaultValue={account.role}
 							inputProps={{
 								name: 'age',
 								id: 'age-native-simple',
@@ -265,7 +269,6 @@ class FullScreenDialog extends React.Component {
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
 							disabled={!edit}
-							native
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							defaultValue={account.isActive}

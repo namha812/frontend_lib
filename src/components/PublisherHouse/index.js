@@ -51,7 +51,7 @@ class PublisherHouse extends React.Component {
             edit: true
         })
     }
-    onAddCategory = () => {
+    onAddPublisher = () => {
         this.setState({
             open: true,
             edit: true,
@@ -61,6 +61,7 @@ class PublisherHouse extends React.Component {
     handleCloseDialog = () => {
         this.setState({
             open: false,
+            publisherHouse: {}
         });
     }
     render() {
@@ -127,7 +128,7 @@ class PublisherHouse extends React.Component {
                     })}
                 </Table>
                 <Fab color="primary" className={classes.fab}>
-                    <IconButton onClick={this.onAddCategory}>
+                    <IconButton onClick={this.onAddPublisher}>
                         <AddIcon color="white" />
                     </IconButton>
                 </Fab>

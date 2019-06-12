@@ -8,17 +8,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ViewIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import AccountDialog from '../AccountDialog';
@@ -57,7 +50,7 @@ class Account extends React.Component {
             edit: true
         })
     }
-    onAddCategory = () => {
+    onAddAccount = () => {
         this.setState({
             open: true,
             edit: true,
@@ -67,6 +60,7 @@ class Account extends React.Component {
     handleCloseDialog = () => {
         this.setState({
             open: false,
+            account: {}
         });
     }
     render() {
@@ -141,7 +135,7 @@ class Account extends React.Component {
                     })}
                 </Table>
                 <Fab color="primary" className={classes.fab}>
-                    <IconButton onClick={this.onAddCategory}>
+                    <IconButton onClick={this.onAddAccount}>
                         <AddIcon color="white" />
                     </IconButton>
                 </Fab>
