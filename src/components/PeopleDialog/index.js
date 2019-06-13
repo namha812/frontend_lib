@@ -10,16 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from "@material-ui/core/TextField";
-import classNames from 'classnames';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
-
+import lodash from 'lodash';
 const styles = (theme) => ({
 	appBar: {
 		position: 'relative',
@@ -74,7 +70,6 @@ class FullScreenDialog extends React.Component {
 		isActive: true,
 		className: null,
 		classId: null,
-		publishing: true
 	}
 
 	handleClickOpen = () => {
@@ -125,14 +120,14 @@ class FullScreenDialog extends React.Component {
 		if (student.id) {
 			editStudent({
 				id: student.id,
-				fullName: fullName || student.fullName,
-				email: email || student.email,
-				sex: sex || student.sex,
-				address: address || student.address,
-				cardNumber: cardNumber || student.cardNumber,
-				phone: phone || student.phone,
-				classId: classId || student.class.id,
-				isActive: isActive || student.isActive
+				fullName: fullName,
+				email: email,
+				sex: sex,
+				address: address,
+				cardNumber: cardNumber,
+				phone: phone,
+				classId: classId || this.defaultClass,
+				isActive: isActive
 			})
 		}
 		else {
@@ -143,12 +138,20 @@ class FullScreenDialog extends React.Component {
 				address,
 				cardNumber,
 				phone,
-				classId: classId || classList[0].id,
+				classId: classId || this.defaultClass,
 				isActive: isActive
 			})
 		}
 
 		this.handleClose();
+	}
+	get validate() {
+		const {
+			fullName,
+			email,
+			cardNumber,
+		} = this.state;
+		return fullName && email  && cardNumber;
 	}
 
 	get Title() {
@@ -161,9 +164,37 @@ class FullScreenDialog extends React.Component {
 		}
 		return "Xem thông tin chi tiết";
 	}
+	get defaultClass() {
+		const { classId } = this.state;
+		if (classId) {
+			return classId;
+		}
+		const { student = {}, classList = [] } = this.props;
+		if (student.id) {
+			return student.class.id
+		}
+		if (classList.length) {
+			return classList[0].id
+		}
+		return null;
+	}
 
-	handleChangeNew = e => {
-		console.log(typeof e.target.value);
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { student: nextStudent } = nextProps;
+		const { student: currentStudent } = prevState;
+		if(!lodash.isEmpty(nextStudent) && JSON.stringify(nextStudent) !== JSON.stringify(currentStudent)){
+			return {
+				fullName: nextStudent.fullName,
+				isActive: nextStudent.isActive,
+				email: nextStudent.email,
+				address: nextStudent.address,
+				sex: nextStudent.sex,
+				cardNumber: nextStudent.cardNumber,
+				classId: nextStudent.classId,
+				student: nextStudent
+			}
+		}
+		return;
 	}
 	render() {
 		const { classes, open, edit, student, classList } = this.props;
@@ -182,7 +213,7 @@ class FullScreenDialog extends React.Component {
 						<Typography variant="h6" color="inherit" className={classes.flex}>
 							{this.Title}
 						</Typography>
-						{edit && <Button color="inherit" onClick={this.handleSubmit}>
+						{edit && <Button color="inherit" onClick={this.handleSubmit} disabled={!this.validate}>
 							Lưu
 						</Button>}
 					</Toolbar>
@@ -197,6 +228,7 @@ class FullScreenDialog extends React.Component {
 						defaultValue={student.fullName}
 						onChange={this.handleChange("fullName")}
 						margin="normal"
+						required
 					/>
 					<TextField
 						disabled={!edit}
@@ -218,6 +250,7 @@ class FullScreenDialog extends React.Component {
 						defaultValue={student.cardNumber}
 						className={classes.textField}
 						margin="normal"
+						required
 					/>
 					<TextField
 						disabled={!edit}
@@ -228,6 +261,7 @@ class FullScreenDialog extends React.Component {
 						value={this.state.email}
 						defaultValue={student.email}
 						margin="normal"
+						required
 					/>
 					<TextField
 						disabled={!edit}
@@ -255,7 +289,8 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Lớp:</InputLabel>
 						<Select
-							value={this.state.classId}
+							required
+							value={this.defaultClass}
 							onChange={this.handleChange('classId')}
 							defaultValue={student.class ? student.class.classId : null}
 							inputProps={{

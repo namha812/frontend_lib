@@ -268,6 +268,7 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="category-native-simple">Loại:</InputLabel>
 						<Select
+							disabled={!edit}
 							value={this.defaultCategory}
 							onChange={this.handleChange('categoryId')}
 							inputProps={{
@@ -283,6 +284,7 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Nhà xuất bản:</InputLabel>
 						<Select
+							disabled={!edit}
 							value={this.defaultPublisherHouse}
 							onChange={this.handleChange('publisherHouseId')}
 							inputProps={{
@@ -298,6 +300,7 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
+							
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							inputProps={{

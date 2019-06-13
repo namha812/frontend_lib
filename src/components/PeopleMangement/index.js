@@ -126,11 +126,9 @@ class PeopleManagement extends React.Component {
 	render() {
 		const {
 			classes,
-			students = [],
 			loadingState,
 			editStudent,
 			addStudent,
-			deleteStudent,
 			classList
 		} = this.props;
 		const { open, edit, currentStudent, page, rowsPerPage } = this.state;
@@ -188,9 +186,9 @@ class PeopleManagement extends React.Component {
 											<IconButton onClick={this.handleEdit(row)}>
 												<Edit />
 											</IconButton>
-											<IconButton onClick={this.handleDelete(row)}>
+											{/* <IconButton onClick={this.handleDelete(row)}>
 												<DeleteIcon />
-											</IconButton>
+											</IconButton> */}
 										</TableCell>
 									</TableRow>
 								);
