@@ -61,7 +61,7 @@ class BorrowBook extends Component {
       currentBook: {}
     }));
   };
-  componentDidMount(){
+  componentDidUpdate() {
     
   }
   handleClose = () => {
@@ -78,7 +78,7 @@ class BorrowBook extends Component {
     let findBook = lodash.find(selectedBook, o => {
       return o.id === book.id
     })
-    if(findBook) {
+    if (findBook) {
       return console.log("Sách này đã tồn tại")
     }
     this.setState(state => ({
@@ -90,8 +90,8 @@ class BorrowBook extends Component {
   }
 
   borrowBook = (data) => {
-    const {borrowBook} = this.props;
-    this.setState({selectedBook: []})
+    const { borrowBook } = this.props;
+    this.setState({ selectedBook: [] })
     borrowBook(data);
   }
 
@@ -113,7 +113,7 @@ class BorrowBook extends Component {
           <div>
             <ViewGridItem searchValue={searchValue} books={books} onSelectedBook={this.onSelectedBook} inBorrowTab />
           </div>
-          <Cart borrowBook={this.borrowBook} students={students} selectedBook={selectedBook} removeBook={this.removeBook} onCancelClick={this.cancelCart}/>
+          <Cart borrowBook={this.borrowBook} students={students} selectedBook={selectedBook} removeBook={this.removeBook} onCancelClick={this.cancelCart} />
         </div>
       </div>
     )

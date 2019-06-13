@@ -14,6 +14,7 @@ class App extends Component {
     const {checkLogin} = this.props;
     checkLogin();
   }
+  
   render() {
     return (
       <div className="App">

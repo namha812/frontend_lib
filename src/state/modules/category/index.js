@@ -8,11 +8,13 @@ export const ADD_CATEGORY = 'ADD_CATEGORY'
 export const ADD_CATEGORY_SAGA = 'ADD_CATEGORY_SAGA'
 
 const defaultState = {
-    categories:[]
+    categories:[],
+    fetched: false
 }
 const categoryReducer = createReducer(defaultState, {
   [FETCH_CATEGORY]: (state, action) => ({
     ...state,
+    fetched: true,
     categories: action.payload.categories
   })
 })

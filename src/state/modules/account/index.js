@@ -8,11 +8,13 @@ export const ADD_ACCOUNT = 'ADD_ACCOUNT'
 export const ADD_ACCOUNT_SAGA = 'ADD_ACCOUNT_SAGA'
 
 const defaultState = {
-    accounts:[]
+    accounts:[],
+    fetched: false
 }
 const accountReducer = createReducer(defaultState, {
   [FETCH_ACCOUNT]: (state, action) => ({
     ...state,
+    fetched: true,
     accounts: action.payload.accounts
   })
 })

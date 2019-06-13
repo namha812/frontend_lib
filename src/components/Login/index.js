@@ -20,7 +20,8 @@ class Login extends Component {
     console.log(event)
   }
 
-  handleLogin = () => {
+  handleLogin = (event) => {
+    event.preventDefault();
     const { user } = this.props
     this.props.loginSaga(user);
   }
@@ -35,7 +36,7 @@ class Login extends Component {
       <div className = 'container'>
         <div className = 'bodylogin'>
           <div className = 'form-container'>
-            <form onSubmit={this.handleLogin} className = 'form'>
+            <div onSubmit={this.handleLogin} className = 'form'>
               <span className="login-form-title">
                 Login
               </span>
@@ -56,12 +57,12 @@ class Login extends Component {
                 />
               </div>
               <div className='btnBottom'>
-                <input className='btnLogin'  type = "submit"  value="Đăng nhập"/>
+                <Button variant="contained" color="primary" onClick={this.handleLogin} className='btnLogin'>Đăng nhập</Button>
               </div>
-              <div>
+              {/* <div>
                 Not a member? <Link to={routeSignup()}>Signup Page</Link>
-              </div>
-            </form>
+              </div> */}
+            </div>
           </div> 
         </div>
       </div>

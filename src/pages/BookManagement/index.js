@@ -21,14 +21,7 @@ import {
   fetchPublisherSaga
 } from '../../state/modules/publisher';
 import Searchbox from '../../components/Searchbox';
-import {
-  ROUTE_HOME,
-  ROUTE_PEOPLE,
-  ROUTE_BOOK_BORROW,
-  ROUTE_BOOK
-} from '../../state/modules/routing';
 import {logoutSaga} from '../../state/modules/auth';
-
 
 class BookMangementPage extends Component {
   state = {
@@ -38,24 +31,39 @@ class BookMangementPage extends Component {
   }
 
   componentDidMount() {
-    const {fetchCategory, fetchPublisher, fetchBook} = this.props;
-    fetchBook();
-    fetchCategory();
-    fetchPublisher();
+    document.title = "Quản lý sách";
+    const { loginStatus, fetchCategory, fetchPublisher, fetchBook, fetchBookStatus, fetchCategoryStatus, fetchedPublisherStatus } = this.props;
+    if(loginStatus) {
+      if(!fetchBookStatus){
+        fetchBook();
+      }
+      if(!fetchCategoryStatus){
+        fetchCategory();
+      }
+      if(!fetchedPublisherStatus){
+        fetchPublisher();
+      }
+    }
   }
-
   componentDidUpdate() {
     const { type } = this.props;
-  }
-
-  recallApi = (route) => {
-
+    const { loginStatus, fetchCategory, fetchPublisher, fetchBook, fetchBookStatus, fetchCategoryStatus, fetchedPublisherStatus } = this.props;
+    if(loginStatus) {
+      if(!fetchBookStatus){
+        fetchBook();
+      }
+      if(!fetchCategoryStatus){
+        fetchCategory();
+      }
+      if(!fetchedPublisherStatus){
+        fetchPublisher();
+      }
+    }
   }
 
   onChangeRoute = (route) => {
     const { redirect } = this.props;
     redirect(route);
-    this.recallApi(route);
   }
 
   onCloseDrawer = (event) => {
@@ -100,7 +108,10 @@ export default connect(state => ({
   categories: state.category.categories,
   classList: state.classes.classes,
   books: state.book.books,
-  publisherHouses: state.publisher.publisherHouses
+  publisherHouses: state.publisher.publisherHouses,
+  fetchBookStatus: state.book.fetched,
+  fetchCategoryStatus: state.category.fetched,
+  fetchedPublisherStatus: state.publisher.fetched
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route

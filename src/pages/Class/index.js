@@ -31,9 +31,17 @@ class ClassPage extends Component {
   }
 
   componentDidMount() {
-    const { fetchClass } = this.props;
+    const { fetchClass, fetchedClassStatus, loginStatus } = this.props;
     document.title = "Quản lý lớp học"
-    fetchClass();
+    if(loginStatus && !fetchedClassStatus) {
+      fetchClass();
+    }
+  }
+  componentDidUpdate() {
+    const { fetchClass, fetchedClassStatus, loginStatus } = this.props;
+    if(loginStatus && !fetchedClassStatus) {
+      fetchClass();
+    }
   }
   onChangeRoute = (route) => {
     this.props.redirect(route);
@@ -60,8 +68,9 @@ class ClassPage extends Component {
 
 export default connect(state => ({
   loginStatus: state.auth.loginStatus,
-  classList: state.classes.classes
-}), (dispatch) => ({ //connect and dispatch your action to call into your reducer - remember your payload.
+  classList: state.classes.classes,
+  fetchedClassStatus: state.classes.fetched
+}), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route
   }),

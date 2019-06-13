@@ -96,7 +96,6 @@ class FullScreenDialog extends React.Component {
 
 	handleChange = (name) => event => {
 		const value = event.target.value;
-		console.log(typeof value);
 		this.setState(state => {
 			return {
 				...state,
@@ -277,6 +276,7 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="sex-helper">Giới tính:</InputLabel>
 						<Select
+							disabled={!edit}
 							className={classes.select}
 							value={this.state.sex ? this.state.sex : (student.sex || 1)}
 							onChange={this.handleChange("sex")}
@@ -289,6 +289,7 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Lớp:</InputLabel>
 						<Select
+							disabled={!edit}
 							required
 							value={this.defaultClass}
 							onChange={this.handleChange('classId')}
@@ -306,6 +307,7 @@ class FullScreenDialog extends React.Component {
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
+							disabled={!edit}
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							defaultValue={student.isActive}

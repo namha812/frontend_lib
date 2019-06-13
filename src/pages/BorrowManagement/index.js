@@ -29,13 +29,19 @@ class BorrowMangementPage extends Component {
   }
 
   componentDidMount() {
-    const { fetchBorrow } = this.props;
-    document.title = "Quản lý sách"
-    fetchBorrow();
+    document.title = "Quản lý sách";
+    const { loginStatus, fetchBorrow, borrowList = [] } = this.props;
+    if(loginStatus && !borrowList.length) {
+      fetchBorrow();
+    }
   }
 
   componentDidUpdate() {
     const { type } = this.props;
+    const { loginStatus, fetchBorrow, borrowList = [] } = this.props;
+    if(loginStatus && !borrowList.length) {
+      fetchBorrow();
+    }
   }
 
 
@@ -64,7 +70,6 @@ class BorrowMangementPage extends Component {
       loginStatus,
       ...remainProps
     } = this.props;
-    console.log(this.props);
     return (
       <React.Fragment>
         <Appbar logout={this.props.logout} loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />

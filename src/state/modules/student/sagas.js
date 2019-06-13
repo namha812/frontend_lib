@@ -15,25 +15,24 @@ import {
 
 import {
   fetchStudent,
-  fetchingStudent,
-  fetchedStudent,
 } from './index'
 import {constants} from '../../../containers/ToastNotification';
 import {showToast} from '../notification/index';
+import {getToken} from '../auth/index';
 function* fetchStudentSaga(action) {
-  yield put(fetchingStudent());
-  const res = yield fetchStudentApi();
+  const token =  yield select(getToken);
+  // yield put(fetchingStudent());
+  const res = yield fetchStudentApi(token);
   if (res.data) {
     yield put(fetchStudent(res.data.data));
   }
-  // yield put(fetchStudent(studenmock));
-  yield put(fetchedStudent())
 }
 
 function* addStudentSaga(action) {
+  const token =  yield select(getToken);
   const { student } = action.payload;
-  yield put(fetchingStudent());
-  const res = yield addStudentApi(student);
+  // yield put(fetchingStudent());
+  const res = yield addStudentApi(student, token);
   if (res.data) {
     const toast = {
       message: "Thêm học sinh thành công",
@@ -50,13 +49,12 @@ function* addStudentSaga(action) {
     }
     yield put(showToast(toast));
   }
-  yield fetchStudentSaga();
 }
 
 function* editStudentSaga(action) {
+  const token =  yield select(getToken);
   const { student } = action.payload;
-  yield put(fetchingStudent());
-  const res = yield updateStudentApi(student);
+  const res = yield updateStudentApi(student, token);
   if (res.data) {
     const toast = {
       message: "Sửa học sinh thành công",
@@ -78,7 +76,6 @@ function* editStudentSaga(action) {
 
 function* deleteStudentSaga(action) {
   const { studentId } = action.payload;
-  yield put(fetchingStudent());
   const res = yield deleteStudentApi(studentId);
   if (res.data) {
     //TODO:

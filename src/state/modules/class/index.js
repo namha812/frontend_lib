@@ -8,11 +8,13 @@ export const ADD_CLASS = 'ADD_CLASS';
 export const ADD_CLASS_SAGA = 'ADD_CLASS_SAGA';
 
 const defaultState = {
-  classes:[]
+  classes:[],
+  fetched: false
 }
 const testReducer = createReducer(defaultState, {
   [FETCH_CLASS]: (state, action) => ({
     ...state,
+    fetched: true,
     classes: action.payload.classes
   })
 })

@@ -28,7 +28,6 @@ const authReducer = createReducer(defaultState, {
     loading: true
   }),
   [LOADED_LOGIN]: (state, action) => {
-    console.log(action);
     return ({
       ...state,
       loading: false,
@@ -83,11 +82,13 @@ export const checkLogin = () => ({
 })
 
 export const logout = () => ({
- type: LOGOUT
+  type: LOGOUT
 })
 
 export const logoutSaga = () => ({
   type: LOGOUT_SAGA
- })
+})
+
+export const getToken = (state) => state.auth.OAuthToken;
 
 export default authReducer;

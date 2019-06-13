@@ -8,11 +8,13 @@ export const EDIT_PUBLISHER = 'EDIT_PUBLISHER'
 export const EDIT_PUBLISHER_SAGA = 'EDIT_PUBLISHER_SAGA'
 
 const defaultState = {
-  publisherHouse: []
+  publisherHouse: [],
+  fetched: false
 }
 const publisherReducer = createReducer(defaultState, {
   [FETCH_PUBLISHER]: (state, action) => ({
     ...state,
+    fetched: true,
     publisherHouses: action.payload.publisherHouse
   })
 })

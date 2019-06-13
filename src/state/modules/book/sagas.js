@@ -4,9 +4,6 @@ import {
   ADD_BOOK_SAGA,
   EDIT_BOOK_SAGA,
   DELETE_BOOK_SAGA,
-  FETCHED_BOOK,
-  FETCHING_BOOK,
-  FETCH_BOOK,
 } from './index'
 import {
   addBook as addBookApi,
@@ -15,28 +12,24 @@ import {
   deleteBook as deleteBookApi
 } from '../../../api/bookApi';
 import {
-  addBook,
   fetchBook,
-  fetchingBook,
-  fetchedBook,
-  fetchBookError
 } from './index'
 import {constants} from '../../../containers/ToastNotification';
 import {showToast} from '../notification/index';
+import {getToken} from '../auth/index'
+
 function* fetchBookSaga(action) {
-  yield put(fetchingBook());
-  const res = yield fetchBookApi();
+  const token =  yield select(getToken);
+  const res = yield fetchBookApi(token);
   if (res.data) {
     yield put(fetchBook(res.data.data));
   }
-  // yield put(fetchBook(bookMock));
-  yield put(fetchedBook())
 }
 
 function* addBookSaga(action) {
   const { book } = action.payload;
-  yield put(fetchingBook());
-  const res = yield addBookApi(book);
+  const token =  yield(select(getToken));
+  const res = yield addBookApi(book,token);
   if (res.data) {
     const toast = {
       message: "Thêm sách thành công",
@@ -58,11 +51,9 @@ function* addBookSaga(action) {
 
 function* editBookSaga(action) {
   const { book } = action.payload;
-  yield put(fetchingBook());
-  const res = yield updateBookApi(book);
+  const token =  yield select(getToken);
+  const res = yield updateBookApi(book,token);
   if (res.data) {
-    //TODO:
-    //TODO:example for toasting a notification
     const toast = {
       message: "Sửa thông tin sách thành công",
       action: "Dismiss",
@@ -75,10 +66,9 @@ function* editBookSaga(action) {
 
 function* deleteBookSaga(action) {
   const { bookId } = action.payload;
-  yield put(fetchingBook());
-  const res = yield deleteBookApi(bookId);
+  const token =  yield select(getToken);
+  const res = yield deleteBookApi(bookId, token);
   if (res.data) {
-    //TODO:
     const toast = {
       message: "Xóa thông tin sách thành công",
       action: "Dismiss",

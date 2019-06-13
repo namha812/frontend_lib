@@ -61,7 +61,8 @@ class FullScreenDialog extends React.Component {
 		isActive: true,
 		publisherHouseId: null,
 		quantity: null,
-		coverPrice: null
+		coverPrice: null,
+		imageUrl: null
 	}
 
 	handleClickOpen = () => {
@@ -79,13 +80,14 @@ class FullScreenDialog extends React.Component {
 				publisherHouseId: null,
 				quantity: null,
 				coverPrice: null,
-				isActive: true
+				isActive: true,
+				imageUrl: null,
+				book: {}
 			}
 		);
 	};
 
 	handleChange = (name) => event => {
-		console.log("handleChange", name)
 		const value = event.target.value;
 		this.setState(state => {
 			return {
@@ -103,7 +105,8 @@ class FullScreenDialog extends React.Component {
 			isActive,
 			publisherHouseId,
 			quantity,
-			coverPrice
+			coverPrice,
+			imageUrl
 		} = this.state;
 		const { addBook, editBook, book } = this.props;
 		if (book.id) {
@@ -116,6 +119,7 @@ class FullScreenDialog extends React.Component {
 				author: author,
 				coverPrice: coverPrice,
 				publisherHouseId: publisherHouseId,
+				imageUrl: imageUrl
 			})
 		}
 		else {
@@ -126,7 +130,8 @@ class FullScreenDialog extends React.Component {
 				categoryId: categoryId || this.defaultCategory,
 				isActive: isActive,
 				publisherHouseId: publisherHouseId || this.defaultPublisherHouse,
-				coverPrice
+				coverPrice,
+				imageUrl
 			})
 		}
 
@@ -191,6 +196,7 @@ class FullScreenDialog extends React.Component {
 				quantity: nextBook.quantity,
 				coverPrice: nextBook.coverPrice,
 				author: nextBook.author,
+				imageUrl: nextBook.imageUrl,
 				book: nextBook
 			}
 		}
@@ -281,6 +287,16 @@ class FullScreenDialog extends React.Component {
 							))}
 						</Select>
 					</FormControl>
+					<TextField
+						disabled={!edit}
+						value={this.state.imageUrl}
+						defaultValue={book.imageUrl}
+						id="standard-required"
+						label="Link ảnh"
+						onChange={this.handleChange("imageUrl")}
+						className={classes.textField}
+						margin="normal"
+					/>
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Nhà xuất bản:</InputLabel>
 						<Select

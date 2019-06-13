@@ -42,12 +42,42 @@ class BookBorrowPage extends Component {
   }
 
   componentDidMount() {
-    const {fetchCategory, fetchStudent, fetchPublisher, fetchBook} = this.props;
-    document.title = "Mượn sách"
-    fetchBook();
-    fetchStudent();
-    fetchCategory();
-    fetchPublisher();
+    const {fetchCategory, fetchStudent, fetchPublisher, fetchBook, fetchedBookStatus, 
+      fetchedCategoryStatus, fetchedPublisherStatus, fetchedStudentStatus, loginStatus} = this.props;
+    document.title = "Mượn sách";
+    if(loginStatus) {
+      if(!fetchedBookStatus) {
+        fetchBook();
+      }
+      if(!fetchedCategoryStatus) {
+        fetchCategory();
+      }
+      if(!fetchedPublisherStatus) {
+        fetchPublisher();
+      }
+      if(!fetchedStudentStatus) {
+        fetchStudent();
+      }
+    }
+  }
+
+  componentDidUpdate(){
+    const {fetchCategory, fetchStudent, fetchPublisher, fetchBook, fetchedBookStatus, 
+      fetchedCategoryStatus, fetchedPublisherStatus, fetchedStudentStatus, loginStatus} = this.props;
+    if(loginStatus) {
+      if(!fetchedBookStatus) {
+        fetchBook();
+      }
+      if(!fetchedCategoryStatus) {
+        fetchCategory();
+      }
+      if(!fetchedPublisherStatus) {
+        fetchPublisher();
+      }
+      if(!fetchedStudentStatus) {
+        fetchStudent();
+      }
+    }
   }
 
   onChangeRoute = (route) => {
@@ -93,7 +123,11 @@ export default connect(state => ({
   categories: state.category.categories,
   books: state.book.books,
   publisherHouse: state.publisher.publisherHouse,
-  students: state.student.students
+  students: state.student.students,
+  fetchedBookStatus: state.book.fetched,
+  fetchedStudentStatus: state.student.fetched,
+  fetchedCategoryStatus: state.category.fetched,
+  fetchedPublisherStatus: state.publisher.fetched
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route

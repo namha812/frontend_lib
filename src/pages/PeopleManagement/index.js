@@ -5,7 +5,7 @@ import { compose } from "redux";
 import Appbar from '../../components/AppBar';
 import Drawer from '../../components/Drawer';
 import PeopleManagement from '../../components/PeopleMangement'
-import {logoutSaga} from '../../state/modules/auth';
+import { logoutSaga } from '../../state/modules/auth';
 
 import {
   fetchStudentSaga,
@@ -24,12 +24,6 @@ import {
   fetchPublisherSaga
 } from '../../state/modules/publisher'
 import Searchbox from '../../components/Searchbox';
-import {
-	ROUTE_HOME,
-	ROUTE_PEOPLE,
-	ROUTE_BOOK_BORROW,
-	ROUTE_BOOK
-} from '../../state/modules/routing';
 
 class PeopleManagementPage extends Component {
   state = {
@@ -40,13 +34,20 @@ class PeopleManagementPage extends Component {
 
   componentDidMount() {
     document.title = "Quản lý độc giả"
-    const { fetchClass, fetchStudent } = this.props;
-    fetchStudent();
-    fetchClass();
+    const { fetchClass, fetchStudent, fetchStudentStatus, loginStatus } = this.props;
+    if (loginStatus) {
+      if (!fetchStudentStatus) {
+        fetchStudent();
+        fetchClass();
+      }
+    }
   }
 
   componentDidUpdate() {
-    const { type } = this.props;
+    const { fetchClass, fetchStudent, fetchStudentStatus, loginStatus } = this.props;
+    if (loginStatus && !fetchStudentStatus) {
+      fetchStudent();
+    }
   }
 
   recallApi = (route) => {
@@ -74,18 +75,17 @@ class PeopleManagementPage extends Component {
   }
   render() {
     const { openDrawer, searchValue } = this.state
-    const { 
+    const {
       location,
       loginStatus,
       student,
       ...remainProps
     } = this.props;
-    console.log(this.props)
     return (
       <React.Fragment>
         <Appbar logout={this.props.logout} loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
         <Drawer loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
-        <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue}/>
+        <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue} />
         <PeopleManagement
           students={student.students}
           loadingState={student.fetching}
@@ -102,19 +102,20 @@ export default connect(state => ({
   location: state.location,
   route: state.location.type,
   student: state.student,
+  fetchStudentStatus: state.student.fetched,
   classList: state.classes.classes,
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route
   }),
-  fetchClass:compose(dispatch, fetchClassSaga),
-  fetchCategory:compose(dispatch, fetchCategorySaga),
-  fetchPublisher:compose(dispatch, fetchPublisherSaga),
-  fetchStudent:compose(dispatch, fetchStudentSaga),
+  fetchClass: compose(dispatch, fetchClassSaga),
+  fetchCategory: compose(dispatch, fetchCategorySaga),
+  fetchPublisher: compose(dispatch, fetchPublisherSaga),
+  fetchStudent: compose(dispatch, fetchStudentSaga),
   editStudent: compose(dispatch, editStudentSaga),
   addStudent: compose(dispatch, addStudentSaga),
   deleteStudent: compose(dispatch, deleteStudentSaga),
   logout: compose(dispatch, logoutSaga)
 
-  
+
 }))(PeopleManagementPage);

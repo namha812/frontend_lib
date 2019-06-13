@@ -104,7 +104,6 @@ class Category extends React.Component {
       editCategory,
       addCategory
     } = this.props;
-    console.log(this.props);
     const { open, edit, category, page, rowsPerPage } = this.state;
     return (
       <Paper>

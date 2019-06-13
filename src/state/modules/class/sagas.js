@@ -4,16 +4,28 @@ import { fetchClassApi, updateClassApi, createClassApi } from '../../../api/clas
 import {constants} from '../../../containers/ToastNotification';
 import {showToast} from '../notification/index';
 import { fetchClass } from './index'
-
+import {getToken} from '../auth/index';
 function* fetchClassSaga(action) {
-    const {data} =  yield fetchClassApi()
-    const classes = data.data
-    yield put(fetchClass(classes));
+    const token =  yield select(getToken);
+    const res =  yield fetchClassApi(token)
+    if(res.err){
+      const toast = {
+        message: "Có lỗi xảy ra",
+        action: "Dismiss",
+        type: constants.FAILED
+      }
+      yield put(showToast(toast));
+    }
+    if(res.data) {
+      const classes = res.data.data;
+      yield put(fetchClass(classes));
+    }
 }
 
 function* editClass(action) {
+  const token =  yield select(getToken);
   const { classes } = action.payload;
-  const res = yield updateClassApi(classes);
+  const res = yield updateClassApi(classes, token);
   if (res.data) {
     const toast = {
       message: "Sửa thông tin lớp thành công",
@@ -34,8 +46,9 @@ function* editClass(action) {
 }
 
 function* addClassSaga(action) {
+  const token =  yield select(getToken);
   const { classes } = action.payload;
-  const res = yield createClassApi(classes);
+  const res = yield createClassApi(classes, token);
   if (res.data) {
     const toast = {
       message: "Thêm lớp thành công",

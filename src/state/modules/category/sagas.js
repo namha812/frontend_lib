@@ -6,17 +6,29 @@ import {showToast} from '../notification/index';
 import {
   fetchCategory
 } from './index'
+import {getToken} from '../auth/index';
 
 function* fetchCategorySaga(action) {
-  const { data } = yield fetchCategoryApi()
-  if (data) {
-    yield put(fetchCategory(data.data));
+  const token =  yield select(getToken);
+  const res = yield fetchCategoryApi(token);
+  if(res.err){
+    const toast = {
+      message: "Có lỗi xảy ra",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
+  }
+  if(res.data) {
+    const category = res.data.data;
+    yield put(fetchCategory(category));
   }
 }
 
 function* editCategorySaga(action) {
+  const token =  yield select(getToken);
   const { category } = action.payload;
-  const res = yield updateCategoryApi(category);
+  const res = yield updateCategoryApi(category, token);
   if (res.data) {
     const toast = {
       message: "Sửa danh mục thành công",
@@ -37,8 +49,9 @@ function* editCategorySaga(action) {
 }
 
 function* addCategorySaga(action) {
+  const token =  yield select(getToken);
   const { category } = action.payload;
-  const res = yield createCategoryApi(category);
+  const res = yield createCategoryApi(category, token);
   if (res.data) {
     const toast = {
       message: "Thêm danh mục thành công",

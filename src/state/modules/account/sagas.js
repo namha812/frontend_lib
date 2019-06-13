@@ -1,25 +1,38 @@
-import { all, put, takeEvery } from 'redux-saga/effects';
+import { all, put, takeEvery, select } from 'redux-saga/effects';
 import { FETCH_ACCOUNT_SAGA, EDIT_ACCOUNT_SAGA, ADD_ACCOUNT_SAGA } from './index'
 import { fetchAccountApi, addAccountApi, updateAccountApi } from '../../../api/accountApi';
 import {constants} from '../../../containers/ToastNotification';
 import {showToast} from '../notification/index';
-
+import {getToken} from '../auth/index'
 import {
   fetchAccount
 } from './index';
 
 function* fetchAccountSaga(action) {
-  const { data } = yield fetchAccountApi();
-  const account = data.data
-  yield put(fetchAccount(account));
+  const token =  yield select(getToken);
+  const res = yield fetchAccountApi(token);
+  if (res.data) {
+    const account = res.data.data
+    yield put(fetchAccount(account));
+  }
+  if(res.err){
+    const toast = {
+      message: "Xảy ra lỗi",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
+  }
+  
 }
 
 function* editAccountSaga(action) {
+  const token =  yield select(getToken);
   const { account } = action.payload;
-  const res = yield updateAccountApi(account);
+  const res = yield updateAccountApi(account, token);
   if (res.data) {
     const toast = {
-      message: "Sủa tài khoản thành công",
+      message: "Sửa tài khoản thành công",
       action: "Dismiss",
       type: constants.SUCCESS
     }
@@ -37,8 +50,9 @@ function* editAccountSaga(action) {
 }
 
 function* addCategorySaga(action) {
+  const token =  yield select(getToken);
   const { account } = action.payload;
-  const res = yield addAccountApi(account);
+  const res = yield addAccountApi(account, token);
   if (res.data) {
     const toast = {
       message: "Thêm tài khoản thành công",

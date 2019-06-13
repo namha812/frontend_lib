@@ -4,16 +4,28 @@ import { fetchPublisherHouseApi, addPublisherHouseApi, updatePublisherHouseApi }
 import { constants } from '../../../containers/ToastNotification';
 import { showToast } from '../notification/index';
 import { fetchPublisher } from './index'
-
+import {getToken} from '../auth/index';
 function* fetchPublisherSaga(action) {
-    const {data} =  yield fetchPublisherHouseApi()
-    const publisher = data.data
+  const token =  yield select(getToken);
+  const res =  yield fetchPublisherHouseApi(token);
+  if(res.data){
+    const publisher = res.data.data;
     yield put(fetchPublisher(publisher));
+  }
+  if(res.err){
+    const toast = {
+      message: "Có lỗi xảy ra",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
+  }
 }
 
 function* addPublisherHouseSaga(action) {
+  const token =  yield select(getToken);
   const { publisher } = action.payload;
-  const res = yield addPublisherHouseApi(publisher);
+  const res = yield addPublisherHouseApi(publisher, token);
   if (res.data) {
     const toast = {
       message: "Thêm nhà xuất bản thành công",
@@ -34,8 +46,9 @@ function* addPublisherHouseSaga(action) {
 }
 
 function* editPublisherHouseSaga(action) {
+  const token =  yield select(getToken);
   const { publisher } = action.payload;
-  const res = yield updatePublisherHouseApi(publisher);
+  const res = yield updatePublisherHouseApi(publisher, token);
   if (res.data) {
     const toast = {
       message: "Sửa nhà xuất bản thành công",

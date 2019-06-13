@@ -31,9 +31,18 @@ class PublisherHousePage extends Component {
     }
 
     componentDidMount() {
-        const { fetchPublisher } = this.props;
-        document.title = "Quản lý nhà xuất bản"
-        fetchPublisher(); 
+        document.title = "Quản lý nhà xuất bản";
+        const { fetchPublisher, loginStatus, publisherHouses = [] } = this.props;
+        if(loginStatus && publisherHouses && !publisherHouses.length){
+            fetchPublisher(); 
+        }
+    }
+
+    componentDidUpdate() {
+        const { fetchPublisher, loginStatus, publisherHouses = [] } = this.props;
+        if(loginStatus && publisherHouses && !publisherHouses.length){
+            fetchPublisher(); 
+        }
     }
     onChangeRoute = (route) => {
         this.props.redirect(route);

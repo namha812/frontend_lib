@@ -117,6 +117,7 @@ class Cart extends React.Component {
 
 	onCancelClick = () => {
 		const { onCancelClick } = this.props;
+		this.setState({ selectedStudent: {} })
 		onCancelClick();
 	}
 
@@ -130,7 +131,6 @@ class Cart extends React.Component {
 	render() {
 		const { selectedStudent } = this.state;
 		const { selectedBook, classes, students = [] } = this.props;
-		console.log(students)
 		if (!selectedBook.length) {
 			return null;
 		}
@@ -223,8 +223,6 @@ class Cart extends React.Component {
 			</Paper>
 		);
 	}
-
-
 }
 
 Cart.propTypes = {

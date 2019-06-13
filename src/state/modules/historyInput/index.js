@@ -4,11 +4,13 @@ export const FETCH_HISTORY = 'FETCH_HISTORY';
 export const FETCH_HISTORY_SAGA = 'FETCH_HISTORY_SAGA';
 
 const defaultState = {
-    historyInput:[]
+    historyInput:[],
+    fetched: false
 }
 const historyReducer = createReducer(defaultState, {
   [FETCH_HISTORY]: (state, action) => ({
     ...state,
+    fetched: true,
     historyInput: action.payload.historyInput
   })
 })

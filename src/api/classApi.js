@@ -1,21 +1,21 @@
 import baseApi from './baseApi'
 
-export const fetchClassApi = () => {
-    return baseApi.get('/class').then(res => res).catch(err => ({
+export const fetchClassApi = (token) => {
+    return baseApi(token).get('/class').then(res => res).catch(err => ({
         ...err,
         err: true
     }));
 }
 
-export const updateClassApi = (classes) => {
-    return baseApi.put('/class/' + classes.id, classes).then(res => res).catch(err => ({
+export const updateClassApi = (classes,token) => {
+    return baseApi(token).put('/class/' + classes.id, classes).then(res => res).catch(err => ({
         ...err,
         err: true
     }));
 }
 
-export const createClassApi = (classes) => {
-    return baseApi.post('/class', classes).then(res => res).catch(err => ({
+export const createClassApi = (classes,token) => {
+    return baseApi(token).post('/class', classes).then(res => res).catch(err => ({
         ...err,
         err: true
     }));

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('token');
+// const token = localStorage.getItem('token');
 
-const baseApi = axios.create({
+const baseApi = (token) => axios.create({
         baseURL: 'http://localhost:3001',
         headers: {
             "Content-Type": "application/json",

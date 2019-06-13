@@ -63,7 +63,6 @@ class FullScreenDialog extends React.Component {
 
   handleApplyForm = () => {
     const { currentItem, note } = this.state;
-    console.log(currentItem);
     const { payBook } = this.props;
     payBook({
       id: currentItem.id,
@@ -143,7 +142,7 @@ class FullScreenDialog extends React.Component {
                         <span style={{ color: "#D8000C" }}>{this.TimePay(row)}</span> : 
                         <span style={{ color: "#4F8A10" }}>{this.TimePay(row)}</span>}</TableCell>
                     <TableCell>
-                      <Button onClick={this.giveBookBack(row)} color="primary" className={classes.button}>
+                      <Button onClick={this.giveBookBack(row)} color="primary" className={classes.button} disabled={row.status === 2}>
                         Trả sách
                       </Button>
                     </TableCell>
@@ -161,12 +160,12 @@ class FullScreenDialog extends React.Component {
           <DialogTitle id="form-dialog-title">Trả sách</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {borrowItem.fullName} trả lại sách, số lượng: {this.state.currentItem.borrowTotal}. Ngày mượn: {format(new Date(this.state.currentItem.borrowDate), "DD/MM/YYYY")}
+              {borrowItem.fullName} trả lại sách. Ngày mượn: {format(new Date(this.state.currentItem.borrowDate), "DD/MM/YYYY")}
             </DialogContentText>
             <DialogContentText>
               Trạng thái: {
                 this.state.currentItem.isExpiry ?
-                  <span style={{ color: "#D8000C" }}>Hết hạn</span>
+                  <span style={{ color: "#D8000C" }}>Quá hạn</span>
                   :
                   <span style={{ color: "#4F8A10" }}>Còn hạn</span>
               }

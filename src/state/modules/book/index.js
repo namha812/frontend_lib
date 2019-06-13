@@ -19,19 +19,10 @@ const defaultState = {
   books: []
 }
 const bookReducer = createReducer(defaultState, {
-  [FETCHING_BOOK]: (state, action) => ({
-    ...state,
-    fetching: true,
-    fetched: false
-  }),
-  [FETCHED_BOOK]: (state, action) => ({
-    ...state,
-    fetching: false,
-    fetched: true
-  }),
   [FETCH_BOOK]: (state, action) => {
     return  {
       ...state,
+      fetched: true,
       books: action.payload.books
     }
   },
@@ -54,12 +45,6 @@ export const fetchBookSaga = (payload) => ({
   type: FETCH_BOOK_SAGA,
 })
 
-export const fetchingBook = () => ({
-  type: FETCHING_BOOK
-})
-export const fetchedBook = () => ({
-  type: FETCHED_BOOK
-})
 export const addBook = (book) => ({
   type: ADD_BOOK,
   payload: {

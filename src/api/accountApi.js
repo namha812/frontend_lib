@@ -1,14 +1,23 @@
 import baseApi from './baseApi'
 
-export const fetchAccountApi = () => {
-  return baseApi.get('/account');
+export const fetchAccountApi = (token) => {
+  return baseApi(token).get('/account').then(res => res).catch(err => ({
+    ...err,
+    err: true
+  }));
 }
 
-export const addAccountApi = (account) => {
-  return baseApi.post('/account', account);
+export const addAccountApi = (account, token) => {
+  return baseApi(token).post('/account', account).then(res => res).catch(err => ({
+    ...err,
+    err: true
+  }));
 }
 
-export const updateAccountApi = (account) => {
+export const updateAccountApi = (account, token) => {
   const { id } = account;
-  return baseApi.put(`/account/${id}`, account);
+  return baseApi(token).put(`/account/${id}`, account).then(res => res).catch(err => ({
+    ...err,
+    err: true
+  }));
 }

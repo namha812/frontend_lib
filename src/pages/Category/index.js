@@ -32,10 +32,23 @@ class CategoryPage extends Component {
   }
 
   componentDidMount() {
-    const { fetchCategory } = this.props;
     document.title = "Quản lý danh mục sách"
-    fetchCategory();
   }
+
+  componentDidUpdate() {
+    const {loginStatus, fetchCategory, fetchedCategoryStatus} = this.props;
+    if(loginStatus && !fetchedCategoryStatus) {
+      fetchCategory();
+    }
+  }
+
+  componentWillUpdate() {
+    const {loginStatus, fetchCategory, fetchedCategoryStatus} = this.props;
+    if(loginStatus && !fetchedCategoryStatus) {
+      fetchCategory();
+    }
+  }
+  
   onChangeRoute = (route) => {
     this.props.redirect(route);
   }
@@ -61,7 +74,8 @@ class CategoryPage extends Component {
 
 export default connect(state => ({
   loginStatus: state.auth.loginStatus,
-  categories: state.category.categories
+  categories: state.category.categories,
+  fetchedCategoryStatus: state.category.fetched
 }), (dispatch) => ({ //connect and dispatch your action to call into your reducer - remember your payload.
   redirect: (route) => dispatch({
     type: route

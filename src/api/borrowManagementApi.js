@@ -1,29 +1,29 @@
 import baseApi from './baseApi'
 
-export const fetchBorrowList = () => {
-  return baseApi.get('/borrowPay').then(res => res).catch(err => ({
+export const fetchBorrowList = (token) => {
+  return baseApi(token).get('/borrowPay').then(res => res).catch(err => ({
     ...err,
     err: true
   }));
 }
 
-export const fetchBorrowById = (id) => {
-  return baseApi.get(`/payment/${id}`).then(res => res).catch(err => ({
+export const fetchBorrowById = (id,token) => {
+  return baseApi(token).get(`/payment/${id}`).then(res => res).catch(err => ({
     ...err,
     err: true
   }));
 }
 
-export const borrowBookApi = (payload) => {
-  return baseApi.post('/borrowPay/borrow', payload).then(res => res).catch(err => ({
+export const borrowBookApi = (payload,token) => {
+  return baseApi(token).post('/borrowPay/borrow', payload).then(res => res).catch(err => ({
     ...err,
     err: true
   }));
 }
 
-export const payBookApi = (payload) => {
+export const payBookApi = (payload,token) => {
   const { id, ...remainsProps } = payload;
-  return baseApi.put(`/borrowPay/payment/${payload.id}`, { ...remainsProps }).then(res => res).catch(err => ({
+  return baseApi(token).put(`/borrowPay/payment/${payload.id}`, { ...remainsProps }).then(res => res).catch(err => ({
     ...err,
     err: true
   }));

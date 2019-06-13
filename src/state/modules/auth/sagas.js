@@ -1,13 +1,13 @@
-import { all, call, delay, fork, takeLatest, put, select, takeEvery } from 'redux-saga/effects';
+import { all, put, select, takeEvery } from 'redux-saga/effects';
 import { LOGIN_SAGA, CHECK_LOGIN, LOGOUT_SAGA } from './index'
-import { loginApi, signupApi } from '../../../api/userApi';
+import { loginApi } from '../../../api/userApi';
 import { fetchStudent } from '../../../api/studentApi';
 import { routeType } from '../routing/index'
-
+import { constants } from '../../../containers/ToastNotification';
+import { showToast } from '../notification/index';
 import {
   loadingLogin,
   loadedLogin,
-  errorLogin,
   logout
 } from './index'
 
@@ -24,27 +24,41 @@ function* loginSaga(action) {
   yield put(loadingLogin());
   const res = yield loginApi(user);
   if (res.data) {
+    const toast = {
+      message: "Đăng nhập thành công",
+      action: "Dismiss",
+      type: constants.SUCCESS
+    }
+    yield put(showToast(toast));
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('fullname', res.data.user.fullName);
+    localStorage.setItem('email', res.data.user.email);
+    localStorage.setItem('id', res.data.user.id);
+    localStorage.setItem('role', res.data.user.role);
     yield put(loadedLogin(res.data));
-    yield put({ type: ROUTE_HOME })
+    yield put({ type: ROUTE_HOME });
   }
-  localStorage.setItem('token', res.data.token);
-  localStorage.setItem('fullname', res.data.user.fullName);
-  localStorage.setItem('email', res.data.user.email);
-  localStorage.setItem('id', res.data.user.id);
-  localStorage.setItem('role', res.data.user.role);
+  if (res.err) {
+    const toast = {
+      message: "Đăng nhập không thành công",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
+  }
 };
 
 function* checkLoginSaga(action) {
-  const token = localStorage.getItem('token');
+  const tokenLocal = localStorage.getItem('token');
   const fullName = localStorage.getItem('fullname');
   const email = localStorage.getItem('email');
   const id = localStorage.getItem('id');
   const role = localStorage.getItem('role');
-  const data = yield fetchStudent();
+  const data = yield fetchStudent(tokenLocal);
   const routeState = yield select(routeType);
   if (!data.err) {
     yield put(loadedLogin({
-      token: token,
+      token: tokenLocal,
       user: {
         fullName,
         email,
@@ -52,7 +66,7 @@ function* checkLoginSaga(action) {
         role
       }
     }));
-    if(routeState === 'route/ROUTE_LOGIN') {
+    if (routeState === 'route/ROUTE_LOGIN') {
       yield put({
         type: "route/ROUTE_HOME"
       })

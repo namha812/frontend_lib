@@ -28,10 +28,17 @@ class HistoryPage extends Component {
     }
 
     componentDidMount() {
-        const { fetchHistory } = this.props;
-        document.title = "Lịch sử nhập kho"
-        console.log("fetchHistory")
-        fetchHistory(); 
+        document.title = "Lịch sử nhập kho";
+        const {loginStatus, fetchHistory, fetchedHistoryStatus} = this.props;
+        if(loginStatus && !fetchedHistoryStatus) {
+            fetchHistory();
+        }
+    }
+    componentDidUpdate() {
+        const {loginStatus, fetchHistory, fetchedHistoryStatus} = this.props;
+        if(loginStatus && !fetchedHistoryStatus) {
+            fetchHistory();
+        }
     }
     onChangeRoute = (route) => {
         this.props.redirect(route);
@@ -57,7 +64,8 @@ class HistoryPage extends Component {
 
 export default connect(state => ({
     loginStatus: state.auth.loginStatus,
-    historyInput: state.historyInput.historyInput
+    historyInput: state.historyInput.historyInput,
+    fetchedHistoryStatus: state.historyInput.fetched
 }), (dispatch) => ({ //connect and dispatch your action to call into your reducer - remember your payload.
     redirect: (route) => dispatch({
         type: route

@@ -28,10 +28,19 @@ class AccountPage extends Component {
     }
 
     componentDidMount() {
-        const { fetchAccount } = this.props;
-        fetchAccount(); 
-        document.title = "Quản lý tài khoản"
+        const { fetchAccount, loginStatus, fetchedAccountStatus } = this.props;
+        document.title = "Quản lý tài khoản";
+        if(loginStatus && !fetchedAccountStatus) {
+            fetchAccount(); 
+        }
     }
+    componentDidUpdate() {
+        const { fetchAccount, loginStatus, fetchedAccountStatus } = this.props;
+        if(loginStatus && !fetchedAccountStatus) {
+            fetchAccount(); 
+        }
+    }
+    
     onChangeRoute = (route) => {
         this.props.redirect(route);
     }
@@ -51,7 +60,8 @@ class AccountPage extends Component {
 
 export default connect(state => ({
     loginStatus: state.auth.loginStatus,
-    accounts: state.account.accounts
+    accounts: state.account.accounts,
+    fetchedAccountStatus: state.account.fetched
 }), (dispatch) => ({ //connect and dispatch your action to call into your reducer - remember your payload.
     redirect: (route) => dispatch({
         type: route

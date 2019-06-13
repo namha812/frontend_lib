@@ -68,7 +68,12 @@ class BookManage extends React.Component {
 	}
 
 	handleCloseDialog = () => {
-		this.setState({ open: false });
+		this.setState(
+			{
+				currentBook: {},
+				open: false
+			}
+		);
 	}
 	handleView = (Book) => () => {
 		this.setState(
@@ -137,7 +142,7 @@ class BookManage extends React.Component {
 			loadingState,
 			editBook,
 			addBook,
-			publisherHouses,
+			publisherHouses = [],
 			categories
 		} = this.props;
 		const { open, edit, currentBook, rowsPerPage, page } = this.state;

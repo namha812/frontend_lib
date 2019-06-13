@@ -87,7 +87,6 @@ class FullScreenDialog extends React.Component {
 				account: {}
 			}
 		);
-		console.log(this.state)
 	};
 
 	handleChange = (name) => event => {

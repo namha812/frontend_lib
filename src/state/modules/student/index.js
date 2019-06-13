@@ -19,19 +19,10 @@ const defaultState = {
   students: []
 }
 const studentReducer = createReducer(defaultState, {
-  [FETCHING_STUDENT]: (state, action) => ({
-    ...state,
-    fetching: true,
-    fetched: false
-  }),
-  [FETCHED_STUDENT]: (state, action) => ({
-    ...state,
-    fetching: false,
-    fetched: true
-  }),
   [FETCH_STUDENT]: (state, action) => {
     return  {
       ...state,
+      fetched: true,
       students: action.payload.students
     }
   },
@@ -54,12 +45,6 @@ export const fetchStudentSaga = (payload) => ({
   type: FETCH_STUDENT_SAGA,
 })
 
-export const fetchingStudent = () => ({
-  type: FETCHING_STUDENT
-})
-export const fetchedStudent = () => ({
-  type: FETCHED_STUDENT
-})
 export const addStudent = (student) => ({
   type: ADD_STUDENT,
   payload: {
