@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import ViewGridItem from '../ViewGridItem';
 import Cart from '../Cart';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from "@material-ui/core/styles";
 import lodash from "lodash";
-
+import {constants} from '../../containers/ToastNotification';
 const styles = theme => ({
   card: {
     display: "flex",
@@ -62,7 +55,7 @@ class BorrowBook extends Component {
     }));
   };
   componentDidUpdate() {
-    
+
   }
   handleClose = () => {
     this.setState({
@@ -74,12 +67,18 @@ class BorrowBook extends Component {
 
   onSelectedBook = (book) => {
     book.number = 1
+    const { showToast } = this.props;
     const { selectedBook } = this.state
     let findBook = lodash.find(selectedBook, o => {
       return o.id === book.id
     })
     if (findBook) {
-      return console.log("Sách này đã tồn tại")
+      const payload = {
+        message: "Cách này đã có trong giỏ",
+        action: "Dismiss",
+        type: constants.FAILED
+      }
+      return showToast(payload);
     }
     this.setState(state => ({
       ...state,

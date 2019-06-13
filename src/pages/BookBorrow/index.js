@@ -25,14 +25,15 @@ import {
 } from '../../state/modules/student'
 import Searchbox from '../../components/Searchbox';
 import {
-	ROUTE_HOME,
-	ROUTE_PEOPLE,
-	ROUTE_BOOK_BORROW,
-	ROUTE_BOOK
+  ROUTE_HOME,
+  ROUTE_PEOPLE,
+  ROUTE_BOOK_BORROW,
+  ROUTE_BOOK
 } from '../../state/modules/routing';
 import BookBorrow from '../../components/BookBorrow';
 import { borrowBookSaga } from '../../state/modules/borrow';
-import {logoutSaga} from '../../state/modules/auth';
+import { logoutSaga } from '../../state/modules/auth';
+import { showToast } from '../../state/modules/notification';
 
 class BookBorrowPage extends Component {
   state = {
@@ -42,39 +43,39 @@ class BookBorrowPage extends Component {
   }
 
   componentDidMount() {
-    const {fetchCategory, fetchStudent, fetchPublisher, fetchBook, fetchedBookStatus, 
-      fetchedCategoryStatus, fetchedPublisherStatus, fetchedStudentStatus, loginStatus} = this.props;
+    const { fetchCategory, fetchStudent, fetchPublisher, fetchBook, fetchedBookStatus,
+      fetchedCategoryStatus, fetchedPublisherStatus, fetchedStudentStatus, loginStatus } = this.props;
     document.title = "Mượn sách";
-    if(loginStatus) {
-      if(!fetchedBookStatus) {
+    if (loginStatus) {
+      if (!fetchedBookStatus) {
         fetchBook();
       }
-      if(!fetchedCategoryStatus) {
+      if (!fetchedCategoryStatus) {
         fetchCategory();
       }
-      if(!fetchedPublisherStatus) {
+      if (!fetchedPublisherStatus) {
         fetchPublisher();
       }
-      if(!fetchedStudentStatus) {
+      if (!fetchedStudentStatus) {
         fetchStudent();
       }
     }
   }
 
-  componentDidUpdate(){
-    const {fetchCategory, fetchStudent, fetchPublisher, fetchBook, fetchedBookStatus, 
-      fetchedCategoryStatus, fetchedPublisherStatus, fetchedStudentStatus, loginStatus} = this.props;
-    if(loginStatus) {
-      if(!fetchedBookStatus) {
+  componentDidUpdate() {
+    const { fetchCategory, fetchStudent, fetchPublisher, fetchBook, fetchedBookStatus,
+      fetchedCategoryStatus, fetchedPublisherStatus, fetchedStudentStatus, loginStatus } = this.props;
+    if (loginStatus) {
+      if (!fetchedBookStatus) {
         fetchBook();
       }
-      if(!fetchedCategoryStatus) {
+      if (!fetchedCategoryStatus) {
         fetchCategory();
       }
-      if(!fetchedPublisherStatus) {
+      if (!fetchedPublisherStatus) {
         fetchPublisher();
       }
-      if(!fetchedStudentStatus) {
+      if (!fetchedStudentStatus) {
         fetchStudent();
       }
     }
@@ -99,8 +100,8 @@ class BookBorrowPage extends Component {
     })
   }
   render() {
-    const { openDrawer,searchValue } = this.state
-    const { 
+    const { openDrawer, searchValue } = this.state
+    const {
       location,
       loginStatus,
       ...remainProps
@@ -108,8 +109,8 @@ class BookBorrowPage extends Component {
     return (
       <React.Fragment>
         <Appbar logout={this.props.logout} loginStatus={loginStatus} openDrawer={this.onOpenDrawer} />
-        <Drawer  loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
-        <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue}/>
+        <Drawer loginStatus={loginStatus} openDrawer={openDrawer} onClose={this.onCloseDrawer} onChangeRoute={this.onChangeRoute} />
+        <Searchbox loginStatus={loginStatus} placeholder="Search" onChangeSearchValue={this.onChangeSearchValue} />
         <BorrowBook searchValue={searchValue} {...remainProps} />
       </React.Fragment>
     );
@@ -133,13 +134,14 @@ export default connect(state => ({
     type: route
   }),
   borrowBook: compose(dispatch, borrowBookSaga),
-  fetchStudent:compose(dispatch, fetchStudentSaga),
-  fetchClass:compose(dispatch, fetchClassSaga),
-  fetchCategory:compose(dispatch, fetchCategorySaga),
-  fetchPublisher:compose(dispatch, fetchPublisherSaga),
-  fetchBook:compose(dispatch, fetchBookSaga),
+  fetchStudent: compose(dispatch, fetchStudentSaga),
+  fetchClass: compose(dispatch, fetchClassSaga),
+  fetchCategory: compose(dispatch, fetchCategorySaga),
+  fetchPublisher: compose(dispatch, fetchPublisherSaga),
+  fetchBook: compose(dispatch, fetchBookSaga),
   editBook: compose(dispatch, editBookSaga),
   addBook: compose(dispatch, addBookSaga),
   deleteBook: compose(dispatch, deleteBookSaga),
-  logout: compose(dispatch, logoutSaga)
+  logout: compose(dispatch, logoutSaga),
+  showToast: compose(dispatch, showToast)
 }))(BookBorrowPage);

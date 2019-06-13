@@ -16,7 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
-
+import {format} from "date-fns";
 import cx from 'classnames';
 
 const CustomTableCell = withStyles(theme => ({
@@ -77,13 +77,14 @@ const styles = theme => ({
 	},
 	selectEmpty: {
 		marginTop: theme.spacing.unit,
-	  },
+	},
 });
-
+let curentDate = new Date();
 class Cart extends React.Component {
-
+	
 	state = {
-		selectedStudent: {}
+		selectedStudent: {},
+		expiryDate: format(curentDate.setDate(curentDate.getDate() + 3), "YYYY-MM-DD")
 	}
 
 	handleChange = name => event => {
@@ -98,8 +99,8 @@ class Cart extends React.Component {
 	}
 
 	onBorrowClick = () => {
-		const { selectedBook, borrowBook, classes, students = [] } = this.props;
-		const { selectedStudent } = this.state;
+		const { selectedBook, borrowBook } = this.props;
+		const { selectedStudent, expiryDate } = this.state;
 		const borrowPay = selectedBook.map(book => {
 			return {
 				bookId: book.id,
@@ -108,7 +109,7 @@ class Cart extends React.Component {
 		});
 		const data = {
 			borrowPay,
-			expiryDate: "2019-06-09",
+			expiryDate: expiryDate,
 			studentId: selectedStudent.id
 		}
 		borrowBook(data);
@@ -129,7 +130,8 @@ class Cart extends React.Component {
 	}
 
 	render() {
-		const { selectedStudent } = this.state;
+		const { selectedStudent, expiryDate } = this.state;
+		console.log(expiryDate)
 		const { selectedBook, classes, students = [] } = this.props;
 		if (!selectedBook.length) {
 			return null;
@@ -170,6 +172,17 @@ class Cart extends React.Component {
 				</Table>
 				<div className={classes.textLabel}>Độc giả</div>
 				<form className={classes.container} noValidate autoComplete="true">
+					<TextField
+						id="date"
+						label="Ngày trả sách"
+						type="date"
+						defaultValue={this.state.expiryDate}
+						className={classes.textField}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						onChange={this.handleChange("expiryDate")}
+					/>
 					<FormControl className={classes.formControl}>
 						<InputLabel htmlFor="class-helper">Học sinh mượn:</InputLabel>
 						<Select
