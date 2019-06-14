@@ -131,7 +131,6 @@ class Cart extends React.Component {
 
 	render() {
 		const { selectedStudent, expiryDate } = this.state;
-		console.log(expiryDate)
 		const { selectedBook, classes, students = [] } = this.props;
 		if (!selectedBook.length) {
 			return null;

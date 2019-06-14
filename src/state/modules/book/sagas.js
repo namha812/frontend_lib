@@ -21,6 +21,14 @@ import {getToken} from '../auth/index'
 function* fetchBookSaga(action) {
   const token =  yield select(getToken);
   const res = yield fetchBookApi(token);
+  if(res.err){
+    const toast = {
+      message: "Sảy ra lỗi",
+      action: "Dismiss",
+      type: constants.FAILED
+    }
+    yield put(showToast(toast));
+  }
   if (res.data) {
     yield put(fetchBook(res.data.data));
   }

@@ -74,7 +74,15 @@ class BorrowBook extends Component {
     })
     if (findBook) {
       const payload = {
-        message: "Cách này đã có trong giỏ",
+        message: "Sách này đã có trong giỏ",
+        action: "Dismiss",
+        type: constants.FAILED
+      }
+      return showToast(payload);
+    }
+    if(book.quantity < 1) {
+      const payload = {
+        message: "Sách này đã hết trong kho",
         action: "Dismiss",
         type: constants.FAILED
       }

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
+import { connect } from "react-redux";
+import { compose } from "redux";
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -21,7 +23,10 @@ import Link from 'redux-first-router-link'
 import {
 	routeLogin,
 	routeSignup
-} from '../../state/modules/routing/actions'
+} from '../../state/modules/routing/actions';
+import {
+	showDetails, hideDetails
+  } from '../../state/modules/auth'
 
 
 const styles = theme => ({
@@ -125,6 +130,10 @@ class PrimarySearchAppBar extends React.Component {
 		this.handleMenuClose()
 	}
 
+	handleShowDetails = () => {
+		this.props.showDetails();
+	}
+
 	render() {
 		const { anchorEl, contactAnchorEl } = this.state;
 		const { classes, loginStatus } = this.props;
@@ -141,7 +150,7 @@ class PrimarySearchAppBar extends React.Component {
 				{!loginStatus && <Link to={routeLogin()}>
 					<MenuItem onClick={this.handleMenuClose}>Đăng nhập</MenuItem>
 				</Link>}
-				{loginStatus && <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>}
+				{loginStatus && <MenuItem onClick={this.handleShowDetails}>Tài khoản</MenuItem>}
 				{loginStatus && <MenuItem onClick={this.handleLogout}>Đăng xuất</MenuItem>}
 			</Menu>
 		);
@@ -182,4 +191,8 @@ PrimarySearchAppBar.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PrimarySearchAppBar);
+const PrimarySearchAppBarConnect =  connect(null, (dispatch) => ({
+	showDetails: compose(dispatch, showDetails)
+  }))(PrimarySearchAppBar);
+
+export default withStyles(styles)(PrimarySearchAppBarConnect);

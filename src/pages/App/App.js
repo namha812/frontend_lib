@@ -4,6 +4,7 @@ import Routes from '../../rootRouter'
 import { connect } from "react-redux";
 import { compose } from "redux";
 import ToastNotification from '../../containers/ToastNotification';
+import AccountDetails from '../../containers/AccountDetails';
 import {
   checkLogin
 } from '../../state/modules/auth'
@@ -20,6 +21,7 @@ class App extends Component {
       <div className="App">
         <Routes />
         <ToastNotification />
+        <AccountDetails />
       </div>
     );
   }

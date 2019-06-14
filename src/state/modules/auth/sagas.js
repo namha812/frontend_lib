@@ -21,7 +21,6 @@ function* loginSaga(action) {
     email: username,
     password
   }
-  yield put(loadingLogin());
   const res = yield loginApi(user);
   if (res.data) {
     const toast = {
@@ -55,6 +54,15 @@ function* checkLoginSaga(action) {
   const id = localStorage.getItem('id');
   const role = localStorage.getItem('role');
   const data = yield fetchStudent(tokenLocal);
+  // yield put(loadedLogin({
+  //   token: "test",
+  //   user: {
+  //     fullName: "namhoang",
+  //     email: "123456@gmail.com",
+  //     id: 1,
+  //     role: 1
+  //   }
+  // }));
   const routeState = yield select(routeType);
   if (!data.err) {
     yield put(loadedLogin({

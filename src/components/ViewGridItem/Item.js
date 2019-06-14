@@ -41,15 +41,16 @@ const styles = theme => ({
 });
 const descriptionDefault = "Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes."
 function MediaControlCard(props) {
-    const { onSelectedBook, bookItem, anonymous, classes, imgUrl, name, author, quantity, content = descriptionDefault } = props;
-    const onClickbook = () => {
+    const { onSelectedBook, bookItem, anonymous, classes, imageUrl, name, author, quantity, content = descriptionDefault } = props;
+    const onClickbook = (event) => {
+        event.stopPropagation();
         onSelectedBook(bookItem);
     }
     return (
-        <Card className={classes.card}>
+        <Card onClick={props.onClickItem(bookItem)} className={classes.card}>
             <CardMedia
                 className={classes.cover}
-                image={imgUrl || "http://inthanhdat.com.vn/source/Cataloque/thiet-ke-bia-sach-01.jpg"}
+                image={imageUrl || "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png"}
                 title="Live from space album cover"
             />
             <div className={classes.details}>

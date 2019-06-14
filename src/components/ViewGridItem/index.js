@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Pagination from "material-ui-flat-pagination";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Item from './Item';
+import Details from './Details';
 import _ from 'lodash';
 const styles = {
 	container: {
@@ -36,7 +43,9 @@ class MediaCard extends Component {
 	state = {
 		offset: 0,
 		page: 0,
-		itemsPerPage: 15
+		itemsPerPage: 15,
+		currentItem: {},
+		open: false
 	}
 
 	get books() {
@@ -58,8 +67,28 @@ class MediaCard extends Component {
 		this.setState({ offset, page: (offset + itemsPerPage) / itemsPerPage - 1 });
 	}
 
+	onClickItem = (item) => () => {
+		this.setState({
+			open: true,
+			currentItem: item
+		})
+	}
+
+	handleClose = () => {
+		this.setState({
+			open: false,
+			currentItem: {}
+		})
+	}
+
+	handleBorrow = () => {
+		const { currentItem } = this.state;
+		this.props.onSelectedBook(currentItem);
+		this.handleClose();
+	}
+
 	render() {
-		const { classes, inBorrowTab = false, onSelectedBook, books = [] } = this.props;
+		const { classes, inBorrowTab = false, onSelectedBook, books = [], routeType } = this.props;
 		const { itemsPerPage } = this.state;
 
 		return (
@@ -68,8 +97,9 @@ class MediaCard extends Component {
 					{this.listItem.map((book, index) => {
 						return (<div key={index} className={classes.gridItem}>
 							<Item
+								onClickItem={this.onClickItem}
 								anonymous={!inBorrowTab}
-								url={book.url}
+								imageUrl={book.imageUrl}
 								name={book.bookName}
 								content={book.content}
 								author={book.author}
@@ -82,6 +112,24 @@ class MediaCard extends Component {
 					}
 					)}
 				</div>
+				<Dialog
+					open={this.state.open}
+					onClose={this.handleClose}
+					aria-labelledby="form-dialog-title"
+				>
+					<DialogTitle id="form-dialog-title">Chi tiết</DialogTitle>
+					<DialogContent>
+						<Details inBorrowTab={inBorrowTab} item={this.state.currentItem} />
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={this.handleClose} color="primary">
+							Hủy
+						</Button>
+						{inBorrowTab && <Button onClick={this.handleBorrow} color="primary">
+							Mượn
+						</Button>}
+					</DialogActions>
+				</Dialog>
 				<div className="pagination" style={{ textAlign: 'center', marginBottom: 20 }}>
 					<Pagination
 						limit={itemsPerPage}

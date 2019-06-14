@@ -35,6 +35,12 @@ const styles = (theme) => ({
 		marginRight: theme.spacing.unit,
 		width: "48%"
 	},
+	textField1: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
+		width: "48%",
+		paddingTop: 16
+	},
 	textFieldFullWidth: {
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
@@ -62,7 +68,8 @@ class FullScreenDialog extends React.Component {
 		publisherHouseId: null,
 		quantity: null,
 		coverPrice: null,
-		imageUrl: null
+		imageUrl: null,
+		content: null
 	}
 
 	handleClickOpen = () => {
@@ -82,6 +89,7 @@ class FullScreenDialog extends React.Component {
 				coverPrice: null,
 				isActive: true,
 				imageUrl: null,
+				content: null,
 				book: {}
 			}
 		);
@@ -106,7 +114,8 @@ class FullScreenDialog extends React.Component {
 			publisherHouseId,
 			quantity,
 			coverPrice,
-			imageUrl
+			imageUrl,
+			content
 		} = this.state;
 		const { addBook, editBook, book } = this.props;
 		if (book.id) {
@@ -119,7 +128,8 @@ class FullScreenDialog extends React.Component {
 				author: author,
 				coverPrice: coverPrice,
 				publisherHouseId: publisherHouseId,
-				imageUrl: imageUrl
+				imageUrl: imageUrl,
+				content: content
 			})
 		}
 		else {
@@ -131,7 +141,8 @@ class FullScreenDialog extends React.Component {
 				isActive: isActive,
 				publisherHouseId: publisherHouseId || this.defaultPublisherHouse,
 				coverPrice,
-				imageUrl
+				imageUrl,
+				content
 			})
 		}
 
@@ -197,6 +208,7 @@ class FullScreenDialog extends React.Component {
 				coverPrice: nextBook.coverPrice,
 				author: nextBook.author,
 				imageUrl: nextBook.imageUrl,
+				content: nextBook.content,
 				book: nextBook
 			}
 		}
@@ -271,7 +283,18 @@ class FullScreenDialog extends React.Component {
 						type="number"
 						required={true}
 					/>
-					<FormControl className={classes.textField} disabled={!edit}>
+					
+					<TextField
+						disabled={!edit}
+						value={this.state.imageUrl}
+						defaultValue={book.imageUrl}
+						id="standard-required"
+						label="Link ảnh"
+						onChange={this.handleChange("imageUrl")}
+						className={classes.textField}
+						margin="normal"
+					/>
+					<FormControl className={classes.textField1} disabled={!edit}>
 						<InputLabel htmlFor="category-native-simple">Loại:</InputLabel>
 						<Select
 							disabled={!edit}
@@ -287,16 +310,7 @@ class FullScreenDialog extends React.Component {
 							))}
 						</Select>
 					</FormControl>
-					<TextField
-						disabled={!edit}
-						value={this.state.imageUrl}
-						defaultValue={book.imageUrl}
-						id="standard-required"
-						label="Link ảnh"
-						onChange={this.handleChange("imageUrl")}
-						className={classes.textField}
-						margin="normal"
-					/>
+					
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Nhà xuất bản:</InputLabel>
 						<Select
@@ -328,6 +342,19 @@ class FullScreenDialog extends React.Component {
 							<MenuItem value={false}>Inactive</MenuItem>
 						</Select>
 					</FormControl>
+					<TextField
+						disabled={!edit}
+						value={this.state.content}
+						defaultValue={book.content}
+						id="standard-required"
+						label="Nội dung"
+						onChange={this.handleChange("content")}
+						className={classes.textField}
+						margin="normal"
+						rows={5}
+						multiline
+						fullWidth
+					/>
 				</form>
 			</Dialog>
 		);

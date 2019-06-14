@@ -11,6 +11,9 @@ export const SIGNUP_ERROR = 'signup error';
 export const CHECK_LOGIN = 'check login';
 export const LOGOUT = 'log out';
 export const LOGOUT_SAGA = 'log out saga'
+export const SHOW_DETAILS = 'SHOW_DETAILS';
+export const HIDE_DETAILS = 'HIDE_DETAILS';
+export const UPDATE_USER = 'UPDATE_USER'
 
 const defaultState = {
   loading: false,
@@ -20,7 +23,8 @@ const defaultState = {
   OAuthToken: null,
   OAuthErrorCode: null,
   OAuthErrorDescription: null,
-  sessionToken: null
+  sessionToken: null,
+  showDetails: false
 }
 const authReducer = createReducer(defaultState, {
   [LOADING_LOGIN]: (state, action) => ({
@@ -55,7 +59,25 @@ const authReducer = createReducer(defaultState, {
     OAuthErrorCode: null,
     OAuthErrorDescription: null,
     sessionToken: null
-  })
+  }),
+  [SHOW_DETAILS]: (state, action) => ({
+    ...state,
+    showDetails: true
+  }),
+  [HIDE_DETAILS]: (state, action) => ({
+    ...state,
+    showDetails: false
+  }),
+  [UPDATE_USER]: (state, action) => {
+    const {fullName} = action.payload.user;
+    return ({
+      ...state,
+      user: {
+        ...state.user,
+        fullName: fullName
+      }
+    })
+  }
 })
 
 export const loginSaga = (payload) => ({
@@ -90,5 +112,19 @@ export const logoutSaga = () => ({
 })
 
 export const getToken = (state) => state.auth.OAuthToken;
+
+ export const showDetails = () => ({
+  type: SHOW_DETAILS
+ })
+ export const hideDetails = () => ({
+  type: HIDE_DETAILS
+ })
+
+ export const updateInfoUser = (user) => ({
+   type: UPDATE_USER,
+   payload: {
+     user
+   }
+ })
 
 export default authReducer;

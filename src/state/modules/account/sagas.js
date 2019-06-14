@@ -32,7 +32,7 @@ function* editAccountSaga(action) {
   const res = yield updateAccountApi(account, token);
   if (res.data) {
     const toast = {
-      message: "Sửa tài khoản thành công",
+      message: "Cập nhật tài khoản thành công",
       action: "Dismiss",
       type: constants.SUCCESS
     }
@@ -40,7 +40,7 @@ function* editAccountSaga(action) {
   }
   if(res.err){
     const toast = {
-      message: "Sửa tài khoản không thành công",
+      message: "Cập nhật tài khoản không thành công",
       action: "Dismiss",
       type: constants.FAILED
     }
