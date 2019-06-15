@@ -31,7 +31,6 @@ function* fetchStudentSaga(action) {
 function* addStudentSaga(action) {
   const token =  yield select(getToken);
   const { student } = action.payload;
-  // yield put(fetchingStudent());
   const res = yield addStudentApi(student, token);
   if (res.data) {
     const toast = {
@@ -49,6 +48,7 @@ function* addStudentSaga(action) {
     }
     yield put(showToast(toast));
   }
+  yield fetchStudentSaga();
 }
 
 function* editStudentSaga(action) {

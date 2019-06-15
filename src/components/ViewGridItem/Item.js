@@ -55,22 +55,18 @@ function MediaControlCard(props) {
             />
             <div className={classes.details}>
                 <CardContent className={classes.content}>
-                    <Typography component="h5" variant="h5">
-                        {name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                        {author}
-                    </Typography>
-                    <Badge
-                        classes={{ badge: classes.badge }}
-                        badgeContent={quantity}
-                        color="primary"
-                    >
-                        <ShoppingCartIcon />
-                    </Badge>
-                    <Typography paragraph>
-                        {content}
-                    </Typography>
+                    <div style={{height: 60, fontSize: 18, fontFamily: '"Roboto", "Helvetica", "Arial"'}}>
+                        <span>{name}</span>
+                    </div>
+                    <div style={{height: 50, fontSize: 14, fontFamily: '"Roboto", "Helvetica", "Arial"', color: 'rgba(0, 0, 0, 0.54)'}}>
+                        <span>{author}</span>
+                    </div>
+                    <div style={{height: 15, fontSize: 14, fontFamily: '"Roboto", "Helvetica", "Arial"', color: 'rgba(0, 0, 0, 0.54)'}}>
+                        <span>Số lượng còn lại: {quantity}</span>
+                    </div>
+                    <div style={{paddingTop: 10, height: 60, fontSize: 14, fontFamily: '"Roboto", "Helvetica", "Arial"', color: 'rgba(0, 0, 0, 0.54)'}}>
+                        <span>Nội dung: {content ? content.slice(0, 60) + " ...xem thêm" : ""}</span>
+                    </div>
                     {!anonymous && <CardActions>
                         <Button size="small" color="primary" onClick={onClickbook}>
                             Thêm vào giỏ

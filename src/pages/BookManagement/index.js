@@ -6,6 +6,9 @@ import Appbar from '../../components/AppBar';
 import Drawer from '../../components/Drawer';
 import BookMangement from '../../components/BookMangement';
 import {
+  fetchHistorySaga
+} from '../../state/modules/historyInput'
+import {
   fetchBookSaga,
   addBookSaga,
   editBookSaga,
@@ -32,8 +35,9 @@ class BookMangementPage extends Component {
 
   componentDidMount() {
     document.title = "Quản lý sách";
-    const { loginStatus, fetchCategory, fetchPublisher, fetchBook, fetchBookStatus, fetchCategoryStatus, fetchedPublisherStatus } = this.props;
+    const { fetchHistory, loginStatus, fetchCategory, fetchPublisher, fetchBook, fetchBookStatus, fetchCategoryStatus, fetchedPublisherStatus } = this.props;
     if(loginStatus) {
+      fetchHistory();
       if(!fetchBookStatus){
         fetchBook();
       }
@@ -47,8 +51,9 @@ class BookMangementPage extends Component {
   }
   componentDidUpdate() {
     const { type } = this.props;
-    const { loginStatus, fetchCategory, fetchPublisher, fetchBook, fetchBookStatus, fetchCategoryStatus, fetchedPublisherStatus } = this.props;
+    const { fetchHistory, loginStatus, fetchCategory, fetchPublisher, fetchBook, fetchBookStatus, fetchCategoryStatus, fetchedPublisherStatus } = this.props;
     if(loginStatus) {
+      fetchHistory();
       if(!fetchBookStatus){
         fetchBook();
       }
@@ -124,6 +129,7 @@ export default connect(state => ({
   editBook: compose(dispatch, editBookSaga),
   addBook: compose(dispatch, addBookSaga),
   deleteBook: compose(dispatch, deleteBookSaga),
-  logout: compose(dispatch, logoutSaga)
+  logout: compose(dispatch, logoutSaga),
+  fetchHistory: compose(dispatch, fetchHistorySaga)
 
 }))(BookMangementPage);

@@ -152,7 +152,6 @@ class BookManage extends React.Component {
 					<TableHead>
 						<TableRow>
 							<TableCell>Trạng thái</TableCell>
-							<TableCell>ID</TableCell>
 							<TableCell>Nhan đề</TableCell>
 							<TableCell>Tác giả</TableCell>
 							<TableCell>Danh mục</TableCell>
@@ -184,9 +183,6 @@ class BookManage extends React.Component {
 											}
 											label={row.isActive ? "Active" : "Inactive"}
 										/>
-									</TableCell>
-									<TableCell component="th" scope="row">
-										{row.id}
 									</TableCell>
 									<TableCell >{row.bookName}</TableCell>
 									<TableCell >{row.author}</TableCell>

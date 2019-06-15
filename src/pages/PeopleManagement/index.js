@@ -44,9 +44,12 @@ class PeopleManagementPage extends Component {
   }
 
   componentDidUpdate() {
-    const { fetchClass, fetchStudent, fetchStudentStatus, loginStatus } = this.props;
+    const { fetchClass, fetchStudent, fetchStudentStatus, loginStatus, fetchClassStatus } = this.props;
     if (loginStatus && !fetchStudentStatus) {
       fetchStudent();
+    }
+    if(loginStatus && !fetchClassStatus) {
+      fetchClass();
     }
   }
 
@@ -104,6 +107,7 @@ export default connect(state => ({
   student: state.student,
   fetchStudentStatus: state.student.fetched,
   classList: state.classes.classes,
+  fetchClassStatus: state.classes.fetched
 }), (dispatch) => ({
   redirect: (route) => dispatch({
     type: route
