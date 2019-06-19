@@ -6,8 +6,13 @@ import lodash from "lodash";
 import {constants} from '../../containers/ToastNotification';
 const styles = theme => ({
   card: {
-    display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+  },
+
+  cardBorrow: {
+  justifyContent: "space-between",
+  display: 'grid',
+  gridTemplateColumns: '2fr 1fr',
   },
   details: {
     maxWidth: 240,
@@ -116,7 +121,7 @@ class BorrowBook extends Component {
     const { selectedBook } = this.state;
     return (
       <div>
-        <div className={classes.card}>
+        <div className={!selectedBook.length ? classes.card : classes.cardBorrow}>
           <div>
             <ViewGridItem searchValue={searchValue} books={books} onSelectedBook={this.onSelectedBook} inBorrowTab />
           </div>

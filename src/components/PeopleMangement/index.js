@@ -140,6 +140,7 @@ class PeopleManagement extends React.Component {
 							<TableRow>
 								<TableCell>Trạng thái</TableCell>
 								<TableCell>Họ tên</TableCell>
+								<TableCell>Lớp</TableCell>
 								<TableCell>Địa chỉ</TableCell>
 								<TableCell>Giới tính</TableCell>
 								<TableCell>CMND</TableCell>
@@ -174,6 +175,7 @@ class PeopleManagement extends React.Component {
 										<TableCell component="th" scope="row">
 											{row.fullName}
 										</TableCell>
+										<TableCell >{row.class.className}</TableCell>
 										<TableCell >{row.address}</TableCell>
 										<TableCell >{row.sex === 1 ? "Nam" : "Nữ"}</TableCell>
 										<TableCell >{row.cardNumber}</TableCell>

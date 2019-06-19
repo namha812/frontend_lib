@@ -4,17 +4,13 @@ import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import Badge from "@material-ui/core/Badge";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { CardActions, Button } from "@material-ui/core";
 
 const styles = theme => ({
     card: {
         display: "flex",
-        maxWidth: 350,
-        height: 240,
-        minWidth: 350
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
     },
     details: {
         maxWidth: 240,
@@ -69,7 +65,7 @@ function MediaControlCard(props) {
                     </div>
                     {!anonymous && <CardActions>
                         <Button size="small" color="primary" onClick={onClickbook}>
-                            Thêm vào giỏ
+                            Mượn sách
                         </Button>
                     </CardActions>}
                 </CardContent>

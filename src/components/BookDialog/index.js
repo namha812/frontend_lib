@@ -14,7 +14,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
 import lodash from 'lodash';
 
 const styles = (theme) => ({
@@ -164,7 +163,7 @@ class FullScreenDialog extends React.Component {
 			quantity,
 			coverPrice,
 		} = this.state;
-		return bookName && quantity  && coverPrice;
+		return bookName && quantity && coverPrice;
 	}
 	get defaultPublisherHouse() {
 		const { publisherHouseId } = this.state;
@@ -176,7 +175,10 @@ class FullScreenDialog extends React.Component {
 			return book.publisherHouse.id
 		}
 		if (publisherHouses.length) {
-			return publisherHouses[0].id
+			let publisher = lodash.find(publisherHouses, item => {
+				return item.isActive
+			})
+			return publisher.id
 		}
 		return null;
 	}
@@ -190,7 +192,10 @@ class FullScreenDialog extends React.Component {
 			return book.category.id
 		}
 		if (categories.length) {
-			return categories[0].id
+			let category = lodash.find(categories, item => {
+				return item.isActive
+			})
+			return category.id
 		}
 		return null;
 	}
@@ -283,7 +288,7 @@ class FullScreenDialog extends React.Component {
 						type="number"
 						required={true}
 					/>
-					
+
 					<TextField
 						disabled={!edit}
 						value={this.state.imageUrl}
@@ -305,12 +310,15 @@ class FullScreenDialog extends React.Component {
 								id: 'category-native-simple',
 							}}
 						>
-							{categories.map(item => (
-								<MenuItem value={item.id}>{item.name}</MenuItem>
-							))}
+							{categories.map(item => {
+								if (!item.isActive && item.id !== book.categoryId) return null;
+								return (
+									<MenuItem value={item.id}>{item.name}</MenuItem>
+								)
+							})}
 						</Select>
 					</FormControl>
-					
+
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Nhà xuất bản:</InputLabel>
 						<Select
@@ -322,15 +330,19 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							{publisherHouses.map(item => (
-								<MenuItem value={item.id}>{item.name}</MenuItem>
-							))}
+							{publisherHouses.map(item => {
+								if (!item.isActive && item.id !== book.publisherHouseId) return null;
+								return (
+									<MenuItem value={item.id}>{item.name}</MenuItem>
+								)
+							}
+							)}
 						</Select>
 					</FormControl>
 					<FormControl className={classes.textField} disabled={!edit}>
 						<InputLabel htmlFor="age-native-simple">Trạng thái:</InputLabel>
 						<Select
-							
+
 							value={this.state.isActive}
 							onChange={this.handleChange('isActive')}
 							inputProps={{

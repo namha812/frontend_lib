@@ -15,11 +15,17 @@ const styles = {
 	container: {
 		display: "flex",
 		flexWrap: "wrap",
-		margin: "0 auto",
+		justifyContent: "center-between",
+		display: 'grid',
+		gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+		gridGap: '30px',
+		paddingLeft: '25px',
+		paddingTop: '25px',
+		paddingRight: '25px'
 	},
 	gridItem: {
-		margin: 20,
-		maxWidth: 320
+		// marginTop: 15,
+		// maxWidth: 320
 	},
 	headerTitle: {
 		padding: 20

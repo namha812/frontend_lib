@@ -150,7 +150,7 @@ class FullScreenDialog extends React.Component {
 			email,
 			cardNumber,
 		} = this.state;
-		return fullName && email  && cardNumber;
+		return fullName && email && cardNumber;
 	}
 
 	get Title() {
@@ -173,7 +173,10 @@ class FullScreenDialog extends React.Component {
 			return student.class.id
 		}
 		if (classList.length) {
-			return classList[0].id
+			let itemClass = lodash.find(classList, item => {
+				return item.isActive
+			})
+			return itemClass.id
 		}
 		return null;
 	}
@@ -181,7 +184,7 @@ class FullScreenDialog extends React.Component {
 	static getDerivedStateFromProps(nextProps, prevState) {
 		const { student: nextStudent } = nextProps;
 		const { student: currentStudent } = prevState;
-		if(!lodash.isEmpty(nextStudent) && JSON.stringify(nextStudent) !== JSON.stringify(currentStudent)){
+		if (!lodash.isEmpty(nextStudent) && JSON.stringify(nextStudent) !== JSON.stringify(currentStudent)) {
 			return {
 				fullName: nextStudent.fullName,
 				isActive: nextStudent.isActive,
@@ -299,9 +302,12 @@ class FullScreenDialog extends React.Component {
 								id: 'age-native-simple',
 							}}
 						>
-							{classList.map(item => (
-								<MenuItem value={item.id}>{item.className}</MenuItem>
-							))}
+							{classList.map(item => {
+								if(!item.isActive && item.id !== student.classId) return null;
+								return (
+									<MenuItem value={item.id}>{item.className}</MenuItem>
+								)
+							})}
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>

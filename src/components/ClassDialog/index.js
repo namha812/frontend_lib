@@ -65,7 +65,7 @@ function Transition(props) {
 class FullScreenDialog extends React.Component {
 
 	state = {
-		name: null,
+		className: null,
 		isActive: true,
 	}
 
@@ -103,8 +103,8 @@ class FullScreenDialog extends React.Component {
 		if (classeItem.id) { 
 			editClass({
 				id: classeItem.id,
-				className: className || classeItem.name,
-				isActive: isActive || classeItem.isActive
+				className: className || classeItem.className,
+				isActive: isActive
 			})
 		}
 		else {

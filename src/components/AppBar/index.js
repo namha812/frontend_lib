@@ -6,18 +6,12 @@ import { compose } from "redux";
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import HomeIcon from '@material-ui/icons/Home';
-import ContactIcon from '@material-ui/icons/ContactPhone'
 import Link from 'redux-first-router-link'
 
 import {
@@ -168,7 +162,6 @@ class PrimarySearchAppBar extends React.Component {
 						<div className={classes.grow} />
 						<div className={classes.sectionDesktop}>
 							{loginStatus && <IconButton color="inherit">
-								<HomeIcon />
 							</IconButton>}
 							<IconButton
 								aria-owns={isMenuOpen ? 'material-appbar' : null}

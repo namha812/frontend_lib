@@ -196,9 +196,6 @@ class BookManage extends React.Component {
 										<IconButton onClick={this.handleEdit(row)}>
 											<Edit />
 										</IconButton>
-										{/* <IconButton onClick={this.handleDelete(row)}>
-											<DeleteIcon />
-										</IconButton> */}
 									</TableCell>
 								</TableRow>
 							);

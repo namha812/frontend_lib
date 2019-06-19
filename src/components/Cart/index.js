@@ -16,7 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
-import {format} from "date-fns";
+import { format } from "date-fns";
 import cx from 'classnames';
 
 const CustomTableCell = withStyles(theme => ({
@@ -81,7 +81,7 @@ const styles = theme => ({
 });
 let curentDate = new Date();
 class Cart extends React.Component {
-	
+
 	state = {
 		selectedStudent: {},
 		expiryDate: format(curentDate.setDate(curentDate.getDate() + 3), "YYYY-MM-DD")
@@ -129,6 +129,9 @@ class Cart extends React.Component {
 		this.setState({ selectedStudent: selectedStudent[0] })
 	}
 
+	// onCancelBorrow = () => {
+	// 	selectedBook = []
+	// }
 	render() {
 		const { selectedStudent, expiryDate } = this.state;
 		const { selectedBook, classes, students = [] } = this.props;
@@ -143,7 +146,7 @@ class Cart extends React.Component {
 							<CustomTableCell>Mã</CustomTableCell>
 							<CustomTableCell>Tên sách</CustomTableCell>
 							<CustomTableCell>Tác giả</CustomTableCell>
-							<CustomTableCell>Xóa</CustomTableCell>
+							<CustomTableCell>Thao tác</CustomTableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -190,9 +193,12 @@ class Cart extends React.Component {
 							onChange={this.onChangeSelected}
 							input={<Input name="class" id="class-helper" />}
 						>
-							{students.map(item => (
-								<MenuItem value={item.id}>{item.fullName}</MenuItem>
-							))}
+							{students.map(item => {
+								if(!item.isActive) return null;
+								return (
+									<MenuItem value={item.id}>{item.fullName}</MenuItem>
+								)
+							})}
 						</Select>
 					</FormControl>
 					<TextField
