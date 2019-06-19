@@ -84,13 +84,18 @@ class Classes extends React.Component {
       open: false,
     });
   }
-
+  get classListLength() {
+    const { searchValue, classList = [] } = this.props;
+    return _.slice(classList.filter(item => {
+      return _.includes(_.toLower(item.className), _.toLower(searchValue));
+    })).length;
+  }
   get classList() {
     const { page, rowsPerPage } = this.state;
     const { searchValue, classList = [] } = this.props;
     return _.slice(classList.filter(item => {
       return _.includes(_.toLower(item.className), _.toLower(searchValue));
-    }), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    }), parseInt(page) * parseInt(rowsPerPage), parseInt(page) * parseInt(rowsPerPage) + parseInt(rowsPerPage))
   }
 
   render() {
@@ -156,7 +161,7 @@ class Classes extends React.Component {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 colSpan={3}
-                count={this.classList.length}
+                count={this.classListLength}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{

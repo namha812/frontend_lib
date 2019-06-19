@@ -89,12 +89,18 @@ class Category extends React.Component {
     });
   }
 
+  get categoryLength() {
+    const { searchValue, categories = [] } = this.props;
+    return _.slice(categories.filter(item => {
+      return _.includes(_.toLower(item.name), _.toLower(searchValue));
+    })).length;
+  }
   get categories() {
     const { page, rowsPerPage } = this.state;
     const { searchValue, categories = [] } = this.props;
     return _.slice(categories.filter(item => {
       return _.includes(_.toLower(item.name), _.toLower(searchValue));
-    }), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    }), parseInt(page) * parseInt(rowsPerPage), parseInt(page) * parseInt(rowsPerPage) + parseInt(rowsPerPage))
   }
 
   render() {
@@ -160,7 +166,7 @@ class Category extends React.Component {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 colSpan={3}
-                count={this.categories.length}
+                count={this.categoryLength}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{

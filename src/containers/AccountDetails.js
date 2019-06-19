@@ -92,13 +92,10 @@ class FullScreenDialog extends React.Component {
 
   get validate() {
     const { password, fullName, rePassword } = this.state;
-    console.log(this.state)
     if (!fullName) {
-      console.log("name false")
       return false;
     }
     if (password && password !== rePassword) {
-      console.log("password false")
       return false
     }
     return true;

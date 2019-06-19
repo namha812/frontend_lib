@@ -125,12 +125,19 @@ class BookManage extends React.Component {
 
 	}
 
+	get bookLength() {
+		const { searchValue, books = [] } = this.props;
+		return books.filter(item => {
+			return _.includes(_.toLower(item.bookName), _.toLower(searchValue));
+		}).length;
+	}
+
 	get books() {
 		const { page, rowsPerPage } = this.state;
 		const { searchValue, books = [] } = this.props;
 		return _.slice(books.filter(item => {
 			return _.includes(_.toLower(item.bookName), _.toLower(searchValue));
-		}), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+		}),parseInt(page) * parseInt(rowsPerPage), parseInt(page) * parseInt(rowsPerPage) + parseInt(rowsPerPage))
 	}
 
 	componentDidMount() {
@@ -206,7 +213,7 @@ class BookManage extends React.Component {
 							<TablePagination
 								rowsPerPageOptions={[5, 10, 25]}
 								colSpan={3}
-								count={this.books.length}
+								count={this.bookLength}
 								rowsPerPage={rowsPerPage}
 								page={page}
 								SelectProps={{

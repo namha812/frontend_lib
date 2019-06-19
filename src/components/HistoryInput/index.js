@@ -8,9 +8,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import lodash from 'lodash';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -51,12 +48,27 @@ class HitoryInput extends React.Component {
             open: false,
         });
     }
+
+    handleChangePage = (event, page) => {
+		this.setState({ page });
+	};
+
+	handleChangeRowsPerPage = event => {
+		this.setState({ rowsPerPage: event.target.value });
+	};
+    get historyInputLength () {
+        const { searchValue, historyInput = [] } = this.props;
+        return historyInput.filter(item => {
+            return _.includes(_.toLower(item.book.bookName), _.toLower(searchValue));
+        }).length;
+    }
+
     get historyInputs() {
         const { page, rowsPerPage } = this.state;
         const { searchValue, historyInput = [] } = this.props;
         return _.slice(historyInput.filter(item => {
             return _.includes(_.toLower(item.book.bookName), _.toLower(searchValue));
-        }), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        }), parseInt(page) * parseInt(rowsPerPage), parseInt(page) * parseInt(rowsPerPage) + parseInt(rowsPerPage))
     }
     render() {
         const {
@@ -70,11 +82,11 @@ class HitoryInput extends React.Component {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
+                            <TableCell>STT</TableCell>
                             <TableCell>Tên sách</TableCell>
                             <TableCell>Tác giả</TableCell>
                             <TableCell>Số lượng nhập thêm</TableCell>
-                            <TableCell>Người tạo</TableCell>
+                            <TableCell style={{width:80}}>Người tạo</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Chức vụ</TableCell>
                             <TableCell>Ngày tạo</TableCell>
@@ -89,10 +101,10 @@ class HitoryInput extends React.Component {
                             </TableRow>
                         }
                     </TableBody>
-                    {this.historyInputs.map(row => {
+                    {this.historyInputs.map((row, index) => {
                         return (
                             <TableRow key={row.id}>
-                                <TableCell>{row.id}</TableCell>
+                                <TableCell>{this.historyInputs.indexOf(row) + 1 + rowsPerPage * page}</TableCell>
                                 <TableCell>{lodash.get(row, 'book.bookName', '---')}</TableCell>
                                 <TableCell>{lodash.get(row, 'book.author', '---')}</TableCell>
                                 <TableCell>{lodash.get(row, 'quantity', '---')}</TableCell>
@@ -109,7 +121,7 @@ class HitoryInput extends React.Component {
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 colSpan={3}
-                                count={this.historyInputs.length}
+                                count={this.historyInputLength}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 SelectProps={{

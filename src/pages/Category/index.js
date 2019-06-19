@@ -32,17 +32,14 @@ class CategoryPage extends Component {
   }
 
   componentDidMount() {
-    document.title = "Quản lý danh mục sách"
-  }
-
-  componentDidUpdate() {
+    document.title = "Quản lý danh mục sách";
     const {loginStatus, fetchCategory, fetchedCategoryStatus} = this.props;
     if(loginStatus && !fetchedCategoryStatus) {
       fetchCategory();
     }
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     const {loginStatus, fetchCategory, fetchedCategoryStatus} = this.props;
     if(loginStatus && !fetchedCategoryStatus) {
       fetchCategory();

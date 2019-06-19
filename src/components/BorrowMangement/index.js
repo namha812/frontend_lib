@@ -63,12 +63,19 @@ class PeopleManagement extends React.Component {
 		this.setState({ rowsPerPage: event.target.value });
 	};
 
+	get borrowsLength () {
+		const { searchValue, borrowList = [] } = this.props;
+		return borrowList.filter(item => {
+			return _.includes(_.toLower(item.fullName), _.toLower(searchValue));
+		}).length;
+	}
+
 	get borrows() {
 		const { page, rowsPerPage } = this.state;
 		const { searchValue, borrowList = [] } = this.props;
 		return _.slice(borrowList.filter(item => {
 			return _.includes(_.toLower(item.fullName), _.toLower(searchValue));
-		}), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+		}), parseInt(page) * parseInt(rowsPerPage), parseInt(page) * parseInt(rowsPerPage) + parseInt(rowsPerPage))
 	}
 
 	render() {
@@ -84,7 +91,7 @@ class PeopleManagement extends React.Component {
 				<Table className={classes.table}>
 					<TableHead>
 						<TableRow>
-							<TableCell>ID</TableCell>
+							<TableCell>STT</TableCell>
 							<TableCell>Tên</TableCell>
 							<TableCell>Số CMT</TableCell>
 							<TableCell>Tổng số mượn</TableCell>
@@ -101,7 +108,7 @@ class PeopleManagement extends React.Component {
 							</TableRow>}
 						{this.borrows.map(row => {
 							return (
-								<TableRow key={row.id}>
+								<TableRow key={this.borrows.indexOf(row) + 1}>
 									<TableCell component="th" scope="row">
 										{row.id}
 									</TableCell>
@@ -122,7 +129,7 @@ class PeopleManagement extends React.Component {
 							<TablePagination
 								rowsPerPageOptions={[5, 10, 25]}
 								colSpan={3}
-								count={this.borrows.length}
+								count={this.borrowsLength}
 								rowsPerPage={rowsPerPage}
 								page={page}
 								SelectProps={{

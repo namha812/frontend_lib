@@ -115,12 +115,19 @@ class PeopleManagement extends React.Component {
 		this.setState({ rowsPerPage: event.target.value });
 	};
 
+	get studentLength(){
+		const { searchValue, students = [] } = this.props;
+		return _.slice(students.filter(item => {
+			return _.includes(_.toLower(item.fullName), _.toLower(searchValue));
+		})).length;
+	}
+
 	get students() {
 		const { page, rowsPerPage } = this.state;
 		const { searchValue, students = [] } = this.props;
 		return _.slice(students.filter(item => {
 			return _.includes(_.toLower(item.fullName), _.toLower(searchValue));
-		}), page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+		}),parseInt(page) * parseInt(rowsPerPage), parseInt(page) * parseInt(rowsPerPage) + parseInt(rowsPerPage))
 	}
 
 	render() {
@@ -201,7 +208,7 @@ class PeopleManagement extends React.Component {
 								<TablePagination
 									rowsPerPageOptions={[5, 10, 25]}
 									colSpan={3}
-									count={this.students.length}
+									count={this.studentLength}
 									rowsPerPage={rowsPerPage}
 									page={page}
 									SelectProps={{

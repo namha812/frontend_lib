@@ -49,7 +49,7 @@ class MediaCard extends Component {
 	state = {
 		offset: 0,
 		page: 0,
-		itemsPerPage: 15,
+		itemsPerPage: 6,
 		currentItem: {},
 		open: false
 	}
