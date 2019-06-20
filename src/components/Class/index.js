@@ -138,7 +138,7 @@ class Classes extends React.Component {
                           disable
                         />
                       }
-                      label={row.isActive ? "Active" : "Inactive"}
+                      label={row.isActive ? "Hoạt động" : "Khóa"}
                     />
                   </TableCell>
                   <TableCell >{row.className}</TableCell>
